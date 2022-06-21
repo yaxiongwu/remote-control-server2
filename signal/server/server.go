@@ -104,16 +104,16 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 
 		rtcTarget := rtc.Target_SUBSCRIBER
 		switch payload := in.Payload.(type) {
-		case *rtc.Request_CreateSession:
-			sid := payload.CreateSession.Sid
-			uid := payload.CreateSession.Uid
+		case *rtc.Request_Register:
+			sid := payload.Register.Sid
+			uid := payload.Register.Uid
 			log.Infof("[C=>S] createSession: sid => %v, uid => %v", sid, uid)
 			//需要查找是否有重名
 			err = client.CreateSession(sid)
 			if err != nil {
 				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_CreateSessionReply{
-						CreateSessionReply: &rtc.CreateSessionReply{
+					Payload: &rtc.Reply_Register{
+						Register: &rtc.RegisterReply{
 							Error: &rtc.Error{
 								Code:   int32(1),
 								Reason: fmt.Sprintf("create seesion error: %v", err),
