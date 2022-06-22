@@ -139,31 +139,31 @@ message AudioLevelSpeaker {
 message Request {
   oneof payload {
     // Basic API Request
-    RegisterRequest register=1;
-    JoinRequest join = 2;
-    SessionDescription description = 3;
-    Trickle trickle = 4;
+    JoinRequest join = 1;
+    SessionDescription description = 2;
+    Trickle trickle = 3;
 
     // Command
-    SubscriptionRequest subscription = 5;
+    SubscriptionRequest subscription = 4;
+    RegisterRequest register=5;
   }
 }
 
 message Reply {
   oneof payload {
     // Basic API Reply
-    RegisterReply register=1;
-    JoinReply join = 2;
-    SessionDescription description = 3;
-    Trickle trickle = 4;
+    JoinReply join = 1;
+    SessionDescription description = 2;
+    Trickle trickle = 3;
 
     // Event
-    TrackEvent trackEvent = 5;
+    TrackEvent trackEvent = 4;
 
     // Command Reply
-    SubscriptionReply subscription = 6;
+    SubscriptionReply subscription = 5;
 
     // Error
-    Error error = 8;
+    Error error = 7;
+    RegisterReply register=8;
   }
 }
