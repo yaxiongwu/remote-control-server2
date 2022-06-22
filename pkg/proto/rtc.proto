@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/pion/ion/proto/rtc";
+option go_package = "github.com/YaxiongWu/remote-control-client-go/pkg/proto/rtc";
 
 package rtc;
 
@@ -26,7 +26,7 @@ message RegisterRequest {
 //创建视频源的回复
 message RegisterReply {
   bool success = 1;
-  Error error = 2;
+  Error error = 2;  
 }
 
 message JoinRequest {
@@ -139,31 +139,31 @@ message AudioLevelSpeaker {
 message Request {
   oneof payload {
     // Basic API Request
-    JoinRequest join = 1;
-    SessionDescription description = 2;
-    Trickle trickle = 3;
+    RegisterRequest register=1;
+    JoinRequest join = 2;
+    SessionDescription description = 3;
+    Trickle trickle = 4;
 
     // Command
-    SubscriptionRequest subscription = 4;
-    RegisterRequest register=5;
+    SubscriptionRequest subscription = 5;
   }
 }
 
 message Reply {
   oneof payload {
     // Basic API Reply
-    JoinReply join = 1;
-    SessionDescription description = 2;
-    Trickle trickle = 3;
+    RegisterReply register=1;
+    JoinReply join = 2;
+    SessionDescription description = 3;
+    Trickle trickle = 4;
+
     // Event
-    TrackEvent trackEvent = 4;
+    TrackEvent trackEvent = 5;
 
     // Command Reply
-    SubscriptionReply subscription = 5;
-    
-    // Error
-    Error error = 7;
+    SubscriptionReply subscription = 6;
 
-    RegisterReply register=8;
+    // Error
+    Error error = 8;
   }
 }
