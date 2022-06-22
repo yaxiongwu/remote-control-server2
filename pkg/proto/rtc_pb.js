@@ -3582,11 +3582,11 @@ proto.rtc.Request.oneofGroups_ = [[1,2,3,4,5]];
  */
 proto.rtc.Request.PayloadCase = {
   PAYLOAD_NOT_SET: 0,
-  REGISTER: 1,
-  JOIN: 2,
-  DESCRIPTION: 3,
-  TRICKLE: 4,
-  SUBSCRIPTION: 5
+  JOIN: 1,
+  DESCRIPTION: 2,
+  TRICKLE: 3,
+  SUBSCRIPTION: 4,
+  REGISTER: 5
 };
 
 /**
@@ -3627,11 +3627,11 @@ proto.rtc.Request.prototype.toObject = function(opt_includeInstance) {
  */
 proto.rtc.Request.toObject = function(includeInstance, msg) {
   var f, obj = {
-    register: (f = msg.getRegister()) && proto.rtc.RegisterRequest.toObject(includeInstance, f),
     join: (f = msg.getJoin()) && proto.rtc.JoinRequest.toObject(includeInstance, f),
     description: (f = msg.getDescription()) && proto.rtc.SessionDescription.toObject(includeInstance, f),
     trickle: (f = msg.getTrickle()) && proto.rtc.Trickle.toObject(includeInstance, f),
-    subscription: (f = msg.getSubscription()) && proto.rtc.SubscriptionRequest.toObject(includeInstance, f)
+    subscription: (f = msg.getSubscription()) && proto.rtc.SubscriptionRequest.toObject(includeInstance, f),
+    register: (f = msg.getRegister()) && proto.rtc.RegisterRequest.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -3669,29 +3669,29 @@ proto.rtc.Request.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new proto.rtc.RegisterRequest;
-      reader.readMessage(value,proto.rtc.RegisterRequest.deserializeBinaryFromReader);
-      msg.setRegister(value);
-      break;
-    case 2:
       var value = new proto.rtc.JoinRequest;
       reader.readMessage(value,proto.rtc.JoinRequest.deserializeBinaryFromReader);
       msg.setJoin(value);
       break;
-    case 3:
+    case 2:
       var value = new proto.rtc.SessionDescription;
       reader.readMessage(value,proto.rtc.SessionDescription.deserializeBinaryFromReader);
       msg.setDescription(value);
       break;
-    case 4:
+    case 3:
       var value = new proto.rtc.Trickle;
       reader.readMessage(value,proto.rtc.Trickle.deserializeBinaryFromReader);
       msg.setTrickle(value);
       break;
-    case 5:
+    case 4:
       var value = new proto.rtc.SubscriptionRequest;
       reader.readMessage(value,proto.rtc.SubscriptionRequest.deserializeBinaryFromReader);
       msg.setSubscription(value);
+      break;
+    case 5:
+      var value = new proto.rtc.RegisterRequest;
+      reader.readMessage(value,proto.rtc.RegisterRequest.deserializeBinaryFromReader);
+      msg.setRegister(value);
       break;
     default:
       reader.skipField();
@@ -3722,18 +3722,10 @@ proto.rtc.Request.prototype.serializeBinary = function() {
  */
 proto.rtc.Request.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getRegister();
-  if (f != null) {
-    writer.writeMessage(
-      1,
-      f,
-      proto.rtc.RegisterRequest.serializeBinaryToWriter
-    );
-  }
   f = message.getJoin();
   if (f != null) {
     writer.writeMessage(
-      2,
+      1,
       f,
       proto.rtc.JoinRequest.serializeBinaryToWriter
     );
@@ -3741,7 +3733,7 @@ proto.rtc.Request.serializeBinaryToWriter = function(message, writer) {
   f = message.getDescription();
   if (f != null) {
     writer.writeMessage(
-      3,
+      2,
       f,
       proto.rtc.SessionDescription.serializeBinaryToWriter
     );
@@ -3749,7 +3741,7 @@ proto.rtc.Request.serializeBinaryToWriter = function(message, writer) {
   f = message.getTrickle();
   if (f != null) {
     writer.writeMessage(
-      4,
+      3,
       f,
       proto.rtc.Trickle.serializeBinaryToWriter
     );
@@ -3757,58 +3749,29 @@ proto.rtc.Request.serializeBinaryToWriter = function(message, writer) {
   f = message.getSubscription();
   if (f != null) {
     writer.writeMessage(
-      5,
+      4,
       f,
       proto.rtc.SubscriptionRequest.serializeBinaryToWriter
+    );
+  }
+  f = message.getRegister();
+  if (f != null) {
+    writer.writeMessage(
+      5,
+      f,
+      proto.rtc.RegisterRequest.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional RegisterRequest register = 1;
- * @return {?proto.rtc.RegisterRequest}
- */
-proto.rtc.Request.prototype.getRegister = function() {
-  return /** @type{?proto.rtc.RegisterRequest} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.RegisterRequest, 1));
-};
-
-
-/**
- * @param {?proto.rtc.RegisterRequest|undefined} value
- * @return {!proto.rtc.Request} returns this
-*/
-proto.rtc.Request.prototype.setRegister = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 1, proto.rtc.Request.oneofGroups_[0], value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.rtc.Request} returns this
- */
-proto.rtc.Request.prototype.clearRegister = function() {
-  return this.setRegister(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.rtc.Request.prototype.hasRegister = function() {
-  return jspb.Message.getField(this, 1) != null;
-};
-
-
-/**
- * optional JoinRequest join = 2;
+ * optional JoinRequest join = 1;
  * @return {?proto.rtc.JoinRequest}
  */
 proto.rtc.Request.prototype.getJoin = function() {
   return /** @type{?proto.rtc.JoinRequest} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.JoinRequest, 2));
+    jspb.Message.getWrapperField(this, proto.rtc.JoinRequest, 1));
 };
 
 
@@ -3817,7 +3780,7 @@ proto.rtc.Request.prototype.getJoin = function() {
  * @return {!proto.rtc.Request} returns this
 */
 proto.rtc.Request.prototype.setJoin = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 2, proto.rtc.Request.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 1, proto.rtc.Request.oneofGroups_[0], value);
 };
 
 
@@ -3835,17 +3798,17 @@ proto.rtc.Request.prototype.clearJoin = function() {
  * @return {boolean}
  */
 proto.rtc.Request.prototype.hasJoin = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
 /**
- * optional SessionDescription description = 3;
+ * optional SessionDescription description = 2;
  * @return {?proto.rtc.SessionDescription}
  */
 proto.rtc.Request.prototype.getDescription = function() {
   return /** @type{?proto.rtc.SessionDescription} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 3));
+    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 2));
 };
 
 
@@ -3854,7 +3817,7 @@ proto.rtc.Request.prototype.getDescription = function() {
  * @return {!proto.rtc.Request} returns this
 */
 proto.rtc.Request.prototype.setDescription = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 3, proto.rtc.Request.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 2, proto.rtc.Request.oneofGroups_[0], value);
 };
 
 
@@ -3872,17 +3835,17 @@ proto.rtc.Request.prototype.clearDescription = function() {
  * @return {boolean}
  */
 proto.rtc.Request.prototype.hasDescription = function() {
-  return jspb.Message.getField(this, 3) != null;
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
 /**
- * optional Trickle trickle = 4;
+ * optional Trickle trickle = 3;
  * @return {?proto.rtc.Trickle}
  */
 proto.rtc.Request.prototype.getTrickle = function() {
   return /** @type{?proto.rtc.Trickle} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.Trickle, 4));
+    jspb.Message.getWrapperField(this, proto.rtc.Trickle, 3));
 };
 
 
@@ -3891,7 +3854,7 @@ proto.rtc.Request.prototype.getTrickle = function() {
  * @return {!proto.rtc.Request} returns this
 */
 proto.rtc.Request.prototype.setTrickle = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 4, proto.rtc.Request.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 3, proto.rtc.Request.oneofGroups_[0], value);
 };
 
 
@@ -3909,17 +3872,17 @@ proto.rtc.Request.prototype.clearTrickle = function() {
  * @return {boolean}
  */
 proto.rtc.Request.prototype.hasTrickle = function() {
-  return jspb.Message.getField(this, 4) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
 /**
- * optional SubscriptionRequest subscription = 5;
+ * optional SubscriptionRequest subscription = 4;
  * @return {?proto.rtc.SubscriptionRequest}
  */
 proto.rtc.Request.prototype.getSubscription = function() {
   return /** @type{?proto.rtc.SubscriptionRequest} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.SubscriptionRequest, 5));
+    jspb.Message.getWrapperField(this, proto.rtc.SubscriptionRequest, 4));
 };
 
 
@@ -3928,7 +3891,7 @@ proto.rtc.Request.prototype.getSubscription = function() {
  * @return {!proto.rtc.Request} returns this
 */
 proto.rtc.Request.prototype.setSubscription = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 5, proto.rtc.Request.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 4, proto.rtc.Request.oneofGroups_[0], value);
 };
 
 
@@ -3946,6 +3909,43 @@ proto.rtc.Request.prototype.clearSubscription = function() {
  * @return {boolean}
  */
 proto.rtc.Request.prototype.hasSubscription = function() {
+  return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional RegisterRequest register = 5;
+ * @return {?proto.rtc.RegisterRequest}
+ */
+proto.rtc.Request.prototype.getRegister = function() {
+  return /** @type{?proto.rtc.RegisterRequest} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.RegisterRequest, 5));
+};
+
+
+/**
+ * @param {?proto.rtc.RegisterRequest|undefined} value
+ * @return {!proto.rtc.Request} returns this
+*/
+proto.rtc.Request.prototype.setRegister = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 5, proto.rtc.Request.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Request} returns this
+ */
+proto.rtc.Request.prototype.clearRegister = function() {
+  return this.setRegister(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Request.prototype.hasRegister = function() {
   return jspb.Message.getField(this, 5) != null;
 };
 
@@ -3959,20 +3959,20 @@ proto.rtc.Request.prototype.hasSubscription = function() {
  * @private {!Array<!Array<number>>}
  * @const
  */
-proto.rtc.Reply.oneofGroups_ = [[1,2,3,4,5,6,8]];
+proto.rtc.Reply.oneofGroups_ = [[1,2,3,4,5,7,8]];
 
 /**
  * @enum {number}
  */
 proto.rtc.Reply.PayloadCase = {
   PAYLOAD_NOT_SET: 0,
-  REGISTER: 1,
-  JOIN: 2,
-  DESCRIPTION: 3,
-  TRICKLE: 4,
-  TRACKEVENT: 5,
-  SUBSCRIPTION: 6,
-  ERROR: 8
+  JOIN: 1,
+  DESCRIPTION: 2,
+  TRICKLE: 3,
+  TRACKEVENT: 4,
+  SUBSCRIPTION: 5,
+  ERROR: 7,
+  REGISTER: 8
 };
 
 /**
@@ -4013,13 +4013,13 @@ proto.rtc.Reply.prototype.toObject = function(opt_includeInstance) {
  */
 proto.rtc.Reply.toObject = function(includeInstance, msg) {
   var f, obj = {
-    register: (f = msg.getRegister()) && proto.rtc.RegisterReply.toObject(includeInstance, f),
     join: (f = msg.getJoin()) && proto.rtc.JoinReply.toObject(includeInstance, f),
     description: (f = msg.getDescription()) && proto.rtc.SessionDescription.toObject(includeInstance, f),
     trickle: (f = msg.getTrickle()) && proto.rtc.Trickle.toObject(includeInstance, f),
     trackevent: (f = msg.getTrackevent()) && proto.rtc.TrackEvent.toObject(includeInstance, f),
     subscription: (f = msg.getSubscription()) && proto.rtc.SubscriptionReply.toObject(includeInstance, f),
-    error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f)
+    error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f),
+    register: (f = msg.getRegister()) && proto.rtc.RegisterReply.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -4057,39 +4057,39 @@ proto.rtc.Reply.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new proto.rtc.RegisterReply;
-      reader.readMessage(value,proto.rtc.RegisterReply.deserializeBinaryFromReader);
-      msg.setRegister(value);
-      break;
-    case 2:
       var value = new proto.rtc.JoinReply;
       reader.readMessage(value,proto.rtc.JoinReply.deserializeBinaryFromReader);
       msg.setJoin(value);
       break;
-    case 3:
+    case 2:
       var value = new proto.rtc.SessionDescription;
       reader.readMessage(value,proto.rtc.SessionDescription.deserializeBinaryFromReader);
       msg.setDescription(value);
       break;
-    case 4:
+    case 3:
       var value = new proto.rtc.Trickle;
       reader.readMessage(value,proto.rtc.Trickle.deserializeBinaryFromReader);
       msg.setTrickle(value);
       break;
-    case 5:
+    case 4:
       var value = new proto.rtc.TrackEvent;
       reader.readMessage(value,proto.rtc.TrackEvent.deserializeBinaryFromReader);
       msg.setTrackevent(value);
       break;
-    case 6:
+    case 5:
       var value = new proto.rtc.SubscriptionReply;
       reader.readMessage(value,proto.rtc.SubscriptionReply.deserializeBinaryFromReader);
       msg.setSubscription(value);
       break;
-    case 8:
+    case 7:
       var value = new proto.rtc.Error;
       reader.readMessage(value,proto.rtc.Error.deserializeBinaryFromReader);
       msg.setError(value);
+      break;
+    case 8:
+      var value = new proto.rtc.RegisterReply;
+      reader.readMessage(value,proto.rtc.RegisterReply.deserializeBinaryFromReader);
+      msg.setRegister(value);
       break;
     default:
       reader.skipField();
@@ -4120,18 +4120,10 @@ proto.rtc.Reply.prototype.serializeBinary = function() {
  */
 proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getRegister();
-  if (f != null) {
-    writer.writeMessage(
-      1,
-      f,
-      proto.rtc.RegisterReply.serializeBinaryToWriter
-    );
-  }
   f = message.getJoin();
   if (f != null) {
     writer.writeMessage(
-      2,
+      1,
       f,
       proto.rtc.JoinReply.serializeBinaryToWriter
     );
@@ -4139,7 +4131,7 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
   f = message.getDescription();
   if (f != null) {
     writer.writeMessage(
-      3,
+      2,
       f,
       proto.rtc.SessionDescription.serializeBinaryToWriter
     );
@@ -4147,7 +4139,7 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
   f = message.getTrickle();
   if (f != null) {
     writer.writeMessage(
-      4,
+      3,
       f,
       proto.rtc.Trickle.serializeBinaryToWriter
     );
@@ -4155,7 +4147,7 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
   f = message.getTrackevent();
   if (f != null) {
     writer.writeMessage(
-      5,
+      4,
       f,
       proto.rtc.TrackEvent.serializeBinaryToWriter
     );
@@ -4163,7 +4155,7 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
   f = message.getSubscription();
   if (f != null) {
     writer.writeMessage(
-      6,
+      5,
       f,
       proto.rtc.SubscriptionReply.serializeBinaryToWriter
     );
@@ -4171,58 +4163,29 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
   f = message.getError();
   if (f != null) {
     writer.writeMessage(
-      8,
+      7,
       f,
       proto.rtc.Error.serializeBinaryToWriter
+    );
+  }
+  f = message.getRegister();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      proto.rtc.RegisterReply.serializeBinaryToWriter
     );
   }
 };
 
 
 /**
- * optional RegisterReply register = 1;
- * @return {?proto.rtc.RegisterReply}
- */
-proto.rtc.Reply.prototype.getRegister = function() {
-  return /** @type{?proto.rtc.RegisterReply} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.RegisterReply, 1));
-};
-
-
-/**
- * @param {?proto.rtc.RegisterReply|undefined} value
- * @return {!proto.rtc.Reply} returns this
-*/
-proto.rtc.Reply.prototype.setRegister = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 1, proto.rtc.Reply.oneofGroups_[0], value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- * @return {!proto.rtc.Reply} returns this
- */
-proto.rtc.Reply.prototype.clearRegister = function() {
-  return this.setRegister(undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.rtc.Reply.prototype.hasRegister = function() {
-  return jspb.Message.getField(this, 1) != null;
-};
-
-
-/**
- * optional JoinReply join = 2;
+ * optional JoinReply join = 1;
  * @return {?proto.rtc.JoinReply}
  */
 proto.rtc.Reply.prototype.getJoin = function() {
   return /** @type{?proto.rtc.JoinReply} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.JoinReply, 2));
+    jspb.Message.getWrapperField(this, proto.rtc.JoinReply, 1));
 };
 
 
@@ -4231,7 +4194,7 @@ proto.rtc.Reply.prototype.getJoin = function() {
  * @return {!proto.rtc.Reply} returns this
 */
 proto.rtc.Reply.prototype.setJoin = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 2, proto.rtc.Reply.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 1, proto.rtc.Reply.oneofGroups_[0], value);
 };
 
 
@@ -4249,17 +4212,17 @@ proto.rtc.Reply.prototype.clearJoin = function() {
  * @return {boolean}
  */
 proto.rtc.Reply.prototype.hasJoin = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
 /**
- * optional SessionDescription description = 3;
+ * optional SessionDescription description = 2;
  * @return {?proto.rtc.SessionDescription}
  */
 proto.rtc.Reply.prototype.getDescription = function() {
   return /** @type{?proto.rtc.SessionDescription} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 3));
+    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 2));
 };
 
 
@@ -4268,7 +4231,7 @@ proto.rtc.Reply.prototype.getDescription = function() {
  * @return {!proto.rtc.Reply} returns this
 */
 proto.rtc.Reply.prototype.setDescription = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 3, proto.rtc.Reply.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 2, proto.rtc.Reply.oneofGroups_[0], value);
 };
 
 
@@ -4286,17 +4249,17 @@ proto.rtc.Reply.prototype.clearDescription = function() {
  * @return {boolean}
  */
 proto.rtc.Reply.prototype.hasDescription = function() {
-  return jspb.Message.getField(this, 3) != null;
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
 /**
- * optional Trickle trickle = 4;
+ * optional Trickle trickle = 3;
  * @return {?proto.rtc.Trickle}
  */
 proto.rtc.Reply.prototype.getTrickle = function() {
   return /** @type{?proto.rtc.Trickle} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.Trickle, 4));
+    jspb.Message.getWrapperField(this, proto.rtc.Trickle, 3));
 };
 
 
@@ -4305,7 +4268,7 @@ proto.rtc.Reply.prototype.getTrickle = function() {
  * @return {!proto.rtc.Reply} returns this
 */
 proto.rtc.Reply.prototype.setTrickle = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 4, proto.rtc.Reply.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 3, proto.rtc.Reply.oneofGroups_[0], value);
 };
 
 
@@ -4323,17 +4286,17 @@ proto.rtc.Reply.prototype.clearTrickle = function() {
  * @return {boolean}
  */
 proto.rtc.Reply.prototype.hasTrickle = function() {
-  return jspb.Message.getField(this, 4) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
 /**
- * optional TrackEvent trackEvent = 5;
+ * optional TrackEvent trackEvent = 4;
  * @return {?proto.rtc.TrackEvent}
  */
 proto.rtc.Reply.prototype.getTrackevent = function() {
   return /** @type{?proto.rtc.TrackEvent} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.TrackEvent, 5));
+    jspb.Message.getWrapperField(this, proto.rtc.TrackEvent, 4));
 };
 
 
@@ -4342,7 +4305,7 @@ proto.rtc.Reply.prototype.getTrackevent = function() {
  * @return {!proto.rtc.Reply} returns this
 */
 proto.rtc.Reply.prototype.setTrackevent = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 5, proto.rtc.Reply.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 4, proto.rtc.Reply.oneofGroups_[0], value);
 };
 
 
@@ -4360,17 +4323,17 @@ proto.rtc.Reply.prototype.clearTrackevent = function() {
  * @return {boolean}
  */
 proto.rtc.Reply.prototype.hasTrackevent = function() {
-  return jspb.Message.getField(this, 5) != null;
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
 /**
- * optional SubscriptionReply subscription = 6;
+ * optional SubscriptionReply subscription = 5;
  * @return {?proto.rtc.SubscriptionReply}
  */
 proto.rtc.Reply.prototype.getSubscription = function() {
   return /** @type{?proto.rtc.SubscriptionReply} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.SubscriptionReply, 6));
+    jspb.Message.getWrapperField(this, proto.rtc.SubscriptionReply, 5));
 };
 
 
@@ -4379,7 +4342,7 @@ proto.rtc.Reply.prototype.getSubscription = function() {
  * @return {!proto.rtc.Reply} returns this
 */
 proto.rtc.Reply.prototype.setSubscription = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 6, proto.rtc.Reply.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 5, proto.rtc.Reply.oneofGroups_[0], value);
 };
 
 
@@ -4397,17 +4360,17 @@ proto.rtc.Reply.prototype.clearSubscription = function() {
  * @return {boolean}
  */
 proto.rtc.Reply.prototype.hasSubscription = function() {
-  return jspb.Message.getField(this, 6) != null;
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
 /**
- * optional Error error = 8;
+ * optional Error error = 7;
  * @return {?proto.rtc.Error}
  */
 proto.rtc.Reply.prototype.getError = function() {
   return /** @type{?proto.rtc.Error} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.Error, 8));
+    jspb.Message.getWrapperField(this, proto.rtc.Error, 7));
 };
 
 
@@ -4416,7 +4379,7 @@ proto.rtc.Reply.prototype.getError = function() {
  * @return {!proto.rtc.Reply} returns this
 */
 proto.rtc.Reply.prototype.setError = function(value) {
-  return jspb.Message.setOneofWrapperField(this, 8, proto.rtc.Reply.oneofGroups_[0], value);
+  return jspb.Message.setOneofWrapperField(this, 7, proto.rtc.Reply.oneofGroups_[0], value);
 };
 
 
@@ -4434,6 +4397,43 @@ proto.rtc.Reply.prototype.clearError = function() {
  * @return {boolean}
  */
 proto.rtc.Reply.prototype.hasError = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional RegisterReply register = 8;
+ * @return {?proto.rtc.RegisterReply}
+ */
+proto.rtc.Reply.prototype.getRegister = function() {
+  return /** @type{?proto.rtc.RegisterReply} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.RegisterReply, 8));
+};
+
+
+/**
+ * @param {?proto.rtc.RegisterReply|undefined} value
+ * @return {!proto.rtc.Reply} returns this
+*/
+proto.rtc.Reply.prototype.setRegister = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 8, proto.rtc.Reply.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Reply} returns this
+ */
+proto.rtc.Reply.prototype.clearRegister = function() {
+  return this.setRegister(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Reply.prototype.hasRegister = function() {
   return jspb.Message.getField(this, 8) != null;
 };
 

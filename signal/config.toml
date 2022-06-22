@@ -86,8 +86,8 @@ realm = "ion"
 # The address the TURN server will listen on.
 address = "0.0.0.0:3478"
 # Certs path to config tls/dtls
-# cert="path/to/cert.pem"
-# key="path/to/key.pem"
+#cert="./https-tls/cert.pem"
+#key="./https-tls/key.pem"
 # Port range that turn relays to SFU
 # WARNING: It shouldn't overlap webrtc.portrange
 # Format: [min, max]

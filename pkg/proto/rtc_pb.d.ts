@@ -458,11 +458,6 @@ export namespace AudioLevelSpeaker {
 }
 
 export class Request extends jspb.Message {
-  hasRegister(): boolean;
-  clearRegister(): void;
-  getRegister(): RegisterRequest | undefined;
-  setRegister(value?: RegisterRequest): void;
-
   hasJoin(): boolean;
   clearJoin(): void;
   getJoin(): JoinRequest | undefined;
@@ -483,6 +478,11 @@ export class Request extends jspb.Message {
   getSubscription(): SubscriptionRequest | undefined;
   setSubscription(value?: SubscriptionRequest): void;
 
+  hasRegister(): boolean;
+  clearRegister(): void;
+  getRegister(): RegisterRequest | undefined;
+  setRegister(value?: RegisterRequest): void;
+
   getPayloadCase(): Request.PayloadCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Request.AsObject;
@@ -496,29 +496,24 @@ export class Request extends jspb.Message {
 
 export namespace Request {
   export type AsObject = {
-    register?: RegisterRequest.AsObject,
     join?: JoinRequest.AsObject,
     description?: SessionDescription.AsObject,
     trickle?: Trickle.AsObject,
     subscription?: SubscriptionRequest.AsObject,
+    register?: RegisterRequest.AsObject,
   }
 
   export enum PayloadCase {
     PAYLOAD_NOT_SET = 0,
-    REGISTER = 1,
-    JOIN = 2,
-    DESCRIPTION = 3,
-    TRICKLE = 4,
-    SUBSCRIPTION = 5,
+    JOIN = 1,
+    DESCRIPTION = 2,
+    TRICKLE = 3,
+    SUBSCRIPTION = 4,
+    REGISTER = 5,
   }
 }
 
 export class Reply extends jspb.Message {
-  hasRegister(): boolean;
-  clearRegister(): void;
-  getRegister(): RegisterReply | undefined;
-  setRegister(value?: RegisterReply): void;
-
   hasJoin(): boolean;
   clearJoin(): void;
   getJoin(): JoinReply | undefined;
@@ -549,6 +544,11 @@ export class Reply extends jspb.Message {
   getError(): Error | undefined;
   setError(value?: Error): void;
 
+  hasRegister(): boolean;
+  clearRegister(): void;
+  getRegister(): RegisterReply | undefined;
+  setRegister(value?: RegisterReply): void;
+
   getPayloadCase(): Reply.PayloadCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Reply.AsObject;
@@ -562,24 +562,24 @@ export class Reply extends jspb.Message {
 
 export namespace Reply {
   export type AsObject = {
-    register?: RegisterReply.AsObject,
     join?: JoinReply.AsObject,
     description?: SessionDescription.AsObject,
     trickle?: Trickle.AsObject,
     trackevent?: TrackEvent.AsObject,
     subscription?: SubscriptionReply.AsObject,
     error?: Error.AsObject,
+    register?: RegisterReply.AsObject,
   }
 
   export enum PayloadCase {
     PAYLOAD_NOT_SET = 0,
-    REGISTER = 1,
-    JOIN = 2,
-    DESCRIPTION = 3,
-    TRICKLE = 4,
-    TRACKEVENT = 5,
-    SUBSCRIPTION = 6,
-    ERROR = 8,
+    JOIN = 1,
+    DESCRIPTION = 2,
+    TRICKLE = 3,
+    TRACKEVENT = 4,
+    SUBSCRIPTION = 5,
+    ERROR = 7,
+    REGISTER = 8,
   }
 }
 
