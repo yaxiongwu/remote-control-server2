@@ -103,8 +103,8 @@ func load() bool {
 
 func parse() bool {
 	flag.StringVar(&file, "c", "config.toml", "config file")
-	//flag.StringVar(&addr, "a", "0.0.0.0:5551", "address to use")
-	flag.StringVar(&addr, "a", "192.168.1.199:5551", "address to use")
+	flag.StringVar(&addr, "a", "0.0.0.0:5551", "address to use")
+	//flag.StringVar(&addr, "a", "192.168.1.199:5551", "address to use")
 	flag.BoolVar(&enableTLS, "tls", false, "enable tls")
 	//flag.StringVar(&cert, "cert", "https-tls/cert.pem", "cert file")
 	//flag.StringVar(&key, "key", "https-tls/key.pem", "key file")
