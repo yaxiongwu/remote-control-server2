@@ -6,12 +6,12 @@ import (
 	"io"
 	"sync"
 
-	"github.com/YaxiongWu/remote-control-server/pkg/stun"
+	"github.com/yaxiongwu/remote-control-server/pkg/stun"
 	log "github.com/pion/ion-log"
 	"github.com/pion/webrtc/v3"
 
 	//rtc "github.com/pion/ion/proto/rtc"
-	rtc "github.com/YaxiongWu/remote-control-server/pkg/proto/rtc"
+	rtc "github.com/yaxiongwu/remote-control-server/pkg/proto/rtc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

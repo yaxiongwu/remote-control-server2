@@ -1,4 +1,4 @@
-module github.com/YaxiongWu/remote-control-server
+module github.com/yaxiongwu/remote-control-server
 
 go 1.17
 

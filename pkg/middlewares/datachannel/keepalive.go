@@ -5,7 +5,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/YaxiongWu/remote-control-sfu/pkg/sfu"
+	"github.com/yaxiongwu/remote-control-sfu/pkg/sfu"
 )
 
 func KeepAlive(timeout time.Duration) func(next sfu.MessageProcessor) sfu.MessageProcessor {

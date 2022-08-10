@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	rtc "github.com/YaxiongWu/remote-control-server/pkg/proto/rtc"
-	"github.com/YaxiongWu/remote-control-server/pkg/stun"
+	rtc "github.com/yaxiongwu/remote-control-server/pkg/proto/rtc"
+	"github.com/yaxiongwu/remote-control-server/pkg/stun"
 	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	log "github.com/pion/ion-log"

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/YaxiongWu/remote-control-sfu/pkg/sfu"
+	"github.com/yaxiongwu/remote-control-sfu/pkg/sfu"
 	"github.com/pion/webrtc/v3"
 )
 
