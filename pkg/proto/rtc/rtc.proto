@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/yaxiongwu/remote-control-client-go/pkg/proto/rtc";
+option go_package = "github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc";
 
 package rtc;
 
@@ -16,11 +16,17 @@ enum Role {
   Unknown = 4; 
 }
 
+enum SourceType {
+  Car = 0;
+  Feed = 1;
+  Camera = 2;
+}
+
 //创建一个新的视频源
 message RegisterRequest {
   string sid = 1;
   string uid = 2;
-  Role   role=3;
+  SourceType   sourceType=3;
   map<string, string> config = 4;  
 }
 //创建视频源的回复
@@ -28,6 +34,51 @@ message RegisterReply {
   bool success = 1;
   Error error = 2;  
 }
+//向服务器获取在线的视频源
+message OnLineSourceRequest {
+     SourceType   sourceType=1;
+}
+//在线的视频源
+message OnLineSources {
+  string sid = 1;
+  string uid = 2;
+}
+//服务器返回在线的视频源
+message OnLineSourceReply {
+  repeated OnLineSources  onLineSources =1;
+  bool success = 2;
+  Error error = 3;
+}
+
+//观看视频申请
+message ViewSourceRequest{
+   string sid = 1;
+   string uid = 2;
+}
+//申请观看视频的结果
+message ViewSourceReply {
+  enum Result{
+    Webrtc = 0;  //可以使用webrtc直连
+    Cloud = 1;    //转云直播
+    Error = 2;    //错误
+  }  
+  Error error = 2;
+  Result result = 3;
+}
+
+//控制申请
+message WantControlRequest{
+   string sid = 1;
+   string uid = 2;
+}
+//控制申请的结果
+message WantControlReply { 
+  bool idleOrNot = 1;  //是否空闲可控
+   uint32 restTimeSecOfControling = 2; //现在正在控制的这个人还剩多少时间,单位秒
+   uint32 numOfWaiting = 3;  //排队的人数，不包括现在控制的那个
+   Error error = 4; 
+}
+
 
 message JoinRequest {
   string sid = 1;

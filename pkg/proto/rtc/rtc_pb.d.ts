@@ -10,8 +10,8 @@ export class RegisterRequest extends jspb.Message {
   getUid(): string;
   setUid(value: string): void;
 
-  getRole(): RoleMap[keyof RoleMap];
-  setRole(value: RoleMap[keyof RoleMap]): void;
+  getSourcetype(): SourceTypeMap[keyof SourceTypeMap];
+  setSourcetype(value: SourceTypeMap[keyof SourceTypeMap]): void;
 
   getConfigMap(): jspb.Map<string, string>;
   clearConfigMap(): void;
@@ -29,7 +29,7 @@ export namespace RegisterRequest {
   export type AsObject = {
     sid: string,
     uid: string,
-    role: RoleMap[keyof RoleMap],
+    sourcetype: SourceTypeMap[keyof SourceTypeMap],
     configMap: Array<[string, string]>,
   }
 }
@@ -56,6 +56,198 @@ export class RegisterReply extends jspb.Message {
 export namespace RegisterReply {
   export type AsObject = {
     success: boolean,
+    error?: Error.AsObject,
+  }
+}
+
+export class OnLineSourceRequest extends jspb.Message {
+  getSourcetype(): SourceTypeMap[keyof SourceTypeMap];
+  setSourcetype(value: SourceTypeMap[keyof SourceTypeMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): OnLineSourceRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: OnLineSourceRequest): OnLineSourceRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: OnLineSourceRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): OnLineSourceRequest;
+  static deserializeBinaryFromReader(message: OnLineSourceRequest, reader: jspb.BinaryReader): OnLineSourceRequest;
+}
+
+export namespace OnLineSourceRequest {
+  export type AsObject = {
+    sourcetype: SourceTypeMap[keyof SourceTypeMap],
+  }
+}
+
+export class OnLineSources extends jspb.Message {
+  getSid(): string;
+  setSid(value: string): void;
+
+  getUid(): string;
+  setUid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): OnLineSources.AsObject;
+  static toObject(includeInstance: boolean, msg: OnLineSources): OnLineSources.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: OnLineSources, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): OnLineSources;
+  static deserializeBinaryFromReader(message: OnLineSources, reader: jspb.BinaryReader): OnLineSources;
+}
+
+export namespace OnLineSources {
+  export type AsObject = {
+    sid: string,
+    uid: string,
+  }
+}
+
+export class OnLineSourceReply extends jspb.Message {
+  clearOnlinesourcesList(): void;
+  getOnlinesourcesList(): Array<OnLineSources>;
+  setOnlinesourcesList(value: Array<OnLineSources>): void;
+  addOnlinesources(value?: OnLineSources, index?: number): OnLineSources;
+
+  getSuccess(): boolean;
+  setSuccess(value: boolean): void;
+
+  hasError(): boolean;
+  clearError(): void;
+  getError(): Error | undefined;
+  setError(value?: Error): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): OnLineSourceReply.AsObject;
+  static toObject(includeInstance: boolean, msg: OnLineSourceReply): OnLineSourceReply.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: OnLineSourceReply, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): OnLineSourceReply;
+  static deserializeBinaryFromReader(message: OnLineSourceReply, reader: jspb.BinaryReader): OnLineSourceReply;
+}
+
+export namespace OnLineSourceReply {
+  export type AsObject = {
+    onlinesourcesList: Array<OnLineSources.AsObject>,
+    success: boolean,
+    error?: Error.AsObject,
+  }
+}
+
+export class ViewSourceRequest extends jspb.Message {
+  getSid(): string;
+  setSid(value: string): void;
+
+  getUid(): string;
+  setUid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ViewSourceRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ViewSourceRequest): ViewSourceRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ViewSourceRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ViewSourceRequest;
+  static deserializeBinaryFromReader(message: ViewSourceRequest, reader: jspb.BinaryReader): ViewSourceRequest;
+}
+
+export namespace ViewSourceRequest {
+  export type AsObject = {
+    sid: string,
+    uid: string,
+  }
+}
+
+export class ViewSourceReply extends jspb.Message {
+  hasError(): boolean;
+  clearError(): void;
+  getError(): Error | undefined;
+  setError(value?: Error): void;
+
+  getResult(): ViewSourceReply.ResultMap[keyof ViewSourceReply.ResultMap];
+  setResult(value: ViewSourceReply.ResultMap[keyof ViewSourceReply.ResultMap]): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ViewSourceReply.AsObject;
+  static toObject(includeInstance: boolean, msg: ViewSourceReply): ViewSourceReply.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ViewSourceReply, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ViewSourceReply;
+  static deserializeBinaryFromReader(message: ViewSourceReply, reader: jspb.BinaryReader): ViewSourceReply;
+}
+
+export namespace ViewSourceReply {
+  export type AsObject = {
+    error?: Error.AsObject,
+    result: ViewSourceReply.ResultMap[keyof ViewSourceReply.ResultMap],
+  }
+
+  export interface ResultMap {
+    WEBRTC: 0;
+    CLOUD: 1;
+    ERROR: 2;
+  }
+
+  export const Result: ResultMap;
+}
+
+export class WantControlRequest extends jspb.Message {
+  getSid(): string;
+  setSid(value: string): void;
+
+  getUid(): string;
+  setUid(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): WantControlRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: WantControlRequest): WantControlRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: WantControlRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WantControlRequest;
+  static deserializeBinaryFromReader(message: WantControlRequest, reader: jspb.BinaryReader): WantControlRequest;
+}
+
+export namespace WantControlRequest {
+  export type AsObject = {
+    sid: string,
+    uid: string,
+  }
+}
+
+export class WantControlReply extends jspb.Message {
+  getIdleornot(): boolean;
+  setIdleornot(value: boolean): void;
+
+  getResttimesecofcontroling(): number;
+  setResttimesecofcontroling(value: number): void;
+
+  getNumofwaiting(): number;
+  setNumofwaiting(value: number): void;
+
+  hasError(): boolean;
+  clearError(): void;
+  getError(): Error | undefined;
+  setError(value?: Error): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): WantControlReply.AsObject;
+  static toObject(includeInstance: boolean, msg: WantControlReply): WantControlReply.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: WantControlReply, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WantControlReply;
+  static deserializeBinaryFromReader(message: WantControlReply, reader: jspb.BinaryReader): WantControlReply;
+}
+
+export namespace WantControlReply {
+  export type AsObject = {
+    idleornot: boolean,
+    resttimesecofcontroling: number,
+    numofwaiting: number,
     error?: Error.AsObject,
   }
 }
@@ -592,6 +784,14 @@ export interface RoleMap {
 }
 
 export const Role: RoleMap;
+
+export interface SourceTypeMap {
+  CAR: 0;
+  FEED: 1;
+  CAMERA: 2;
+}
+
+export const SourceType: SourceTypeMap;
 
 export interface TargetMap {
   PUBLISHER: 0;
