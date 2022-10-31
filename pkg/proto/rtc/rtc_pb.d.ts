@@ -64,6 +64,8 @@ export class OnLineSourceRequest extends jspb.Message {
   getSourcetype(): SourceTypeMap[keyof SourceTypeMap];
   setSourcetype(value: SourceTypeMap[keyof SourceTypeMap]): void;
 
+  getConfigMap(): jspb.Map<string, string>;
+  clearConfigMap(): void;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OnLineSourceRequest.AsObject;
   static toObject(includeInstance: boolean, msg: OnLineSourceRequest): OnLineSourceRequest.AsObject;
@@ -77,6 +79,7 @@ export class OnLineSourceRequest extends jspb.Message {
 export namespace OnLineSourceRequest {
   export type AsObject = {
     sourcetype: SourceTypeMap[keyof SourceTypeMap],
+    configMap: Array<[string, string]>,
   }
 }
 
@@ -675,6 +678,21 @@ export class Request extends jspb.Message {
   getRegister(): RegisterRequest | undefined;
   setRegister(value?: RegisterRequest): void;
 
+  hasOnlinesource(): boolean;
+  clearOnlinesource(): void;
+  getOnlinesource(): OnLineSourceRequest | undefined;
+  setOnlinesource(value?: OnLineSourceRequest): void;
+
+  hasViewsource(): boolean;
+  clearViewsource(): void;
+  getViewsource(): ViewSourceRequest | undefined;
+  setViewsource(value?: ViewSourceRequest): void;
+
+  hasWantcontrol(): boolean;
+  clearWantcontrol(): void;
+  getWantcontrol(): WantControlRequest | undefined;
+  setWantcontrol(value?: WantControlRequest): void;
+
   getPayloadCase(): Request.PayloadCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Request.AsObject;
@@ -693,6 +711,9 @@ export namespace Request {
     trickle?: Trickle.AsObject,
     subscription?: SubscriptionRequest.AsObject,
     register?: RegisterRequest.AsObject,
+    onlinesource?: OnLineSourceRequest.AsObject,
+    viewsource?: ViewSourceRequest.AsObject,
+    wantcontrol?: WantControlRequest.AsObject,
   }
 
   export enum PayloadCase {
@@ -702,6 +723,9 @@ export namespace Request {
     TRICKLE = 3,
     SUBSCRIPTION = 4,
     REGISTER = 5,
+    ONLINESOURCE = 6,
+    VIEWSOURCE = 7,
+    WANTCONTROL = 8,
   }
 }
 
@@ -741,6 +765,21 @@ export class Reply extends jspb.Message {
   getRegister(): RegisterReply | undefined;
   setRegister(value?: RegisterReply): void;
 
+  hasOnlinesource(): boolean;
+  clearOnlinesource(): void;
+  getOnlinesource(): OnLineSourceReply | undefined;
+  setOnlinesource(value?: OnLineSourceReply): void;
+
+  hasViewsource(): boolean;
+  clearViewsource(): void;
+  getViewsource(): ViewSourceReply | undefined;
+  setViewsource(value?: ViewSourceReply): void;
+
+  hasWantcontrol(): boolean;
+  clearWantcontrol(): void;
+  getWantcontrol(): WantControlReply | undefined;
+  setWantcontrol(value?: WantControlReply): void;
+
   getPayloadCase(): Reply.PayloadCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Reply.AsObject;
@@ -761,6 +800,9 @@ export namespace Reply {
     subscription?: SubscriptionReply.AsObject,
     error?: Error.AsObject,
     register?: RegisterReply.AsObject,
+    onlinesource?: OnLineSourceReply.AsObject,
+    viewsource?: ViewSourceReply.AsObject,
+    wantcontrol?: WantControlReply.AsObject,
   }
 
   export enum PayloadCase {
@@ -772,6 +814,9 @@ export namespace Reply {
     SUBSCRIPTION = 5,
     ERROR = 7,
     REGISTER = 8,
+    ONLINESOURCE = 9,
+    VIEWSOURCE = 10,
+    WANTCONTROL = 11,
   }
 }
 

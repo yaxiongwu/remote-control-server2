@@ -986,7 +986,8 @@ proto.rtc.OnLineSourceRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.rtc.OnLineSourceRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    sourcetype: jspb.Message.getFieldWithDefault(msg, 1, 0)
+    sourcetype: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    configMap: (f = msg.getConfigMap()) ? f.toObject(includeInstance, undefined) : []
   };
 
   if (includeInstance) {
@@ -1027,6 +1028,12 @@ proto.rtc.OnLineSourceRequest.deserializeBinaryFromReader = function(msg, reader
       var value = /** @type {!proto.rtc.SourceType} */ (reader.readEnum());
       msg.setSourcetype(value);
       break;
+    case 4:
+      var value = msg.getConfigMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "", "");
+         });
+      break;
     default:
       reader.skipField();
       break;
@@ -1063,6 +1070,10 @@ proto.rtc.OnLineSourceRequest.serializeBinaryToWriter = function(message, writer
       f
     );
   }
+  f = message.getConfigMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(4, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+  }
 };
 
 
@@ -1082,6 +1093,28 @@ proto.rtc.OnLineSourceRequest.prototype.getSourcetype = function() {
 proto.rtc.OnLineSourceRequest.prototype.setSourcetype = function(value) {
   return jspb.Message.setProto3EnumField(this, 1, value);
 };
+
+
+/**
+ * map<string, string> config = 4;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,string>}
+ */
+proto.rtc.OnLineSourceRequest.prototype.getConfigMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,string>} */ (
+      jspb.Message.getMapField(this, 4, opt_noLazyCreate,
+      null));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.rtc.OnLineSourceRequest} returns this
+ */
+proto.rtc.OnLineSourceRequest.prototype.clearConfigMap = function() {
+  this.getConfigMap().clear();
+  return this;};
 
 
 
@@ -5012,7 +5045,7 @@ proto.rtc.AudioLevelSpeaker.prototype.setActive = function(value) {
  * @private {!Array<!Array<number>>}
  * @const
  */
-proto.rtc.Request.oneofGroups_ = [[1,2,3,4,5]];
+proto.rtc.Request.oneofGroups_ = [[1,2,3,4,5,6,7,8]];
 
 /**
  * @enum {number}
@@ -5023,7 +5056,10 @@ proto.rtc.Request.PayloadCase = {
   DESCRIPTION: 2,
   TRICKLE: 3,
   SUBSCRIPTION: 4,
-  REGISTER: 5
+  REGISTER: 5,
+  ONLINESOURCE: 6,
+  VIEWSOURCE: 7,
+  WANTCONTROL: 8
 };
 
 /**
@@ -5068,7 +5104,10 @@ proto.rtc.Request.toObject = function(includeInstance, msg) {
     description: (f = msg.getDescription()) && proto.rtc.SessionDescription.toObject(includeInstance, f),
     trickle: (f = msg.getTrickle()) && proto.rtc.Trickle.toObject(includeInstance, f),
     subscription: (f = msg.getSubscription()) && proto.rtc.SubscriptionRequest.toObject(includeInstance, f),
-    register: (f = msg.getRegister()) && proto.rtc.RegisterRequest.toObject(includeInstance, f)
+    register: (f = msg.getRegister()) && proto.rtc.RegisterRequest.toObject(includeInstance, f),
+    onlinesource: (f = msg.getOnlinesource()) && proto.rtc.OnLineSourceRequest.toObject(includeInstance, f),
+    viewsource: (f = msg.getViewsource()) && proto.rtc.ViewSourceRequest.toObject(includeInstance, f),
+    wantcontrol: (f = msg.getWantcontrol()) && proto.rtc.WantControlRequest.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -5129,6 +5168,21 @@ proto.rtc.Request.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.rtc.RegisterRequest;
       reader.readMessage(value,proto.rtc.RegisterRequest.deserializeBinaryFromReader);
       msg.setRegister(value);
+      break;
+    case 6:
+      var value = new proto.rtc.OnLineSourceRequest;
+      reader.readMessage(value,proto.rtc.OnLineSourceRequest.deserializeBinaryFromReader);
+      msg.setOnlinesource(value);
+      break;
+    case 7:
+      var value = new proto.rtc.ViewSourceRequest;
+      reader.readMessage(value,proto.rtc.ViewSourceRequest.deserializeBinaryFromReader);
+      msg.setViewsource(value);
+      break;
+    case 8:
+      var value = new proto.rtc.WantControlRequest;
+      reader.readMessage(value,proto.rtc.WantControlRequest.deserializeBinaryFromReader);
+      msg.setWantcontrol(value);
       break;
     default:
       reader.skipField();
@@ -5197,6 +5251,30 @@ proto.rtc.Request.serializeBinaryToWriter = function(message, writer) {
       5,
       f,
       proto.rtc.RegisterRequest.serializeBinaryToWriter
+    );
+  }
+  f = message.getOnlinesource();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      proto.rtc.OnLineSourceRequest.serializeBinaryToWriter
+    );
+  }
+  f = message.getViewsource();
+  if (f != null) {
+    writer.writeMessage(
+      7,
+      f,
+      proto.rtc.ViewSourceRequest.serializeBinaryToWriter
+    );
+  }
+  f = message.getWantcontrol();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      proto.rtc.WantControlRequest.serializeBinaryToWriter
     );
   }
 };
@@ -5387,6 +5465,117 @@ proto.rtc.Request.prototype.hasRegister = function() {
 };
 
 
+/**
+ * optional OnLineSourceRequest onLineSource = 6;
+ * @return {?proto.rtc.OnLineSourceRequest}
+ */
+proto.rtc.Request.prototype.getOnlinesource = function() {
+  return /** @type{?proto.rtc.OnLineSourceRequest} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.OnLineSourceRequest, 6));
+};
+
+
+/**
+ * @param {?proto.rtc.OnLineSourceRequest|undefined} value
+ * @return {!proto.rtc.Request} returns this
+*/
+proto.rtc.Request.prototype.setOnlinesource = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 6, proto.rtc.Request.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Request} returns this
+ */
+proto.rtc.Request.prototype.clearOnlinesource = function() {
+  return this.setOnlinesource(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Request.prototype.hasOnlinesource = function() {
+  return jspb.Message.getField(this, 6) != null;
+};
+
+
+/**
+ * optional ViewSourceRequest viewSource = 7;
+ * @return {?proto.rtc.ViewSourceRequest}
+ */
+proto.rtc.Request.prototype.getViewsource = function() {
+  return /** @type{?proto.rtc.ViewSourceRequest} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.ViewSourceRequest, 7));
+};
+
+
+/**
+ * @param {?proto.rtc.ViewSourceRequest|undefined} value
+ * @return {!proto.rtc.Request} returns this
+*/
+proto.rtc.Request.prototype.setViewsource = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 7, proto.rtc.Request.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Request} returns this
+ */
+proto.rtc.Request.prototype.clearViewsource = function() {
+  return this.setViewsource(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Request.prototype.hasViewsource = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional WantControlRequest wantControl = 8;
+ * @return {?proto.rtc.WantControlRequest}
+ */
+proto.rtc.Request.prototype.getWantcontrol = function() {
+  return /** @type{?proto.rtc.WantControlRequest} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.WantControlRequest, 8));
+};
+
+
+/**
+ * @param {?proto.rtc.WantControlRequest|undefined} value
+ * @return {!proto.rtc.Request} returns this
+*/
+proto.rtc.Request.prototype.setWantcontrol = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 8, proto.rtc.Request.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Request} returns this
+ */
+proto.rtc.Request.prototype.clearWantcontrol = function() {
+  return this.setWantcontrol(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Request.prototype.hasWantcontrol = function() {
+  return jspb.Message.getField(this, 8) != null;
+};
+
+
 
 /**
  * Oneof group definitions for this message. Each group defines the field
@@ -5396,7 +5585,7 @@ proto.rtc.Request.prototype.hasRegister = function() {
  * @private {!Array<!Array<number>>}
  * @const
  */
-proto.rtc.Reply.oneofGroups_ = [[1,2,3,4,5,7,8]];
+proto.rtc.Reply.oneofGroups_ = [[1,2,3,4,5,7,8,9,10,11]];
 
 /**
  * @enum {number}
@@ -5409,7 +5598,10 @@ proto.rtc.Reply.PayloadCase = {
   TRACKEVENT: 4,
   SUBSCRIPTION: 5,
   ERROR: 7,
-  REGISTER: 8
+  REGISTER: 8,
+  ONLINESOURCE: 9,
+  VIEWSOURCE: 10,
+  WANTCONTROL: 11
 };
 
 /**
@@ -5456,7 +5648,10 @@ proto.rtc.Reply.toObject = function(includeInstance, msg) {
     trackevent: (f = msg.getTrackevent()) && proto.rtc.TrackEvent.toObject(includeInstance, f),
     subscription: (f = msg.getSubscription()) && proto.rtc.SubscriptionReply.toObject(includeInstance, f),
     error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f),
-    register: (f = msg.getRegister()) && proto.rtc.RegisterReply.toObject(includeInstance, f)
+    register: (f = msg.getRegister()) && proto.rtc.RegisterReply.toObject(includeInstance, f),
+    onlinesource: (f = msg.getOnlinesource()) && proto.rtc.OnLineSourceReply.toObject(includeInstance, f),
+    viewsource: (f = msg.getViewsource()) && proto.rtc.ViewSourceReply.toObject(includeInstance, f),
+    wantcontrol: (f = msg.getWantcontrol()) && proto.rtc.WantControlReply.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -5527,6 +5722,21 @@ proto.rtc.Reply.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.rtc.RegisterReply;
       reader.readMessage(value,proto.rtc.RegisterReply.deserializeBinaryFromReader);
       msg.setRegister(value);
+      break;
+    case 9:
+      var value = new proto.rtc.OnLineSourceReply;
+      reader.readMessage(value,proto.rtc.OnLineSourceReply.deserializeBinaryFromReader);
+      msg.setOnlinesource(value);
+      break;
+    case 10:
+      var value = new proto.rtc.ViewSourceReply;
+      reader.readMessage(value,proto.rtc.ViewSourceReply.deserializeBinaryFromReader);
+      msg.setViewsource(value);
+      break;
+    case 11:
+      var value = new proto.rtc.WantControlReply;
+      reader.readMessage(value,proto.rtc.WantControlReply.deserializeBinaryFromReader);
+      msg.setWantcontrol(value);
       break;
     default:
       reader.skipField();
@@ -5611,6 +5821,30 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
       8,
       f,
       proto.rtc.RegisterReply.serializeBinaryToWriter
+    );
+  }
+  f = message.getOnlinesource();
+  if (f != null) {
+    writer.writeMessage(
+      9,
+      f,
+      proto.rtc.OnLineSourceReply.serializeBinaryToWriter
+    );
+  }
+  f = message.getViewsource();
+  if (f != null) {
+    writer.writeMessage(
+      10,
+      f,
+      proto.rtc.ViewSourceReply.serializeBinaryToWriter
+    );
+  }
+  f = message.getWantcontrol();
+  if (f != null) {
+    writer.writeMessage(
+      11,
+      f,
+      proto.rtc.WantControlReply.serializeBinaryToWriter
     );
   }
 };
@@ -5872,6 +6106,117 @@ proto.rtc.Reply.prototype.clearRegister = function() {
  */
 proto.rtc.Reply.prototype.hasRegister = function() {
   return jspb.Message.getField(this, 8) != null;
+};
+
+
+/**
+ * optional OnLineSourceReply onLineSource = 9;
+ * @return {?proto.rtc.OnLineSourceReply}
+ */
+proto.rtc.Reply.prototype.getOnlinesource = function() {
+  return /** @type{?proto.rtc.OnLineSourceReply} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.OnLineSourceReply, 9));
+};
+
+
+/**
+ * @param {?proto.rtc.OnLineSourceReply|undefined} value
+ * @return {!proto.rtc.Reply} returns this
+*/
+proto.rtc.Reply.prototype.setOnlinesource = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 9, proto.rtc.Reply.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Reply} returns this
+ */
+proto.rtc.Reply.prototype.clearOnlinesource = function() {
+  return this.setOnlinesource(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Reply.prototype.hasOnlinesource = function() {
+  return jspb.Message.getField(this, 9) != null;
+};
+
+
+/**
+ * optional ViewSourceReply viewSource = 10;
+ * @return {?proto.rtc.ViewSourceReply}
+ */
+proto.rtc.Reply.prototype.getViewsource = function() {
+  return /** @type{?proto.rtc.ViewSourceReply} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.ViewSourceReply, 10));
+};
+
+
+/**
+ * @param {?proto.rtc.ViewSourceReply|undefined} value
+ * @return {!proto.rtc.Reply} returns this
+*/
+proto.rtc.Reply.prototype.setViewsource = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 10, proto.rtc.Reply.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Reply} returns this
+ */
+proto.rtc.Reply.prototype.clearViewsource = function() {
+  return this.setViewsource(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Reply.prototype.hasViewsource = function() {
+  return jspb.Message.getField(this, 10) != null;
+};
+
+
+/**
+ * optional WantControlReply wantControl = 11;
+ * @return {?proto.rtc.WantControlReply}
+ */
+proto.rtc.Reply.prototype.getWantcontrol = function() {
+  return /** @type{?proto.rtc.WantControlReply} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.WantControlReply, 11));
+};
+
+
+/**
+ * @param {?proto.rtc.WantControlReply|undefined} value
+ * @return {!proto.rtc.Reply} returns this
+*/
+proto.rtc.Reply.prototype.setWantcontrol = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 11, proto.rtc.Reply.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Reply} returns this
+ */
+proto.rtc.Reply.prototype.clearWantcontrol = function() {
+  return this.setWantcontrol(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Reply.prototype.hasWantcontrol = function() {
+  return jspb.Message.getField(this, 11) != null;
 };
 
 

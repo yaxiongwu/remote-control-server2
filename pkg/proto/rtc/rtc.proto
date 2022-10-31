@@ -37,6 +37,7 @@ message RegisterReply {
 //向服务器获取在线的视频源
 message OnLineSourceRequest {
      SourceType   sourceType=1;
+     map<string, string> config = 4;
 }
 //在线的视频源
 message OnLineSources {
@@ -197,6 +198,9 @@ message Request {
     // Command
     SubscriptionRequest subscription = 4;
     RegisterRequest register=5;
+    OnLineSourceRequest onLineSource=6;
+    ViewSourceRequest viewSource =7;
+    WantControlRequest wantControl =8;
   }
 }
 
@@ -216,5 +220,8 @@ message Reply {
     // Error
     Error error = 7;
     RegisterReply register=8;
+    OnLineSourceReply onLineSource = 9;
+    ViewSourceReply viewSource =10;
+    WantControlReply wantControl=11;
   }
 }
