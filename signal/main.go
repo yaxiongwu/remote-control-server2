@@ -9,11 +9,11 @@ import (
 	_ "net/http/pprof"
 	"os"
 
-	"github.com/yaxiongwu/remote-control-server/signal/server"
+	"github.com/yaxiongwu/remote-control-server2/signal/server"
 
-	"github.com/yaxiongwu/remote-control-server/pkg/stun"
+	"github.com/yaxiongwu/remote-control-server2/pkg/stun"
 
-	log "github.com/yaxiongwu/remote-control-server/pkg/logger"
+	log "github.com/yaxiongwu/remote-control-server2/pkg/logger"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"

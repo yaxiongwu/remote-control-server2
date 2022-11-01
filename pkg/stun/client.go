@@ -8,6 +8,7 @@ import (
 
 	"github.com/lucsky/cuid"
 	"github.com/pion/webrtc/v3"
+	"github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc"
 )
 
 type Client interface {
@@ -95,7 +96,7 @@ func (c *ClientLocal) Session() Session {
 	return c.session
 }
 
-func (c *ClientLocal) CreateSession(sid string) error {
+func (c *ClientLocal) CreateSession(sid string, sourceType rtc.SourceType) error {
 
 	s := c.provider.GetSessions()
 
@@ -110,7 +111,7 @@ func (c *ClientLocal) CreateSession(sid string) error {
 			return nil
 		}
 	}
-	c.session = NewSession(sid)
+	c.session = NewSession(sid, sourceType)
 	return nil
 }
 
@@ -147,6 +148,18 @@ func (c *ClientLocal) Close() error {
 	for i, c := range c.session.Clients() {
 		fmt.Println(i, ".", c.id)
 	}
+	return nil
+}
+
+func (c *ClientLocal) Register(sid, uid string) error {
+	if uid == "" {
+		uid = cuid.New()
+	}
+	c.id = uid
+	s := c.provider.GetSession(sid)
+	s.SetSourceClient(c)
+	s.AddClient(c)
+	c.session = s
 	return nil
 }
 

@@ -6,12 +6,12 @@ import (
 	"io"
 	"sync"
 
-	"github.com/yaxiongwu/remote-control-server/pkg/stun"
 	log "github.com/pion/ion-log"
 	"github.com/pion/webrtc/v3"
+	"github.com/yaxiongwu/remote-control-server2/pkg/stun"
 
 	//rtc "github.com/pion/ion/proto/rtc"
-	rtc "github.com/yaxiongwu/remote-control-server/pkg/proto/rtc"
+	rtc "github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -107,9 +107,10 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 		case *rtc.Request_Register:
 			sid := payload.Register.Sid
 			uid := payload.Register.Uid
-			log.Infof("[C=>S] createSession: sid => %v, uid => %v", sid, uid)
+			sourceType := payload.Register.SourceType
+			log.Infof("[C=>S] createSession: sid => %v, uid => %v", sid, uid, sourceType)
 			//需要查找是否有重名
-			err = client.CreateSession(sid)
+			err = client.CreateSession(sid, sourceType)
 			if err != nil {
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_Register{
@@ -127,7 +128,9 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				break
 			}
 
-			client.Join(sid, uid)
+			//client.Join(sid, uid)
+			client.Register(sid, uid)
+			log.Debugf("client.GetID():%v", client.GetID())
 
 			rtcTarget = rtc.Target_PUBLISHER
 
@@ -188,7 +191,35 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				})
 			}
 			//log.Debugf("client.GetID():%v,client.OnJoinReply: %v", client.GetID(), client.OnJoinReply)
+		case *rtc.Request_OnLineSource:
 
+			sessions := s.STUN.GetSessions()
+
+			log.Debugf("[S=>C] client.OnLineSource: %v,sessions:%v", payload.OnLineSource.SourceType, sessions)
+			var onlineSources []*rtc.OnLineSources
+
+			for _, s := range sessions {
+				log.Debugf("Sid:%v,Uid:%v", s.ID(), client.GetID())
+				if s.GetSourceType() == payload.OnLineSource.SourceType {
+					onlineSources = append(onlineSources, &rtc.OnLineSources{
+						Sid: s.ID(),
+						Uid: s.GetSourceClient().GetID(),
+					})
+				}
+			}
+			log.Debugf("onlineSources:%v", onlineSources)
+			err = sig.Send(&rtc.Reply{
+				Payload: &rtc.Reply_OnLineSource{
+					OnLineSource: &rtc.OnLineSourceReply{
+						Success:       true,
+						Error:         nil,
+						OnLineSources: onlineSources,
+					},
+				},
+			})
+			if err != nil {
+				log.Errorf("err:%v", err)
+			}
 		case *rtc.Request_Join:
 			sid := payload.Join.Sid
 			uid := payload.Join.Uid
@@ -413,8 +444,8 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			uid := payload.Subscription.Subscriptions[0].Layer
 			log.Debugf("[C=>S] sid: %v,uid:%s", sid, uid) //, payload.Subscription.trackId, payload.Subscription.layer)
 
-			client.CreateSession(sid)
-			client.Join(sid, uid)
+			//client.CreateSession(sid)
+			//client.Join(sid, uid)
 			rtcTarget = rtc.Target_PUBLISHER
 
 			client.OnSessionDescription = func(o *webrtc.SessionDescription) {

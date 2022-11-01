@@ -30,7 +30,7 @@ func NewSTUN() *STUN {
 // NewSession creates a new SessionLocal instance
 func (s *STUN) newSession(id string) Session {
 
-	session := NewSession(id).(*SessionLocal) //NewSession(id)返回的是Session,类型是接口，这个 . (*SessionLocal)如何理解？
+	session := NewSession(id, 0).(*SessionLocal) //NewSession(id)返回的是Session,类型是接口，这个 . (*SessionLocal)如何理解？
 	session.OnClose(func() {
 		s.Lock()
 		delete(s.sessions, id)

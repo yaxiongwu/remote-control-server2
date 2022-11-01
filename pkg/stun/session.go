@@ -2,6 +2,8 @@ package stun
 
 import (
 	"sync"
+
+	"github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc"
 )
 
 // Session represents a set of peers. Transports inside a SessionLocal
@@ -15,6 +17,9 @@ type Session interface {
 	Clients() []*ClientLocal
 	IsFirstDatachannelDesc() bool
 	SetFirstDatachannelDesc(b bool)
+	SetSourceClient(sourceClient *ClientLocal)
+	GetSourceClient() *ClientLocal
+	GetSourceType() rtc.SourceType
 }
 
 type SessionLocal struct {
@@ -30,14 +35,17 @@ type SessionLocal struct {
 	// datachannels   []*Datachannel
 	onCloseHandler       func()
 	firstDatachannelDesc bool
+	sourceType           rtc.SourceType
+	sourceClient         *ClientLocal
 }
 
 // NewSession creates a new SessionLocal
-func NewSession(id string) Session {
+func NewSession(id string, sourceType rtc.SourceType) Session {
 	s := &SessionLocal{
 		id:                   id,
 		clients:              make(map[string]*ClientLocal),
 		firstDatachannelDesc: true,
+		sourceType:           sourceType,
 	}
 	// log1.SetFlags(log1.Ldate | log1.Lshortfile | log1.Ltime)
 	// go s.audioLevelObserver(cfg.Router.AudioLevelInterval)
@@ -110,4 +118,16 @@ func (s *SessionLocal) Close() {
 	if s.onCloseHandler != nil {
 		s.onCloseHandler()
 	}
+}
+
+func (s *SessionLocal) SetSourceClient(client *ClientLocal) {
+	s.sourceClient = client
+}
+
+func (s *SessionLocal) GetSourceClient() *ClientLocal {
+	return s.sourceClient
+}
+
+func (s *SessionLocal) GetSourceType() rtc.SourceType {
+	return s.sourceType
 }
