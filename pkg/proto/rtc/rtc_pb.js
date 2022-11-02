@@ -1551,7 +1551,9 @@ proto.rtc.ViewSourceRequest.prototype.toObject = function(opt_includeInstance) {
 proto.rtc.ViewSourceRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     sid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    uid: jspb.Message.getFieldWithDefault(msg, 2, "")
+    uid: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    configMap: (f = msg.getConfigMap()) ? f.toObject(includeInstance, undefined) : [],
+    description: (f = msg.getDescription()) && proto.rtc.SessionDescription.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1596,6 +1598,17 @@ proto.rtc.ViewSourceRequest.deserializeBinaryFromReader = function(msg, reader) 
       var value = /** @type {string} */ (reader.readString());
       msg.setUid(value);
       break;
+    case 3:
+      var value = msg.getConfigMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "", "");
+         });
+      break;
+    case 4:
+      var value = new proto.rtc.SessionDescription;
+      reader.readMessage(value,proto.rtc.SessionDescription.deserializeBinaryFromReader);
+      msg.setDescription(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1639,6 +1652,18 @@ proto.rtc.ViewSourceRequest.serializeBinaryToWriter = function(message, writer) 
       f
     );
   }
+  f = message.getConfigMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+  }
+  f = message.getDescription();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.rtc.SessionDescription.serializeBinaryToWriter
+    );
+  }
 };
 
 
@@ -1675,6 +1700,65 @@ proto.rtc.ViewSourceRequest.prototype.getUid = function() {
  */
 proto.rtc.ViewSourceRequest.prototype.setUid = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * map<string, string> config = 3;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,string>}
+ */
+proto.rtc.ViewSourceRequest.prototype.getConfigMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,string>} */ (
+      jspb.Message.getMapField(this, 3, opt_noLazyCreate,
+      null));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.rtc.ViewSourceRequest} returns this
+ */
+proto.rtc.ViewSourceRequest.prototype.clearConfigMap = function() {
+  this.getConfigMap().clear();
+  return this;};
+
+
+/**
+ * optional SessionDescription description = 4;
+ * @return {?proto.rtc.SessionDescription}
+ */
+proto.rtc.ViewSourceRequest.prototype.getDescription = function() {
+  return /** @type{?proto.rtc.SessionDescription} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 4));
+};
+
+
+/**
+ * @param {?proto.rtc.SessionDescription|undefined} value
+ * @return {!proto.rtc.ViewSourceRequest} returns this
+*/
+proto.rtc.ViewSourceRequest.prototype.setDescription = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.ViewSourceRequest} returns this
+ */
+proto.rtc.ViewSourceRequest.prototype.clearDescription = function() {
+  return this.setDescription(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.ViewSourceRequest.prototype.hasDescription = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
@@ -1901,7 +1985,9 @@ proto.rtc.WantControlRequest.prototype.toObject = function(opt_includeInstance) 
 proto.rtc.WantControlRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     sid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    uid: jspb.Message.getFieldWithDefault(msg, 2, "")
+    uid: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    configMap: (f = msg.getConfigMap()) ? f.toObject(includeInstance, undefined) : [],
+    description: (f = msg.getDescription()) && proto.rtc.SessionDescription.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -1946,6 +2032,17 @@ proto.rtc.WantControlRequest.deserializeBinaryFromReader = function(msg, reader)
       var value = /** @type {string} */ (reader.readString());
       msg.setUid(value);
       break;
+    case 3:
+      var value = msg.getConfigMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "", "");
+         });
+      break;
+    case 4:
+      var value = new proto.rtc.SessionDescription;
+      reader.readMessage(value,proto.rtc.SessionDescription.deserializeBinaryFromReader);
+      msg.setDescription(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1989,6 +2086,18 @@ proto.rtc.WantControlRequest.serializeBinaryToWriter = function(message, writer)
       f
     );
   }
+  f = message.getConfigMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
+  }
+  f = message.getDescription();
+  if (f != null) {
+    writer.writeMessage(
+      4,
+      f,
+      proto.rtc.SessionDescription.serializeBinaryToWriter
+    );
+  }
 };
 
 
@@ -2025,6 +2134,65 @@ proto.rtc.WantControlRequest.prototype.getUid = function() {
  */
 proto.rtc.WantControlRequest.prototype.setUid = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * map<string, string> config = 3;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,string>}
+ */
+proto.rtc.WantControlRequest.prototype.getConfigMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,string>} */ (
+      jspb.Message.getMapField(this, 3, opt_noLazyCreate,
+      null));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.rtc.WantControlRequest} returns this
+ */
+proto.rtc.WantControlRequest.prototype.clearConfigMap = function() {
+  this.getConfigMap().clear();
+  return this;};
+
+
+/**
+ * optional SessionDescription description = 4;
+ * @return {?proto.rtc.SessionDescription}
+ */
+proto.rtc.WantControlRequest.prototype.getDescription = function() {
+  return /** @type{?proto.rtc.SessionDescription} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 4));
+};
+
+
+/**
+ * @param {?proto.rtc.SessionDescription|undefined} value
+ * @return {!proto.rtc.WantControlRequest} returns this
+*/
+proto.rtc.WantControlRequest.prototype.setDescription = function(value) {
+  return jspb.Message.setWrapperField(this, 4, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.WantControlRequest} returns this
+ */
+proto.rtc.WantControlRequest.prototype.clearDescription = function() {
+  return this.setDescription(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.WantControlRequest.prototype.hasDescription = function() {
+  return jspb.Message.getField(this, 4) != null;
 };
 
 

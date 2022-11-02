@@ -111,6 +111,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			log.Infof("[C=>S] createSession: sid => %v, uid => %v", sid, uid, sourceType)
 			//需要查找是否有重名
 			err = client.CreateSession(sid, sourceType)
+
 			if err != nil {
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_Register{
@@ -207,6 +208,10 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					})
 				}
 			}
+			onlineSources = append(onlineSources, &rtc.OnLineSources{
+				Sid: "testSid",
+				Uid: "testUid",
+			})
 			log.Debugf("onlineSources:%v", onlineSources)
 			err = sig.Send(&rtc.Reply{
 				Payload: &rtc.Reply_OnLineSource{

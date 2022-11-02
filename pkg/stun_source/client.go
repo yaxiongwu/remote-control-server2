@@ -14,12 +14,12 @@ import (
 type Client interface {
 	GetID() string
 	SetID(cid string) error
-	CreateSession(sid string) error
-	Session() Session
+	CreateSource(sid string) error
+	Source() Source
 	Close() error
 
-	// InterOnOfferJSON2GRCP(*webrtc.SessionDescription) func()
-	// InterOnOfferGRCP2JSON(*webrtc.SessionDescription) func()
+	// InterOnOfferJSON2GRCP(*webrtc.SourceDescription) func()
+	// InterOnOfferGRCP2JSON(*webrtc.SourceDescription) func()
 	// InterOnIceCandidateJSON2GRCP(*webrtc.ICECandidateInit, int) func()
 	// InterOnIceCandidateGRCP2JSON(*webrtc.ICECandidateInit, int) func()
 	// InterOnICEConnStateChangeJSON2GRCP(webrtc.ICEConnectionState) func()
@@ -37,11 +37,11 @@ var (
 	ErrOfferIgnored = errors.New("offered ignored")
 )
 
-// JoinConfig allow adding more control to the peers joining a SessionLocal.
+// JoinConfig allow adding more control to the peers joining a SourceLocal.
 type JoinConfig struct {
-	// If true the peer will not be allowed to publish tracks to SessionLocal.
+	// If true the peer will not be allowed to publish tracks to SourceLocal.
 	NoPublish bool
-	// If true the peer will not be allowed to subscribe to other peers in SessionLocal.
+	// If true the peer will not be allowed to subscribe to other peers in SourceLocal.
 	NoSubscribe bool
 	// If true the peer will not automatically subscribe all tracks,
 	// and then the peer can use peer.Subscriber().AddDownTrack/RemoveDownTrack
@@ -51,11 +51,11 @@ type JoinConfig struct {
 	VideoSourceToBeControled bool //标识是否是视频源，视频被控制端
 }
 
-// SessionProvider provides the SessionLocal to the sfu.Peer
+// SourceProvider provides the SourceLocal to the sfu.Peer
 // This allows the sfu.SFU{} implementation to be customized / wrapped by another package
-type SessionProvider interface {
-	GetSession(sid string) Session
-	GetSessions() []Session
+type SourceProvider interface {
+	GetSource(sid string) Source
+	GetSources() []Source
 }
 
 /*
@@ -67,51 +67,51 @@ type ClientLocal struct {
 	sync.Mutex
 	id string
 	//closed   bool
-	session  Session
-	provider SessionProvider //这个provider有什么用？提供session之上的STUN?
+	source   Source
+	provider SourceProvider //这个provider有什么用？提供source之上的STUN?
 
 	VideoSourceID string
-	// OnOfferJSON2GRCP              func(*webrtc.SessionDescription)
-	// OnOfferGRCP2JSONReply         func(*webrtc.SessionDescription)
-	// OnOfferGRCP2JSONNotify        func(*webrtc.SessionDescription)
+	// OnOfferJSON2GRCP              func(*webrtc.SourceDescription)
+	// OnOfferGRCP2JSONReply         func(*webrtc.SourceDescription)
+	// OnOfferGRCP2JSONNotify        func(*webrtc.SourceDescription)
 	// OnIceCandidateJSON2GRCP       func(*webrtc.ICECandidateInit, int)
 	// OnIceCandidateGRCP2JSON       func(*webrtc.ICECandidateInit, int)
 	// OnICEConnStateChangeJSON2GRCP func(webrtc.ICEConnectionState)
 	// OnICEConnStateChangeGRCP2JSON func(webrtc.ICEConnectionState)
-	OnSessionDescription func(*webrtc.SessionDescription)
+	OnSourceDescription  func(*webrtc.SourceDescription)
 	OnIceCandidate       func(*webrtc.ICECandidateInit, int)
 	OnICEConnStateChange func(webrtc.ICEConnectionState)
-	OnJoinReply          func(*webrtc.SessionDescription)
+	OnJoinReply          func(*webrtc.SourceDescription)
 }
 
 // NewPeer creates a new PeerLocal for signaling with the given SFU
-func NewClient(provider SessionProvider) *ClientLocal {
+func NewClient(provider SourceProvider) *ClientLocal {
 	log.SetFlags(log.Ldate | log.Lshortfile)
 	return &ClientLocal{
 		provider: provider,
 	}
 }
 
-func (c *ClientLocal) Session() Session {
-	return c.session
+func (c *ClientLocal) Source() Source {
+	return c.source
 }
 
-func (c *ClientLocal) CreateSession(sid string, sourceType rtc.SourceType) error {
+func (c *ClientLocal) CreateSource(sid string, sourceType rtc.SourceType) error {
 
-	s := c.provider.GetSessions()
+	s := c.provider.GetSources()
 
-	for _, session := range s {
-		if session.ID() == sid {
-			return errors.New("Session already exists")
+	for _, source := range s {
+		if source.ID() == sid {
+			return errors.New("Source already exists")
 		}
 	}
 
-	if c.session != nil {
-		if c.session.ID() == sid {
+	if c.source != nil {
+		if c.source.ID() == sid {
 			return nil
 		}
 	}
-	c.session = NewSession(sid, sourceType)
+	c.source = NewSource(sid, sourceType)
 	return nil
 }
 
@@ -136,19 +136,16 @@ func (c *ClientLocal) Close() error {
 	// }
 	//c.closed = true
 	fmt.Println("Before RemoveClient")
-	if c.session == nil {
-		return nil //getonlineSources的时候没有加入到session中去
-	}
-	for i, c := range c.session.Clients() {
+	for i, c := range c.source.Clients() {
 		fmt.Println(i, ".", c.id)
 	}
 
-	if c.session != nil {
-		c.session.RemoveClient(c)
-		c.session.SetFirstDatachannelDesc(true)
+	if c.source != nil {
+		c.source.RemoveClient(c)
+		c.source.SetFirstDatachannelDesc(true)
 	}
 	fmt.Println("After RemoveClient")
-	for i, c := range c.session.Clients() {
+	for i, c := range c.source.Clients() {
 		fmt.Println(i, ".", c.id)
 	}
 	return nil
@@ -159,18 +156,18 @@ func (c *ClientLocal) Register(sid, uid string) error {
 		uid = cuid.New()
 	}
 	c.id = uid
-	s := c.provider.GetSession(sid)
+	s := c.provider.GetSource(sid)
 	s.SetSourceClient(c)
 	s.AddClient(c)
-	c.session = s
+	c.source = s
 	return nil
 }
 
-// Join initializes this peer for a given sessionID
+// Join initializes this peer for a given sourceID
 func (c *ClientLocal) Join(sid, uid string) error {
 
-	// if c.session != nil {
-	// 	//Logger.V(1).Info("peer already exists", "session_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
+	// if c.source != nil {
+	// 	//Logger.V(1).Info("peer already exists", "source_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
 	// 	return ErrTransportExists
 	// }
 	println("peer_Join,uid:%v", uid)
@@ -179,7 +176,7 @@ func (c *ClientLocal) Join(sid, uid string) error {
 	}
 	c.id = uid
 
-	s := c.provider.GetSession(sid)
+	s := c.provider.GetSource(sid)
 	//Logger.Printf("join,*c:%v,c:%v,&c:%v", *c, c, &c)
 	//需要处理断线、第二个用户登录等问题
 	clients := s.Clients()
@@ -201,21 +198,21 @@ func (c *ClientLocal) Join(sid, uid string) error {
 	}
 
 	s.AddClient(c)
-	c.session = s
+	c.source = s
 
 	return nil
 }
 
-func (c *ClientLocal) ProviderSessions() []Session {
+func (c *ClientLocal) ProviderSources() []Source {
 	p := c.provider
-	return p.GetSessions()
+	return p.GetSources()
 
 }
 
-// func (c *ClientLocal) OnOfferJSON2GRCP(*webrtc.SessionDescription) {
+// func (c *ClientLocal) OnOfferJSON2GRCP(*webrtc.SourceDescription) {
 // 	return c.OnOfferJSON2GRCP
 // }
-// func (c *ClientLocal) OnOfferGRCP2JSONReply(*webrtc.SessionDescription) {
+// func (c *ClientLocal) OnOfferGRCP2JSONReply(*webrtc.SourceDescription) {
 // 	return c.OnOfferGRCP2JSONReply
 // }
 // func (c *ClientLocal) OnIceCandidateJSON2GRCP(*webrtc.ICECandidateInit, int) {

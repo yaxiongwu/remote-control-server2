@@ -146,6 +146,13 @@ export class ViewSourceRequest extends jspb.Message {
   getUid(): string;
   setUid(value: string): void;
 
+  getConfigMap(): jspb.Map<string, string>;
+  clearConfigMap(): void;
+  hasDescription(): boolean;
+  clearDescription(): void;
+  getDescription(): SessionDescription | undefined;
+  setDescription(value?: SessionDescription): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): ViewSourceRequest.AsObject;
   static toObject(includeInstance: boolean, msg: ViewSourceRequest): ViewSourceRequest.AsObject;
@@ -160,6 +167,8 @@ export namespace ViewSourceRequest {
   export type AsObject = {
     sid: string,
     uid: string,
+    configMap: Array<[string, string]>,
+    description?: SessionDescription.AsObject,
   }
 }
 
@@ -204,6 +213,13 @@ export class WantControlRequest extends jspb.Message {
   getUid(): string;
   setUid(value: string): void;
 
+  getConfigMap(): jspb.Map<string, string>;
+  clearConfigMap(): void;
+  hasDescription(): boolean;
+  clearDescription(): void;
+  getDescription(): SessionDescription | undefined;
+  setDescription(value?: SessionDescription): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WantControlRequest.AsObject;
   static toObject(includeInstance: boolean, msg: WantControlRequest): WantControlRequest.AsObject;
@@ -218,6 +234,8 @@ export namespace WantControlRequest {
   export type AsObject = {
     sid: string,
     uid: string,
+    configMap: Array<[string, string]>,
+    description?: SessionDescription.AsObject,
   }
 }
 

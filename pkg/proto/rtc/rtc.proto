@@ -55,6 +55,8 @@ message OnLineSourceReply {
 message ViewSourceRequest{
    string sid = 1;
    string uid = 2;
+   map<string, string> config = 3;
+   SessionDescription description = 4;
 }
 //申请观看视频的结果
 message ViewSourceReply {
@@ -71,6 +73,8 @@ message ViewSourceReply {
 message WantControlRequest{
    string sid = 1;
    string uid = 2;
+   map<string, string> config = 3;
+   SessionDescription description = 4;
 }
 //控制申请的结果
 message WantControlReply { 
