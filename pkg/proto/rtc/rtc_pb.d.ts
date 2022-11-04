@@ -173,6 +173,9 @@ export namespace ViewSourceRequest {
 }
 
 export class ViewSourceReply extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): void;
+
   hasError(): boolean;
   clearError(): void;
   getError(): Error | undefined;
@@ -193,6 +196,7 @@ export class ViewSourceReply extends jspb.Message {
 
 export namespace ViewSourceReply {
   export type AsObject = {
+    success: boolean,
     error?: Error.AsObject,
     result: ViewSourceReply.ResultMap[keyof ViewSourceReply.ResultMap],
   }
@@ -240,6 +244,9 @@ export namespace WantControlRequest {
 }
 
 export class WantControlReply extends jspb.Message {
+  getSuccess(): boolean;
+  setSuccess(value: boolean): void;
+
   getIdleornot(): boolean;
   setIdleornot(value: boolean): void;
 
@@ -266,6 +273,7 @@ export class WantControlReply extends jspb.Message {
 
 export namespace WantControlReply {
   export type AsObject = {
+    success: boolean,
     idleornot: boolean,
     resttimesecofcontroling: number,
     numofwaiting: number,
@@ -395,6 +403,12 @@ export namespace TrackInfo {
 }
 
 export class SessionDescription extends jspb.Message {
+  getFrom(): string;
+  setFrom(value: string): void;
+
+  getTo(): string;
+  setTo(value: string): void;
+
   getTarget(): TargetMap[keyof TargetMap];
   setTarget(value: TargetMap[keyof TargetMap]): void;
 
@@ -421,6 +435,8 @@ export class SessionDescription extends jspb.Message {
 
 export namespace SessionDescription {
   export type AsObject = {
+    from: string,
+    to: string,
     target: TargetMap[keyof TargetMap],
     type: string,
     sdp: string,

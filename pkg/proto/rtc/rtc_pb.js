@@ -1794,6 +1794,7 @@ proto.rtc.ViewSourceReply.prototype.toObject = function(opt_includeInstance) {
  */
 proto.rtc.ViewSourceReply.toObject = function(includeInstance, msg) {
   var f, obj = {
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
     error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f),
     result: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
@@ -1832,6 +1833,10 @@ proto.rtc.ViewSourceReply.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setSuccess(value);
+      break;
     case 2:
       var value = new proto.rtc.Error;
       reader.readMessage(value,proto.rtc.Error.deserializeBinaryFromReader);
@@ -1870,6 +1875,13 @@ proto.rtc.ViewSourceReply.prototype.serializeBinary = function() {
  */
 proto.rtc.ViewSourceReply.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getSuccess();
+  if (f) {
+    writer.writeBool(
+      1,
+      f
+    );
+  }
   f = message.getError();
   if (f != null) {
     writer.writeMessage(
@@ -1896,6 +1908,24 @@ proto.rtc.ViewSourceReply.Result = {
   CLOUD: 1,
   ERROR: 2
 };
+
+/**
+ * optional bool success = 1;
+ * @return {boolean}
+ */
+proto.rtc.ViewSourceReply.prototype.getSuccess = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.rtc.ViewSourceReply} returns this
+ */
+proto.rtc.ViewSourceReply.prototype.setSuccess = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 1, value);
+};
+
 
 /**
  * optional Error error = 2;
@@ -2228,9 +2258,10 @@ proto.rtc.WantControlReply.prototype.toObject = function(opt_includeInstance) {
  */
 proto.rtc.WantControlReply.toObject = function(includeInstance, msg) {
   var f, obj = {
-    idleornot: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
-    resttimesecofcontroling: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    numofwaiting: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 1, false),
+    idleornot: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    resttimesecofcontroling: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    numofwaiting: jspb.Message.getFieldWithDefault(msg, 4, 0),
     error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f)
   };
 
@@ -2270,17 +2301,21 @@ proto.rtc.WantControlReply.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {boolean} */ (reader.readBool());
-      msg.setIdleornot(value);
+      msg.setSuccess(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setResttimesecofcontroling(value);
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIdleornot(value);
       break;
     case 3:
       var value = /** @type {number} */ (reader.readUint32());
-      msg.setNumofwaiting(value);
+      msg.setResttimesecofcontroling(value);
       break;
     case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setNumofwaiting(value);
+      break;
+    case 5:
       var value = new proto.rtc.Error;
       reader.readMessage(value,proto.rtc.Error.deserializeBinaryFromReader);
       msg.setError(value);
@@ -2314,31 +2349,38 @@ proto.rtc.WantControlReply.prototype.serializeBinary = function() {
  */
 proto.rtc.WantControlReply.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getIdleornot();
+  f = message.getSuccess();
   if (f) {
     writer.writeBool(
       1,
       f
     );
   }
-  f = message.getResttimesecofcontroling();
-  if (f !== 0) {
-    writer.writeUint32(
+  f = message.getIdleornot();
+  if (f) {
+    writer.writeBool(
       2,
       f
     );
   }
-  f = message.getNumofwaiting();
+  f = message.getResttimesecofcontroling();
   if (f !== 0) {
     writer.writeUint32(
       3,
       f
     );
   }
+  f = message.getNumofwaiting();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
+      f
+    );
+  }
   f = message.getError();
   if (f != null) {
     writer.writeMessage(
-      4,
+      5,
       f,
       proto.rtc.Error.serializeBinaryToWriter
     );
@@ -2347,10 +2389,10 @@ proto.rtc.WantControlReply.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional bool idleOrNot = 1;
+ * optional bool success = 1;
  * @return {boolean}
  */
-proto.rtc.WantControlReply.prototype.getIdleornot = function() {
+proto.rtc.WantControlReply.prototype.getSuccess = function() {
   return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 1, false));
 };
 
@@ -2359,34 +2401,34 @@ proto.rtc.WantControlReply.prototype.getIdleornot = function() {
  * @param {boolean} value
  * @return {!proto.rtc.WantControlReply} returns this
  */
-proto.rtc.WantControlReply.prototype.setIdleornot = function(value) {
+proto.rtc.WantControlReply.prototype.setSuccess = function(value) {
   return jspb.Message.setProto3BooleanField(this, 1, value);
 };
 
 
 /**
- * optional uint32 restTimeSecOfControling = 2;
+ * optional bool idleOrNot = 2;
+ * @return {boolean}
+ */
+proto.rtc.WantControlReply.prototype.getIdleornot = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.rtc.WantControlReply} returns this
+ */
+proto.rtc.WantControlReply.prototype.setIdleornot = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
+};
+
+
+/**
+ * optional uint32 restTimeSecOfControling = 3;
  * @return {number}
  */
 proto.rtc.WantControlReply.prototype.getResttimesecofcontroling = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.rtc.WantControlReply} returns this
- */
-proto.rtc.WantControlReply.prototype.setResttimesecofcontroling = function(value) {
-  return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional uint32 numOfWaiting = 3;
- * @return {number}
- */
-proto.rtc.WantControlReply.prototype.getNumofwaiting = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
 };
 
@@ -2395,18 +2437,36 @@ proto.rtc.WantControlReply.prototype.getNumofwaiting = function() {
  * @param {number} value
  * @return {!proto.rtc.WantControlReply} returns this
  */
-proto.rtc.WantControlReply.prototype.setNumofwaiting = function(value) {
+proto.rtc.WantControlReply.prototype.setResttimesecofcontroling = function(value) {
   return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
 /**
- * optional Error error = 4;
+ * optional uint32 numOfWaiting = 4;
+ * @return {number}
+ */
+proto.rtc.WantControlReply.prototype.getNumofwaiting = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.rtc.WantControlReply} returns this
+ */
+proto.rtc.WantControlReply.prototype.setNumofwaiting = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional Error error = 5;
  * @return {?proto.rtc.Error}
  */
 proto.rtc.WantControlReply.prototype.getError = function() {
   return /** @type{?proto.rtc.Error} */ (
-    jspb.Message.getWrapperField(this, proto.rtc.Error, 4));
+    jspb.Message.getWrapperField(this, proto.rtc.Error, 5));
 };
 
 
@@ -2415,7 +2475,7 @@ proto.rtc.WantControlReply.prototype.getError = function() {
  * @return {!proto.rtc.WantControlReply} returns this
 */
 proto.rtc.WantControlReply.prototype.setError = function(value) {
-  return jspb.Message.setWrapperField(this, 4, value);
+  return jspb.Message.setWrapperField(this, 5, value);
 };
 
 
@@ -2433,7 +2493,7 @@ proto.rtc.WantControlReply.prototype.clearError = function() {
  * @return {boolean}
  */
 proto.rtc.WantControlReply.prototype.hasError = function() {
-  return jspb.Message.getField(this, 4) != null;
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
@@ -3319,7 +3379,7 @@ proto.rtc.TrackInfo.prototype.setFramerate = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.rtc.SessionDescription.repeatedFields_ = [4];
+proto.rtc.SessionDescription.repeatedFields_ = [6];
 
 
 
@@ -3352,9 +3412,11 @@ proto.rtc.SessionDescription.prototype.toObject = function(opt_includeInstance) 
  */
 proto.rtc.SessionDescription.toObject = function(includeInstance, msg) {
   var f, obj = {
-    target: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    type: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    sdp: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    from: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    to: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    target: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    type: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    sdp: jspb.Message.getFieldWithDefault(msg, 5, ""),
     trackinfosList: jspb.Message.toObjectList(msg.getTrackinfosList(),
     proto.rtc.TrackInfo.toObject, includeInstance)
   };
@@ -3394,18 +3456,26 @@ proto.rtc.SessionDescription.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {!proto.rtc.Target} */ (reader.readEnum());
-      msg.setTarget(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setFrom(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setType(value);
+      msg.setTo(value);
       break;
     case 3:
+      var value = /** @type {!proto.rtc.Target} */ (reader.readEnum());
+      msg.setTarget(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setType(value);
+      break;
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setSdp(value);
       break;
-    case 4:
+    case 6:
       var value = new proto.rtc.TrackInfo;
       reader.readMessage(value,proto.rtc.TrackInfo.deserializeBinaryFromReader);
       msg.addTrackinfos(value);
@@ -3439,31 +3509,45 @@ proto.rtc.SessionDescription.prototype.serializeBinary = function() {
  */
 proto.rtc.SessionDescription.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getTarget();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getFrom();
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
   }
-  f = message.getType();
+  f = message.getTo();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
+  f = message.getTarget();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      3,
+      f
+    );
+  }
+  f = message.getType();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
   f = message.getSdp();
   if (f.length > 0) {
     writer.writeString(
-      3,
+      5,
       f
     );
   }
   f = message.getTrackinfosList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      4,
+      6,
       f,
       proto.rtc.TrackInfo.serializeBinaryToWriter
     );
@@ -3472,28 +3556,28 @@ proto.rtc.SessionDescription.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional Target target = 1;
- * @return {!proto.rtc.Target}
- */
-proto.rtc.SessionDescription.prototype.getTarget = function() {
-  return /** @type {!proto.rtc.Target} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/**
- * @param {!proto.rtc.Target} value
- * @return {!proto.rtc.SessionDescription} returns this
- */
-proto.rtc.SessionDescription.prototype.setTarget = function(value) {
-  return jspb.Message.setProto3EnumField(this, 1, value);
-};
-
-
-/**
- * optional string type = 2;
+ * optional string from = 1;
  * @return {string}
  */
-proto.rtc.SessionDescription.prototype.getType = function() {
+proto.rtc.SessionDescription.prototype.getFrom = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.rtc.SessionDescription} returns this
+ */
+proto.rtc.SessionDescription.prototype.setFrom = function(value) {
+  return jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional string to = 2;
+ * @return {string}
+ */
+proto.rtc.SessionDescription.prototype.getTo = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
@@ -3502,17 +3586,53 @@ proto.rtc.SessionDescription.prototype.getType = function() {
  * @param {string} value
  * @return {!proto.rtc.SessionDescription} returns this
  */
-proto.rtc.SessionDescription.prototype.setType = function(value) {
+proto.rtc.SessionDescription.prototype.setTo = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional string sdp = 3;
+ * optional Target target = 3;
+ * @return {!proto.rtc.Target}
+ */
+proto.rtc.SessionDescription.prototype.getTarget = function() {
+  return /** @type {!proto.rtc.Target} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {!proto.rtc.Target} value
+ * @return {!proto.rtc.SessionDescription} returns this
+ */
+proto.rtc.SessionDescription.prototype.setTarget = function(value) {
+  return jspb.Message.setProto3EnumField(this, 3, value);
+};
+
+
+/**
+ * optional string type = 4;
+ * @return {string}
+ */
+proto.rtc.SessionDescription.prototype.getType = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.rtc.SessionDescription} returns this
+ */
+proto.rtc.SessionDescription.prototype.setType = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string sdp = 5;
  * @return {string}
  */
 proto.rtc.SessionDescription.prototype.getSdp = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
@@ -3521,17 +3641,17 @@ proto.rtc.SessionDescription.prototype.getSdp = function() {
  * @return {!proto.rtc.SessionDescription} returns this
  */
 proto.rtc.SessionDescription.prototype.setSdp = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * repeated TrackInfo trackInfos = 4;
+ * repeated TrackInfo trackInfos = 6;
  * @return {!Array<!proto.rtc.TrackInfo>}
  */
 proto.rtc.SessionDescription.prototype.getTrackinfosList = function() {
   return /** @type{!Array<!proto.rtc.TrackInfo>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.rtc.TrackInfo, 4));
+    jspb.Message.getRepeatedWrapperField(this, proto.rtc.TrackInfo, 6));
 };
 
 
@@ -3540,7 +3660,7 @@ proto.rtc.SessionDescription.prototype.getTrackinfosList = function() {
  * @return {!proto.rtc.SessionDescription} returns this
 */
 proto.rtc.SessionDescription.prototype.setTrackinfosList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+  return jspb.Message.setRepeatedWrapperField(this, 6, value);
 };
 
 
@@ -3550,7 +3670,7 @@ proto.rtc.SessionDescription.prototype.setTrackinfosList = function(value) {
  * @return {!proto.rtc.TrackInfo}
  */
 proto.rtc.SessionDescription.prototype.addTrackinfos = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.rtc.TrackInfo, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.rtc.TrackInfo, opt_index);
 };
 
 

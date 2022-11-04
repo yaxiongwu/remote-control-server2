@@ -64,7 +64,8 @@ message ViewSourceReply {
     Webrtc = 0;  //可以使用webrtc直连
     Cloud = 1;    //转云直播
     Error = 2;    //错误
-  }  
+  }
+  bool success = 1;  
   Error error = 2;
   Result result = 3;
 }
@@ -78,10 +79,11 @@ message WantControlRequest{
 }
 //控制申请的结果
 message WantControlReply { 
-  bool idleOrNot = 1;  //是否空闲可控
-   uint32 restTimeSecOfControling = 2; //现在正在控制的这个人还剩多少时间,单位秒
-   uint32 numOfWaiting = 3;  //排队的人数，不包括现在控制的那个
-   Error error = 4; 
+  bool success = 1;
+  bool idleOrNot = 2;  //是否空闲可控
+   uint32 restTimeSecOfControling = 3; //现在正在控制的这个人还剩多少时间,单位秒
+   uint32 numOfWaiting = 4;  //排队的人数，不包括现在控制的那个
+   Error error = 5; 
 }
 
 
@@ -129,13 +131,15 @@ message TrackInfo {
 }
 
 message SessionDescription {
-  Target target = 1;
+  string from=1;
+  string to=2;
+  Target target = 3;
   // 'offer' | 'answer'
-  string type = 2;
+  string type = 4;
   // sdp contents
-  string sdp = 3;
+  string sdp = 5;
   // sdp metdata
-  repeated TrackInfo trackInfos = 4;
+  repeated TrackInfo trackInfos = 6;
 }
 
 message Trickle {

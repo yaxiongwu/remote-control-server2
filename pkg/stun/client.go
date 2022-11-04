@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sync"
+	"time"
 
 	"github.com/lucsky/cuid"
 	"github.com/pion/webrtc/v3"
@@ -17,6 +18,8 @@ type Client interface {
 	CreateSession(sid string) error
 	Session() Session
 	Close() error
+	WantControl(sid, uid string) *rtc.WantControlReply
+	GetRole() int8
 
 	// InterOnOfferJSON2GRCP(*webrtc.SessionDescription) func()
 	// InterOnOfferGRCP2JSON(*webrtc.SessionDescription) func()
@@ -63,14 +66,25 @@ type SessionProvider interface {
 
 */
 // SFU represents an sfu instance
+const (
+	SOURCE  = 0
+	CONTROL = 1
+	VIEW    = 2
+	UNKNOWN = 3
+)
+
 type ClientLocal struct {
 	sync.Mutex
 	id string
 	//closed   bool
-	session  Session
-	provider SessionProvider //这个provider有什么用？提供session之上的STUN?
-
-	VideoSourceID string
+	session          Session
+	provider         SessionProvider //这个provider有什么用？提供source之上的STUN?
+	role             int8
+	timeBeginControl time.Time
+	timeEndControl   time.Time
+	timeBeginView    time.Time
+	timeEndView      time.Time
+	VideoSourceID    string
 	// OnOfferJSON2GRCP              func(*webrtc.SessionDescription)
 	// OnOfferGRCP2JSONReply         func(*webrtc.SessionDescription)
 	// OnOfferGRCP2JSONNotify        func(*webrtc.SessionDescription)
@@ -82,6 +96,7 @@ type ClientLocal struct {
 	OnIceCandidate       func(*webrtc.ICECandidateInit, int)
 	OnICEConnStateChange func(webrtc.ICEConnectionState)
 	OnJoinReply          func(*webrtc.SessionDescription)
+	OnWantControlRequest func(*rtc.WantControlRequest)
 }
 
 // NewPeer creates a new PeerLocal for signaling with the given SFU
@@ -206,10 +221,52 @@ func (c *ClientLocal) Join(sid, uid string) error {
 	return nil
 }
 
+// Join initializes this peer for a given sourceID
+func (c *ClientLocal) WantControl(sid, uid string) *rtc.WantControlReply {
+
+	// if c.source != nil {
+	// 	//Logger.V(1).Info("peer already exists", "source_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
+	// 	return ErrTransportExists
+	// }
+	println("peer_Join,uid:%v", uid)
+	if uid == "" {
+		uid = cuid.New()
+	}
+	c.id = uid
+	c.role = CONTROL
+
+	idleOrNot := true
+
+	s := c.provider.GetSession(sid)
+	//Logger.Printf("join,*c:%v,c:%v,&c:%v", *c, c, &c)
+	//需要处理断线、第二个用户登录等问题
+	clients := s.Clients()
+	for _, client := range clients {
+		println("clientID:%s", client.GetID())
+		if client.GetRole() == CONTROL {
+			idleOrNot = false
+		}
+	}
+
+	s.AddClient(c)
+	c.session = s
+
+	return &rtc.WantControlReply{
+		Success:                 true,
+		IdleOrNot:               idleOrNot,
+		RestTimeSecOfControling: 101,
+		NumOfWaiting:            121,
+	}
+}
+
 func (c *ClientLocal) ProviderSessions() []Session {
 	p := c.provider
 	return p.GetSessions()
 
+}
+
+func (c *ClientLocal) GetRole() int8 {
+	return c.role
 }
 
 // func (c *ClientLocal) OnOfferJSON2GRCP(*webrtc.SessionDescription) {
