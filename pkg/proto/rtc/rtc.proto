@@ -79,11 +79,12 @@ message WantControlRequest{
 }
 //控制申请的结果
 message WantControlReply { 
-  bool success = 1;
-  bool idleOrNot = 2;  //是否空闲可控
+   bool success = 1;
+   bool idleOrNot = 2;  //是否空闲可控
    uint32 restTimeSecOfControling = 3; //现在正在控制的这个人还剩多少时间,单位秒
    uint32 numOfWaiting = 4;  //排队的人数，不包括现在控制的那个
    Error error = 5; 
+   SessionDescription description = 6;
 }
 
 

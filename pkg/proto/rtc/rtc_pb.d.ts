@@ -261,6 +261,11 @@ export class WantControlReply extends jspb.Message {
   getError(): Error | undefined;
   setError(value?: Error): void;
 
+  hasDescription(): boolean;
+  clearDescription(): void;
+  getDescription(): SessionDescription | undefined;
+  setDescription(value?: SessionDescription): void;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WantControlReply.AsObject;
   static toObject(includeInstance: boolean, msg: WantControlReply): WantControlReply.AsObject;
@@ -278,6 +283,7 @@ export namespace WantControlReply {
     resttimesecofcontroling: number,
     numofwaiting: number,
     error?: Error.AsObject,
+    description?: SessionDescription.AsObject,
   }
 }
 

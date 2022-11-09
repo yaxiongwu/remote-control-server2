@@ -135,16 +135,12 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 
 			rtcTarget = rtc.Target_PUBLISHER
 
-			client.OnSessionDescription = func(o *webrtc.SessionDescription) {
-				//log.Debugf("[S=>C] client.OnSessionDescription: %v", o.SDP)
-				// if bVideoSource {
-				// 	rtcTarget = rtc.Target_SUBSCRIBER
-				// } else {
-				// 	rtcTarget = rtc.Target_PUBLISHER
-				// }
+			client.OnSessionDescription = func(o *webrtc.SessionDescription, from string, to string) {
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_Description{
 						Description: &rtc.SessionDescription{
+							From:   from,
+							To:     to,
 							Target: rtc.Target(rtcTarget), //需要特别注意SUB和PUB，视频源应该是pub，控制端主动发起，是Sub
 							Sdp:    o.SDP,
 							Type:   o.Type.String(),
@@ -191,15 +187,8 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					},
 				})
 			}
-			client.OnWantControlRequest =func(wcr *rtc.WantControlRequest) {
-				log.Debugf("[S=>C] client.OnWantControlRequest: %v", wcr)
-                err = sig.Send(&rtc.Request{
-                    Payload: &rtc.Request_WantControl{
-						WantControl: wcr,
-					},
-			})
-			
-						//log.Debugf("client.GetID():%v,client.OnJoinReply: %v", client.GetID(), client.OnJoinReply)
+
+			//log.Debugf("client.GetID():%v,client.OnJoinReply: %v", client.GetID(), client.OnJoinReply)
 		case *rtc.Request_OnLineSource:
 
 			sessions := s.STUN.GetSessions()
@@ -252,11 +241,13 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			}
 
 			rtcTarget := rtc.Target_SUBSCRIBER
-			client.OnSessionDescription = func(o *webrtc.SessionDescription) {
+			client.OnSessionDescription = func(o *webrtc.SessionDescription, from string, to string) {
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_Description{
 						Description: &rtc.SessionDescription{
-							Target: rtc.Target(rtcTarget), //需要特别注意SUB和PUB，answer方是PUB，offer方是SUB,视频源应该是pub，控制端主动发起，是Sub
+							From:   from,
+							To:     to,
+							Target: rtc.Target(rtcTarget), //需要特别注意SUB和PUB，视频源应该是pub，控制端主动发起，是Sub
 							Sdp:    o.SDP,
 							Type:   o.Type.String(),
 						},
@@ -307,12 +298,12 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				Type: webrtc.NewSDPType(payload.WantControl.Description.Type),
 			}
 
-			sourceClient := client.Session().GetSourceClient()
+			sourceClient := client.Session().GetSourceClient() 
 
 			if sourceClient != nil {
 				log.Debugf("join desc from client %v to client:%v", client.GetID(), sourceClient.GetID())
 				if sourceClient.OnSessionDescription != nil {
-					sourceClient.OnSessionDescription(&desc)
+					sourceClient.OnSessionDescription(&desc, payload.WantControl.Uid, "s")
 				}
 			}
 

@@ -92,7 +92,7 @@ type ClientLocal struct {
 	// OnIceCandidateGRCP2JSON       func(*webrtc.ICECandidateInit, int)
 	// OnICEConnStateChangeJSON2GRCP func(webrtc.ICEConnectionState)
 	// OnICEConnStateChangeGRCP2JSON func(webrtc.ICEConnectionState)
-	OnSessionDescription func(*webrtc.SessionDescription)
+	OnSessionDescription func(*webrtc.SessionDescription, string, string)
 	OnIceCandidate       func(*webrtc.ICECandidateInit, int)
 	OnICEConnStateChange func(webrtc.ICEConnectionState)
 	OnJoinReply          func(*webrtc.SessionDescription)

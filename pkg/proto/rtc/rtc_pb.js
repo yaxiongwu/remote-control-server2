@@ -2262,7 +2262,8 @@ proto.rtc.WantControlReply.toObject = function(includeInstance, msg) {
     idleornot: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
     resttimesecofcontroling: jspb.Message.getFieldWithDefault(msg, 3, 0),
     numofwaiting: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f)
+    error: (f = msg.getError()) && proto.rtc.Error.toObject(includeInstance, f),
+    description: (f = msg.getDescription()) && proto.rtc.SessionDescription.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -2319,6 +2320,11 @@ proto.rtc.WantControlReply.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.rtc.Error;
       reader.readMessage(value,proto.rtc.Error.deserializeBinaryFromReader);
       msg.setError(value);
+      break;
+    case 6:
+      var value = new proto.rtc.SessionDescription;
+      reader.readMessage(value,proto.rtc.SessionDescription.deserializeBinaryFromReader);
+      msg.setDescription(value);
       break;
     default:
       reader.skipField();
@@ -2383,6 +2389,14 @@ proto.rtc.WantControlReply.serializeBinaryToWriter = function(message, writer) {
       5,
       f,
       proto.rtc.Error.serializeBinaryToWriter
+    );
+  }
+  f = message.getDescription();
+  if (f != null) {
+    writer.writeMessage(
+      6,
+      f,
+      proto.rtc.SessionDescription.serializeBinaryToWriter
     );
   }
 };
@@ -2494,6 +2508,43 @@ proto.rtc.WantControlReply.prototype.clearError = function() {
  */
 proto.rtc.WantControlReply.prototype.hasError = function() {
   return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional SessionDescription description = 6;
+ * @return {?proto.rtc.SessionDescription}
+ */
+proto.rtc.WantControlReply.prototype.getDescription = function() {
+  return /** @type{?proto.rtc.SessionDescription} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.SessionDescription, 6));
+};
+
+
+/**
+ * @param {?proto.rtc.SessionDescription|undefined} value
+ * @return {!proto.rtc.WantControlReply} returns this
+*/
+proto.rtc.WantControlReply.prototype.setDescription = function(value) {
+  return jspb.Message.setWrapperField(this, 6, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.WantControlReply} returns this
+ */
+proto.rtc.WantControlReply.prototype.clearDescription = function() {
+  return this.setDescription(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.WantControlReply.prototype.hasDescription = function() {
+  return jspb.Message.getField(this, 6) != null;
 };
 
 
