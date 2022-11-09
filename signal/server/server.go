@@ -187,6 +187,18 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					},
 				})
 			}
+			client.OnWantControlReply = func(o *rtc.WantControlReply) {
+				log.Debugf("[S=>C] client.OnWantControlReply: %v", o.Description)
+				err = sig.Send(&rtc.Reply{
+					Payload: &rtc.Reply_WantControl{
+						WantControl: &rtc.WantControlReply{
+							Success:     true,
+							Error:       nil,
+							Description: o.Description,
+						},
+					},
+				})
+			}
 
 			//log.Debugf("client.GetID():%v,client.OnJoinReply: %v", client.GetID(), client.OnJoinReply)
 		case *rtc.Request_OnLineSource:
@@ -276,34 +288,34 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					log.Errorf("OnIceCandidate send error: %v", err)
 				}
 			}
-			client.OnJoinReply = func(o *webrtc.SessionDescription) {
-				log.Debugf("[S=>C] client.OnJoinReply: %v", o.SDP)
-				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_Join{
-						Join: &rtc.JoinReply{
-							Success: true,
-							Error:   nil,
-							Description: &rtc.SessionDescription{
-								Target: rtc.Target(rtcTarget),
-								Sdp:    o.SDP,
-								Type:   o.Type.String(),
-							},
-						},
-					},
-				})
-			}
+			// client.OnJoinReply = func(o *webrtc.SessionDescription) {
+			// 	log.Debugf("[S=>C] client.OnJoinReply: %v", o.SDP)
+			// 	err = sig.Send(&rtc.Reply{
+			// 		Payload: &rtc.Reply_Join{
+			// 			Join: &rtc.JoinReply{
+			// 				Success: true,
+			// 				Error:   nil,
+			// 				Description: &rtc.SessionDescription{
+			// 					Target: rtc.Target(rtcTarget),
+			// 					Sdp:    o.SDP,
+			// 					Type:   o.Type.String(),
+			// 				},
+			// 			},
+			// 		},
+			// 	})
+			// }
 			//发sdp给视频源
 			desc := webrtc.SessionDescription{
 				SDP:  payload.WantControl.Description.Sdp,
 				Type: webrtc.NewSDPType(payload.WantControl.Description.Type),
 			}
 
-			sourceClient := client.Session().GetSourceClient() 
+			sourceClient := client.Session().GetSourceClient()
 
 			if sourceClient != nil {
 				log.Debugf("join desc from client %v to client:%v", client.GetID(), sourceClient.GetID())
-				if sourceClient.OnSessionDescription != nil {
-					sourceClient.OnSessionDescription(&desc, payload.WantControl.Uid, "s")
+				if sourceClient.OnWantControlReply != nil {
+					sourceClient.OnWantControlReply(&desc, payload.WantControl.Uid, "s")
 				}
 			}
 

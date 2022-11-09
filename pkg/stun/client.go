@@ -97,6 +97,7 @@ type ClientLocal struct {
 	OnICEConnStateChange func(webrtc.ICEConnectionState)
 	OnJoinReply          func(*webrtc.SessionDescription)
 	OnWantControlRequest func(*rtc.WantControlRequest)
+	OnWantControlReply   func(*rtc.WantControlReply)
 }
 
 // NewPeer creates a new PeerLocal for signaling with the given SFU
