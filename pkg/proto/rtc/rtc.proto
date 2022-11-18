@@ -26,8 +26,9 @@ enum SourceType {
 message RegisterRequest {
   string sid = 1;
   string uid = 2;
-  SourceType   sourceType=3;
-  map<string, string> config = 4;  
+  string name = 3;
+  SourceType   sourceType=4;
+  map<string, string> config = 5;
 }
 //创建视频源的回复
 message RegisterReply {
@@ -41,8 +42,8 @@ message OnLineSourceRequest {
 }
 //在线的视频源
 message OnLineSources {
-  string sid = 1;
-  string uid = 2;
+  string uid = 1;
+  string name = 2;
 }
 //服务器返回在线的视频源
 message OnLineSourceReply {
@@ -53,7 +54,7 @@ message OnLineSourceReply {
 
 //观看视频申请
 message ViewSourceRequest{
-   string sid = 1;
+   //string sid = 1;
    string uid = 2;
    map<string, string> config = 3;
    SessionDescription description = 4;
@@ -72,10 +73,13 @@ message ViewSourceReply {
 
 //控制申请
 message WantControlRequest{
-   string sid = 1;
-   string uid = 2;
+   string from = 1;
+   string to = 2;
    map<string, string> config = 3;
-   SessionDescription description = 4;
+    // 'offer' | 'answer'
+  string sdpType = 4;
+  // sdp contents
+  string sdp = 5;
 }
 //控制申请的结果
 message WantControlReply { 
@@ -83,8 +87,13 @@ message WantControlReply {
    bool idleOrNot = 2;  //是否空闲可控
    uint32 restTimeSecOfControling = 3; //现在正在控制的这个人还剩多少时间,单位秒
    uint32 numOfWaiting = 4;  //排队的人数，不包括现在控制的那个
-   Error error = 5; 
-   SessionDescription description = 6;
+   Error error = 5;
+   string from = 6;
+   string to = 7;
+    // 'offer' | 'answer'
+  string sdpType = 8;
+  // sdp contents
+  string sdp = 9;
 }
 
 
@@ -132,8 +141,8 @@ message TrackInfo {
 }
 
 message SessionDescription {
-  string from=1;
-  string to=2;
+  string from = 1;
+  string to = 2;
   Target target = 3;
   // 'offer' | 'answer'
   string type = 4;
@@ -144,8 +153,10 @@ message SessionDescription {
 }
 
 message Trickle {
-  Target target = 1;
-  string init = 2;
+  string from=1;
+  string to=2;
+  Target target = 3;
+  string init = 4;
 }
 
 message Error {
@@ -210,6 +221,7 @@ message Request {
     OnLineSourceRequest onLineSource=6;
     ViewSourceRequest viewSource =7;
     WantControlRequest wantControl =8;
+    WantControlReply   wantControlReply =9;//最终由视频源决定wantControlReply，生成的这个reply需要由request发往服务器再转发
   }
 }
 

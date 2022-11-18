@@ -14,7 +14,9 @@ import (
 
 type Client interface {
 	GetID() string
+	GetName() string
 	SetID(cid string) error
+	SetName(name string) error
 	CreateSession(sid string) error
 	Session() Session
 	Close() error
@@ -75,7 +77,8 @@ const (
 
 type ClientLocal struct {
 	sync.Mutex
-	id string
+	id   string
+	name string
 	//closed   bool
 	session          Session
 	provider         SessionProvider //这个provider有什么用？提供source之上的STUN?
@@ -93,7 +96,7 @@ type ClientLocal struct {
 	// OnICEConnStateChangeJSON2GRCP func(webrtc.ICEConnectionState)
 	// OnICEConnStateChangeGRCP2JSON func(webrtc.ICEConnectionState)
 	OnSessionDescription func(*webrtc.SessionDescription, string, string)
-	OnIceCandidate       func(*webrtc.ICECandidateInit, int)
+	OnIceCandidate       func(*webrtc.ICECandidateInit, string, string)
 	OnICEConnStateChange func(webrtc.ICEConnectionState)
 	OnJoinReply          func(*webrtc.SessionDescription)
 	OnWantControlRequest func(*rtc.WantControlRequest)
@@ -142,6 +145,17 @@ func (c *ClientLocal) SetID(cid string) error {
 	return nil
 }
 
+// Name return the peer name
+func (c *ClientLocal) GetName() string {
+	return c.name
+}
+
+// ID return the peer id
+func (c *ClientLocal) SetName(name string) error {
+	c.name = name
+	return nil
+}
+
 // Close shuts down the peer connection and sends true to the done channel
 func (c *ClientLocal) Close() error {
 	c.Lock()
@@ -170,13 +184,26 @@ func (c *ClientLocal) Close() error {
 	return nil
 }
 
-func (c *ClientLocal) Register(sid, uid string) error {
+func (c *ClientLocal) Register(uid, name string) error {
 	if uid == "" {
 		uid = cuid.New()
 	}
 	c.id = uid
-	s := c.provider.GetSession(sid)
+	c.name = name
+	s := c.provider.GetSession(uid)
 	s.SetSourceClient(c)
+	s.AddClient(c)
+	c.session = s
+	return nil
+}
+
+func (c *ClientLocal) Add(uid, name string) error {
+	if uid == "" {
+		uid = cuid.New()
+	}
+	c.id = uid
+	c.name = name
+	s := c.provider.GetSession(uid)
 	s.AddClient(c)
 	c.session = s
 	return nil
@@ -223,22 +250,22 @@ func (c *ClientLocal) Join(sid, uid string) error {
 }
 
 // Join initializes this peer for a given sourceID
-func (c *ClientLocal) WantControl(sid, uid string) *rtc.WantControlReply {
+func (c *ClientLocal) WantControl(from string, to string) *rtc.WantControlReply {
 
 	// if c.source != nil {
 	// 	//Logger.V(1).Info("peer already exists", "source_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
 	// 	return ErrTransportExists
 	// }
-	println("peer_Join,uid:%v", uid)
-	if uid == "" {
-		uid = cuid.New()
+	println("peer_Join,from:%v,to:%v", from, to)
+	if from == "" {
+		from = cuid.New()
 	}
-	c.id = uid
+	c.id = from
 	c.role = CONTROL
 
 	idleOrNot := true
 
-	s := c.provider.GetSession(sid)
+	s := c.provider.GetSession(to)
 	//Logger.Printf("join,*c:%v,c:%v,&c:%v", *c, c, &c)
 	//需要处理断线、第二个用户登录等问题
 	clients := s.Clients()

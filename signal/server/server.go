@@ -105,12 +105,12 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 		rtcTarget := rtc.Target_SUBSCRIBER
 		switch payload := in.Payload.(type) {
 		case *rtc.Request_Register:
-			sid := payload.Register.Sid
+			name := payload.Register.Name
 			uid := payload.Register.Uid
 			sourceType := payload.Register.SourceType
-			log.Infof("[C=>S] createSession: sid => %v, uid => %v", sid, uid, sourceType)
+			log.Infof("[C=>S] createSession: name => %v, uid => %v", name, uid, sourceType)
 			//需要查找是否有重名
-			err = client.CreateSession(sid, sourceType)
+			err = client.CreateSession(uid, sourceType)
 
 			if err != nil {
 				err = sig.Send(&rtc.Reply{
@@ -130,7 +130,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			}
 
 			//client.Join(sid, uid)
-			client.Register(sid, uid)
+			client.Register(uid, name)
 			log.Debugf("client.GetID():%v", client.GetID())
 
 			rtcTarget = rtc.Target_PUBLISHER
@@ -152,8 +152,8 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				}
 			}
 
-			client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, target int) {
-				log.Debugf("[S=>C] peer.OnIceCandidate: target = %v, candidate = %v", target, candidate.Candidate)
+			client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, from string, to string) {
+				log.Debugf("[S=>C] peer.OnIceCandidate:from= %v, to= %v,candidate = %v", from, to, candidate.Candidate)
 				bytes, err := json.Marshal(candidate)
 				if err != nil {
 					log.Errorf("OnIceCandidate error: %v", err)
@@ -161,8 +161,9 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_Trickle{
 						Trickle: &rtc.Trickle{
-							Init:   string(bytes),
-							Target: rtc.Target(target),
+							Init: string(bytes),
+							From: from,
+							To:   to,
 						},
 					},
 				})
@@ -188,14 +189,10 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				})
 			}
 			client.OnWantControlReply = func(o *rtc.WantControlReply) {
-				log.Debugf("[S=>C] client.OnWantControlReply: %v", o.Description)
+				log.Debugf("[S=>C] client.OnWantControlReply: %v", o)
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_WantControl{
-						WantControl: &rtc.WantControlReply{
-							Success:     true,
-							Error:       nil,
-							Description: o.Description,
-						},
+						WantControl: o,
 					},
 				})
 			}
@@ -212,15 +209,16 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				log.Debugf("Sid:%v,Uid:%v", s.ID(), client.GetID())
 				if s.GetSourceType() == payload.OnLineSource.SourceType {
 					onlineSources = append(onlineSources, &rtc.OnLineSources{
-						Sid: s.ID(),
-						Uid: s.GetSourceClient().GetID(),
+						//Sid: s.ID(),
+						Uid:  s.GetSourceClient().GetID(),
+						Name: s.GetSourceClient().GetName(),
 					})
 				}
 			}
-			onlineSources = append(onlineSources, &rtc.OnLineSources{
-				Sid: "testSid",
-				Uid: "testUid",
-			})
+			// onlineSources = append(onlineSources, &rtc.OnLineSources{
+			// 	Sid: "testSid",
+			// 	Uid: "testUid",241
+			// })
 			log.Debugf("onlineSources:%v", onlineSources)
 			err = sig.Send(&rtc.Reply{
 				Payload: &rtc.Reply_OnLineSource{
@@ -237,21 +235,23 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 
 		case *rtc.Request_WantControl:
 
-			sid := payload.WantControl.Sid
-			uid := payload.WantControl.Uid
-			log.Infof("[C=>S] join: sid => %v, uid => %v", sid, uid)
+			from := payload.WantControl.From
+			to := payload.WantControl.To
+			//name := payload.WantControl.Name
+			log.Infof("[C=>S] Request_WantControl:  from :%v,to:%v", from, to)
+			//wantControl只带了目的地址，比如网页上带了PiVedioSource，到了Pi那端，需要知道的是网页的id
+			//对连接用户的管理交给视频源，这里不回应wantControlReply，
+			// wantControlReply := client.WantControl(from, to)
 
-			wantControlReply := client.WantControl(sid, uid)
-
-			err = sig.Send(&rtc.Reply{
-				Payload: &rtc.Reply_WantControl{
-					WantControl: wantControlReply,
-				},
-			})
-			if err != nil {
-				log.Errorf("err:%v", err)
-			}
-
+			// err = sig.Send(&rtc.Reply{
+			// 	Payload: &rtc.Reply_WantControl{
+			// 		WantControl: wantControlReply,
+			// 	},
+			// })
+			// if err != nil {
+			// 	log.Errorf("err:%v", err)
+			// }
+			client.WantControl(from, to)
 			rtcTarget := rtc.Target_SUBSCRIBER
 			client.OnSessionDescription = func(o *webrtc.SessionDescription, from string, to string) {
 				err = sig.Send(&rtc.Reply{
@@ -270,8 +270,8 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				}
 			}
 
-			client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, target int) {
-				log.Debugf("[S=>C] peer.OnIceCandidate: target = %v, candidate = %v", target, candidate.Candidate)
+			client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, from string, to string) {
+				log.Debugf("[S=>C] peer.OnIceCandidate:from= %v, to= %v,candidate = %v", from, to, candidate.Candidate)
 				bytes, err := json.Marshal(candidate)
 				if err != nil {
 					log.Errorf("OnIceCandidate error: %v", err)
@@ -279,8 +279,9 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_Trickle{
 						Trickle: &rtc.Trickle{
-							Init:   string(bytes),
-							Target: rtc.Target(target),
+							Init: string(bytes),
+							From: from,
+							To:   to,
 						},
 					},
 				})
@@ -288,221 +289,71 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					log.Errorf("OnIceCandidate send error: %v", err)
 				}
 			}
-			// client.OnJoinReply = func(o *webrtc.SessionDescription) {
-			// 	log.Debugf("[S=>C] client.OnJoinReply: %v", o.SDP)
-			// 	err = sig.Send(&rtc.Reply{
-			// 		Payload: &rtc.Reply_Join{
-			// 			Join: &rtc.JoinReply{
-			// 				Success: true,
-			// 				Error:   nil,
-			// 				Description: &rtc.SessionDescription{
-			// 					Target: rtc.Target(rtcTarget),
-			// 					Sdp:    o.SDP,
-			// 					Type:   o.Type.String(),
-			// 				},
-			// 			},
-			// 		},
-			// 	})
-			// }
-			//发sdp给视频源
+
+			client.OnWantControlReply = func(o *rtc.WantControlReply) {
+				log.Debugf("[S=>C] client.OnWantControlReply: %v", o)
+				err = sig.Send(&rtc.Reply{
+					Payload: &rtc.Reply_WantControl{
+						WantControl: o,
+					},
+				})
+			}
 
 			sourceClient := client.Session().GetSourceClient()
-
 			if sourceClient != nil {
-				log.Debugf("join desc from client %v to client:%v", client.GetID(), sourceClient.GetID())
+				log.Debugf("wantControl desc from client %v to client:%v,Uid:%v", client.GetID(), sourceClient.GetID(), payload.WantControl.From)
 				if sourceClient.OnWantControlReply != nil {
 					sourceClient.OnWantControlReply(&rtc.WantControlReply{
-						Success:     true,
-						Uid:         payload.WantControl.Uid,
-						Description: payload.WantControl.Description,
+						Success: true,
+						From:    payload.WantControl.From,
+						Sdp:     payload.WantControl.Sdp,
+						SdpType: payload.WantControl.SdpType,
 					})
 				}
 			}
 
-		case *rtc.Request_Join:
-			sid := payload.Join.Sid
-			uid := payload.Join.Uid
-			log.Infof("[C=>S] join: sid => %v, uid => %v", sid, uid)
-			//fmt.Printf("contains videoSource: %v\r\n", strings.Contains(uid, "videoSource"))
+			//网页向服务器发Request_WantControl,服务器向视频源发wantControlReply，视频源根据实际情况回复Request_WantControlReply,服务器收到后，转发wantcontrolReply给网页
+		case *rtc.Request_WantControlReply:
 
-			// if strings.Contains(uid, "videoSource") { //是视频源
-			// 	client.CreateSession(sid)
-			// 	rtcTarget = rtc.Target_SUBSCRIBER
-			// 	err = sig.Send(&rtc.Reply{
-			// 		Payload: &rtc.Reply_Join{
-			// 			Join: &rtc.JoinReply{
-			// 				Success: false,
-			// 				Error: &rtc.Error{
-			// 					Code:   int32(InternalError),
-			// 					Reason: fmt.Sprintf("join error: %v", err),
-			// 				},
-			// 			},
-			// 		},
-			// 	})
-			// } else { //后面加入的客户端
-			// 	rtcTarget = rtc.Target_PUBLISHER
-			// 	// bVideoSource = false
-			// }
-			/*
-				视频源在Subscription里创建了session和join，但只是建立了一个
-				grpc通道，没有跟wenrtc相关的内容，当客户端join时，才发datachannel 的offer
-				给视频源，视频源会自动建立连接，在c.datachannel的回调函数中再publisher
-				answer方是PUB，offer方是SUB
+			from := payload.WantControlReply.From
+			to := payload.WantControlReply.To
+			//name := payload.WantControl.Name
+			log.Infof("[C=>S] Request_WantControlReply:  from :%v,to:%v", from, to)
 
-				原来的设计是各方join，提供一个datachannel的offer，服务器回复answer,在网页端
-				会等待"join-reply"的回复；现在改成树莓派的视频源端发送subscription，保持一个grpc的
-				通信通道，由网页客户端发送join，等待"join-reply"的回应，这个join所带的description会
-				发给视频源端，回应的是description,如何界定这第一个des，把它当成网页客户端的'join-reply'
-				回应给客户端，而且又让后面普通的description当成正常的des回应给客户端呢？
-				在session中设置一个IsFirstDatachannelDesc，如果是网页来的join，树莓派回应des，当成第一个，
-				以join-reply回应，如果不是，当普通的des。
-				断线重连之后，要清空这个IsFirstDatachannelDesc。
-			*/
-
-			client.Join(sid, uid)
-
-			// bHadJoinBefore := false
-			// if client.Session() == nil {
-			// 	log.Errorf("client has no session!")
-			// 	continue
-			// }
-			// clients := client.Session().Clients()
-			// for cl := range clients {
-			// 	if clients[cl].GetID() == uid {
-			// 		bHadJoinBefore = true
-			// 	}
-			// }
-			// if !bHadJoinBefore {
-			// 	client.Join(sid, uid)
-			// }
-
-			//log.Debugf("client.ProviderSessions(): %v", client.ProviderSessions())
-			rtcTarget := rtc.Target_SUBSCRIBER
-			// client.OnSessionDescription = func(o *webrtc.SessionDescription) {
-			// 	//log.Debugf("[S=>C] Target_SUBSCRIBER: %v", o.SDP)
-			// 	// if bVideoSource {
-			// 	// 	rtcTarget = rtc.Target_SUBSCRIBER
-			// 	// } else {
-			// 	// 	rtcTarget = rtc.Target_PUBLISHER
-			// 	// }
-			// 	err = sig.Send(&rtc.Reply{
-			// 		Payload: &rtc.Reply_Description{
-			// 			Description: &rtc.SessionDescription{
-			// 				Target: rtc.Target(rtcTarget), //需要特别注意SUB和PUB，answer方是PUB，offer方是SUB,视频源应该是pub，控制端主动发起，是Sub
-			// 				Sdp:    o.SDP,
-			// 				Type:   o.Type.String(),
-			// 			},
-			// 		},
-			// 	})
-			// 	if err != nil {
-			// 		log.Errorf("negotiation error: %v", err)
-			// 	}
-			// }
-
-			client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, target int) {
-				log.Debugf("[S=>C] peer.OnIceCandidate: target = %v, candidate = %v", target, candidate.Candidate)
-				bytes, err := json.Marshal(candidate)
-				if err != nil {
-					log.Errorf("OnIceCandidate error: %v", err)
-				}
-				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_Trickle{
-						Trickle: &rtc.Trickle{
-							Init:   string(bytes),
-							Target: rtc.Target(target),
-						},
-					},
-				})
-				if err != nil {
-					log.Errorf("OnIceCandidate send error: %v", err)
-				}
-			}
-			client.OnJoinReply = func(o *webrtc.SessionDescription) {
-				log.Debugf("[S=>C] client.OnJoinReply: %v", o.SDP)
-				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_Join{
-						Join: &rtc.JoinReply{
+			clients := client.Session().Clients()
+			log.Debugf("1")
+			for _, c := range clients {
+				if c.GetID() == payload.WantControlReply.To {
+					log.Debugf("2")
+					if c.OnWantControlReply != nil {
+						log.Debugf("3")
+						c.OnWantControlReply(&rtc.WantControlReply{
 							Success: true,
-							Error:   nil,
-							Description: &rtc.SessionDescription{
-								Target: rtc.Target(rtcTarget),
-								Sdp:    o.SDP,
-								Type:   o.Type.String(),
-							},
-						},
-					},
-				})
+							From:    payload.WantControlReply.From,
+							Sdp:     payload.WantControlReply.Sdp,
+							SdpType: payload.WantControlReply.SdpType,
+						})
+					}
+				}
 			}
-			// client.OnICEConnStateChange = func(c webrtc.ICEConnectionState) {
-			// 	s.Lock()
-			// 	err = sig.Send(&rtc.Reply{
-			// 		Payload: &pb.SignalReply_IceConnectionState{
-			// 			IceConnectionState: c.String(),
-			// 		},
-			// 	})
-			// 	s.Unlock()
-
-			// 	if err != nil {
-			// 		stun.LogDebug.Print(err, "oniceconnectionstatechange error")
-			// 	}
-			// }
-
-			// desc := webrtc.SessionDescription{
-			// 	SDP:  payload.Join.Description.Sdp,
-			// 	Type: webrtc.NewSDPType(payload.Join.Description.Type),
-			// }
-
-			//clients := client.Session().Clients()
-			// for c := range clients {
-			// 	// if clients[c].GetID() != client.GetID() {
-
-			// 	// 	log.Debugf("join desc from client %v to client:%v", client.GetID(), clients[c].GetID())
-			// 	// 	if clients[c].OnSessionDescription != nil {
-			// 	// 		clients[c].OnSessionDescription(&desc)
-			// 	// 	}
-
-			// 	// 	if err != nil {
-			// 	// 		log.Errorf("grpc send error: %v", err)
-			// 	// 		return status.Errorf(codes.Internal, err.Error())
-			// 	// 	}
-			// 	// }
-			// }
 
 		case *rtc.Request_Description:
 
-			// desc := webrtc.SessionDescription{
-			// 	SDP:  payload.Description.Sdp,
-			// 	Type: webrtc.NewSDPType(payload.Description.Type),
-			// }
-			//log.Debugf("description:%v", desc)
+			desc := webrtc.SessionDescription{
+				SDP:  payload.Description.Sdp,
+				Type: webrtc.NewSDPType(payload.Description.Type),
+			}
+			log.Debugf("description:%v,from:%v,to:%v", payload.Description.Sdp, client.GetID(), payload.Description.To)
 			clients := client.Session().Clients()
-			for c := range clients {
-				if clients[c].GetID() != client.GetID() {
-
-					// 	log.Debugf("client.Session().IsFirstDatachannelDesc():%v", client.Session().IsFirstDatachannelDesc())
-					// 	if client.Session().IsFirstDatachannelDesc() {
-					// 		if clients[c].OnJoinReply != nil {
-					// 			log.Debugf("clients[c].OnJoinReply(&desc)")
-					// 			clients[c].OnJoinReply(&desc)
-					// 		}
-					// 		client.Session().SetFirstDatachannelDesc(false)
-
-					// 	} else {
-					// 		if clients[c].OnSessionDescription != nil {
-					// 			log.Debugf("clients[c].OnSessionDescription(&desc)")
-					// 			clients[c].OnSessionDescription(&desc)
-					// 		}
-					// 	}
-
-					// 	if err != nil {
-					// 		log.Errorf("grpc send error: %v", err)
-					// 		return status.Errorf(codes.Internal, err.Error())
-					// 	}
+			for _, c := range clients {
+				if c.GetID() == payload.Description.To {
+					c.OnSessionDescription(&desc, client.GetID(), payload.Description.To)
 				}
 			}
 
 		case *rtc.Request_Trickle:
 			var candidate webrtc.ICECandidateInit
+			log.Infof("Trickle.Init [%v] to [%v]", payload.Trickle.Init, payload.Trickle.To)
 			err := json.Unmarshal([]byte(payload.Trickle.Init), &candidate)
 			if err != nil {
 				log.Errorf("error parsing ice candidate, error -> %v", err)
@@ -522,88 +373,83 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			}
 
 			clients := client.Session().Clients()
-			for c := range clients {
-				if clients[c].GetID() != client.GetID() {
-					log.Debugf("trickle from client %v to client:%v", client.GetID(), clients[c].GetID())
-					log.Debugf("target %v, candidate %v", int(payload.Trickle.Target), candidate.Candidate)
-					if clients[c].OnIceCandidate != nil {
+			for _, c := range clients {
+				if c.GetID() == payload.Trickle.To {
+					log.Debugf("client.GetID():%v,trickle from %v to %v,candidate:%v", client.GetID(), payload.Trickle.From, payload.Trickle.To, candidate.Candidate)
+					if c.OnIceCandidate != nil {
 						//pub和sub问题是相对的，具体问题还有待进一步优化
-						tempTarget := 0
-						if int(payload.Trickle.Target) == 0 {
-							tempTarget = 1
-						}
 						//clients[c].OnIceCandidate(&candidate, int(payload.Trickle.Target))
-						clients[c].OnIceCandidate(&candidate, tempTarget)
+						c.OnIceCandidate(&candidate, client.GetID(), payload.Trickle.To)
 					}
 				}
 			}
 
 		case *rtc.Request_Subscription:
-			sid := payload.Subscription.Subscriptions[0].TrackId
-			uid := payload.Subscription.Subscriptions[0].Layer
-			log.Debugf("[C=>S] sid: %v,uid:%s", sid, uid) //, payload.Subscription.trackId, payload.Subscription.layer)
+			// sid := payload.Subscription.Subscriptions[0].TrackId
+			// uid := payload.Subscription.Subscriptions[0].Layer
+			// log.Debugf("[C=>S] sid: %v,uid:%s", sid, uid) //, payload.Subscription.trackId, payload.Subscription.layer)
 
-			//client.CreateSession(sid)
-			//client.Join(sid, uid)
-			rtcTarget = rtc.Target_PUBLISHER
+			// //client.CreateSession(sid)
+			// //client.Join(sid, uid)
+			// rtcTarget = rtc.Target_PUBLISHER
 
-			// client.OnSessionDescription = func(o *webrtc.SessionDescription) {
-			// 	log.Debugf("[S=>C] client.OnSessionDescription: %v", o.SDP)
-			// 	// if bVideoSource {
-			// 	// 	rtcTarget = rtc.Target_SUBSCRIBER
-			// 	// } else {
-			// 	// 	rtcTarget = rtc.Target_PUBLISHER
-			// 	// }
+			// // client.OnSessionDescription = func(o *webrtc.SessionDescription) {
+			// // 	log.Debugf("[S=>C] client.OnSessionDescription: %v", o.SDP)
+			// // 	// if bVideoSource {
+			// // 	// 	rtcTarget = rtc.Target_SUBSCRIBER
+			// // 	// } else {
+			// // 	// 	rtcTarget = rtc.Target_PUBLISHER
+			// // 	// }
+			// // 	err = sig.Send(&rtc.Reply{
+			// // 		Payload: &rtc.Reply_Description{
+			// // 			Description: &rtc.SessionDescription{
+			// // 				Target: rtc.Target(rtcTarget), //需要特别注意SUB和PUB，视频源应该是pub，控制端主动发起，是Sub
+			// // 				Sdp:    o.SDP,
+			// // 				Type:   o.Type.String(),
+			// // 			},
+			// // 		},
+			// // 	})
+			// // 	if err != nil {
+			// // 		log.Errorf("negotiation error: %v", err)
+			// // 	}
+			// // }
+
+			// client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, target int) {
+			// 	log.Debugf("[S=>C] peer.OnIceCandidate: target = %v, candidate = %v", target, candidate.Candidate)
+			// 	bytes, err := json.Marshal(candidate)
+			// 	if err != nil {
+			// 		log.Errorf("OnIceCandidate error: %v", err)
+			// 	}
 			// 	err = sig.Send(&rtc.Reply{
-			// 		Payload: &rtc.Reply_Description{
-			// 			Description: &rtc.SessionDescription{
-			// 				Target: rtc.Target(rtcTarget), //需要特别注意SUB和PUB，视频源应该是pub，控制端主动发起，是Sub
-			// 				Sdp:    o.SDP,
-			// 				Type:   o.Type.String(),
+			// 		Payload: &rtc.Reply_Trickle{
+			// 			Trickle: &rtc.Trickle{
+			// 				Init:   string(bytes),
+			// 				Target: rtc.Target(target),
 			// 			},
 			// 		},
 			// 	})
 			// 	if err != nil {
-			// 		log.Errorf("negotiation error: %v", err)
+			// 		log.Errorf("OnIceCandidate send error: %v", err)
 			// 	}
 			// }
 
-			client.OnIceCandidate = func(candidate *webrtc.ICECandidateInit, target int) {
-				log.Debugf("[S=>C] peer.OnIceCandidate: target = %v, candidate = %v", target, candidate.Candidate)
-				bytes, err := json.Marshal(candidate)
-				if err != nil {
-					log.Errorf("OnIceCandidate error: %v", err)
-				}
-				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_Trickle{
-						Trickle: &rtc.Trickle{
-							Init:   string(bytes),
-							Target: rtc.Target(target),
-						},
-					},
-				})
-				if err != nil {
-					log.Errorf("OnIceCandidate send error: %v", err)
-				}
-			}
-
-			client.OnJoinReply = func(o *webrtc.SessionDescription) {
-				log.Debugf("[S=>C] client.OnJoinReply: %v", o.SDP)
-				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_Join{
-						Join: &rtc.JoinReply{
-							Success: true,
-							Error:   nil,
-							Description: &rtc.SessionDescription{
-								Target: rtc.Target(rtcTarget),
-								Sdp:    o.SDP,
-								Type:   o.Type.String(),
-							},
-						},
-					},
-				})
-			}
-			log.Debugf("client.GetID():%v,client.OnJoinReply: %v", client.GetID(), client.OnJoinReply)
+			// client.OnJoinReply = func(o *webrtc.SessionDescription) {
+			// 	log.Debugf("[S=>C] client.OnJoinReply: %v", o.SDP)
+			// 	err = sig.Send(&rtc.Reply{
+			// 		Payload: &rtc.Reply_Join{
+			// 			Join: &rtc.JoinReply{
+			// 				Success: true,
+			// 				Error:   nil,
+			// 				Description: &rtc.SessionDescription{
+			// 					Target: rtc.Target(rtcTarget),
+			// 					Sdp:    o.SDP,
+			// 					Type:   o.Type.String(),
+			// 				},
+			// 			},
+			// 		},
+			// 	})
+			// }
+			// log.Debugf("client.GetID():%v,client.OnJoinReply: %v", client.GetID(), client.OnJoinReply)
 			// 	subscription := payload.Subscription
 			// 	needNegotiate := false
 			// 	for _, trackInfo := range subscription.Subscriptions {

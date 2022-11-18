@@ -10,6 +10,9 @@ export class RegisterRequest extends jspb.Message {
   getUid(): string;
   setUid(value: string): void;
 
+  getName(): string;
+  setName(value: string): void;
+
   getSourcetype(): SourceTypeMap[keyof SourceTypeMap];
   setSourcetype(value: SourceTypeMap[keyof SourceTypeMap]): void;
 
@@ -29,6 +32,7 @@ export namespace RegisterRequest {
   export type AsObject = {
     sid: string,
     uid: string,
+    name: string,
     sourcetype: SourceTypeMap[keyof SourceTypeMap],
     configMap: Array<[string, string]>,
   }
@@ -84,11 +88,11 @@ export namespace OnLineSourceRequest {
 }
 
 export class OnLineSources extends jspb.Message {
-  getSid(): string;
-  setSid(value: string): void;
-
   getUid(): string;
   setUid(value: string): void;
+
+  getName(): string;
+  setName(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): OnLineSources.AsObject;
@@ -102,8 +106,8 @@ export class OnLineSources extends jspb.Message {
 
 export namespace OnLineSources {
   export type AsObject = {
-    sid: string,
     uid: string,
+    name: string,
   }
 }
 
@@ -140,9 +144,6 @@ export namespace OnLineSourceReply {
 }
 
 export class ViewSourceRequest extends jspb.Message {
-  getSid(): string;
-  setSid(value: string): void;
-
   getUid(): string;
   setUid(value: string): void;
 
@@ -165,7 +166,6 @@ export class ViewSourceRequest extends jspb.Message {
 
 export namespace ViewSourceRequest {
   export type AsObject = {
-    sid: string,
     uid: string,
     configMap: Array<[string, string]>,
     description?: SessionDescription.AsObject,
@@ -211,18 +211,19 @@ export namespace ViewSourceReply {
 }
 
 export class WantControlRequest extends jspb.Message {
-  getSid(): string;
-  setSid(value: string): void;
+  getFrom(): string;
+  setFrom(value: string): void;
 
-  getUid(): string;
-  setUid(value: string): void;
+  getTo(): string;
+  setTo(value: string): void;
 
   getConfigMap(): jspb.Map<string, string>;
   clearConfigMap(): void;
-  hasDescription(): boolean;
-  clearDescription(): void;
-  getDescription(): SessionDescription | undefined;
-  setDescription(value?: SessionDescription): void;
+  getSdptype(): string;
+  setSdptype(value: string): void;
+
+  getSdp(): string;
+  setSdp(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WantControlRequest.AsObject;
@@ -236,10 +237,11 @@ export class WantControlRequest extends jspb.Message {
 
 export namespace WantControlRequest {
   export type AsObject = {
-    sid: string,
-    uid: string,
+    from: string,
+    to: string,
     configMap: Array<[string, string]>,
-    description?: SessionDescription.AsObject,
+    sdptype: string,
+    sdp: string,
   }
 }
 
@@ -261,10 +263,17 @@ export class WantControlReply extends jspb.Message {
   getError(): Error | undefined;
   setError(value?: Error): void;
 
-  hasDescription(): boolean;
-  clearDescription(): void;
-  getDescription(): SessionDescription | undefined;
-  setDescription(value?: SessionDescription): void;
+  getFrom(): string;
+  setFrom(value: string): void;
+
+  getTo(): string;
+  setTo(value: string): void;
+
+  getSdptype(): string;
+  setSdptype(value: string): void;
+
+  getSdp(): string;
+  setSdp(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WantControlReply.AsObject;
@@ -283,7 +292,10 @@ export namespace WantControlReply {
     resttimesecofcontroling: number,
     numofwaiting: number,
     error?: Error.AsObject,
-    description?: SessionDescription.AsObject,
+    from: string,
+    to: string,
+    sdptype: string,
+    sdp: string,
   }
 }
 
@@ -451,6 +463,12 @@ export namespace SessionDescription {
 }
 
 export class Trickle extends jspb.Message {
+  getFrom(): string;
+  setFrom(value: string): void;
+
+  getTo(): string;
+  setTo(value: string): void;
+
   getTarget(): TargetMap[keyof TargetMap];
   setTarget(value: TargetMap[keyof TargetMap]): void;
 
@@ -469,6 +487,8 @@ export class Trickle extends jspb.Message {
 
 export namespace Trickle {
   export type AsObject = {
+    from: string,
+    to: string,
     target: TargetMap[keyof TargetMap],
     init: string,
   }
@@ -733,6 +753,11 @@ export class Request extends jspb.Message {
   getWantcontrol(): WantControlRequest | undefined;
   setWantcontrol(value?: WantControlRequest): void;
 
+  hasWantcontrolreply(): boolean;
+  clearWantcontrolreply(): void;
+  getWantcontrolreply(): WantControlReply | undefined;
+  setWantcontrolreply(value?: WantControlReply): void;
+
   getPayloadCase(): Request.PayloadCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Request.AsObject;
@@ -754,6 +779,7 @@ export namespace Request {
     onlinesource?: OnLineSourceRequest.AsObject,
     viewsource?: ViewSourceRequest.AsObject,
     wantcontrol?: WantControlRequest.AsObject,
+    wantcontrolreply?: WantControlReply.AsObject,
   }
 
   export enum PayloadCase {
@@ -766,6 +792,7 @@ export namespace Request {
     ONLINESOURCE = 6,
     VIEWSOURCE = 7,
     WANTCONTROL = 8,
+    WANTCONTROLREPLY = 9,
   }
 }
 
