@@ -2,7 +2,6 @@ package stun
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -165,22 +164,27 @@ func (c *ClientLocal) Close() error {
 	// 	return nil
 	// }
 	//c.closed = true
-	fmt.Println("Before RemoveClient")
+	//fmt.Println("Before RemoveClient")
 	if c.session == nil {
 		return nil //getonlineSources的时候没有加入到session中去
 	}
-	for i, c := range c.session.Clients() {
-		fmt.Println(i, ".", c.id)
-	}
 
-	if c.session != nil {
+	if c.session.GetClient(c.id) != nil {
 		c.session.RemoveClient(c)
-		c.session.SetFirstDatachannelDesc(true)
 	}
-	fmt.Println("After RemoveClient")
-	for i, c := range c.session.Clients() {
-		fmt.Println(i, ".", c.id)
-	}
+	// for i, c := range c.session.Clients() {
+	// 	fmt.Println(i, ".", c.id)
+	// }
+
+	// if c.session != nil {
+	// 	if c.session.Clients[c.id] != nil {
+	// 		c.session.RemoveClient(c)
+	// 	}
+	// }
+	// fmt.Println("After RemoveClient")
+	// for i, c := range c.session.Clients() {
+	// 	fmt.Println(i, ".", c.id)
+	// }
 	return nil
 }
 

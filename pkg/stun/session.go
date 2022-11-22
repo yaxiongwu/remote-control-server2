@@ -74,7 +74,12 @@ func (s *SessionLocal) AddClient(client *ClientLocal) {
 func (s *SessionLocal) GetClient(clientID string) *ClientLocal {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
-	return s.clients[clientID]
+	if clientID != "" && s.clients[clientID] != nil {
+		return s.clients[clientID]
+	} else {
+		return nil
+	}
+
 }
 
 // RemovePeer removes Peer from the SessionLocal

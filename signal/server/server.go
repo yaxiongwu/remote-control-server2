@@ -308,6 +308,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 						From:    payload.WantControl.From,
 						Sdp:     payload.WantControl.Sdp,
 						SdpType: payload.WantControl.SdpType,
+						//IdleOrNot: payload.WantControl.IdleOrNot,
 					})
 				}
 			}
@@ -320,21 +321,25 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			//name := payload.WantControl.Name
 			log.Infof("[C=>S] Request_WantControlReply:  from :%v,to:%v", from, to)
 
-			clients := client.Session().Clients()
+			//clients := client.Session().Clients()
 			log.Debugf("1")
-			for _, c := range clients {
-				if c.GetID() == payload.WantControlReply.To {
-					log.Debugf("2")
-					if c.OnWantControlReply != nil {
-						log.Debugf("3")
-						c.OnWantControlReply(&rtc.WantControlReply{
-							Success: true,
-							From:    payload.WantControlReply.From,
-							Sdp:     payload.WantControlReply.Sdp,
-							SdpType: payload.WantControlReply.SdpType,
-						})
-					}
-				}
+			c := client.Session().GetClient(payload.WantControlReply.To)
+			// for _, c := range clients {
+			// 	if c.GetID() == payload.WantControlReply.To {
+
+			if c.OnWantControlReply != nil && c != nil {
+
+				c.OnWantControlReply(&rtc.WantControlReply{
+					Success:                 true,
+					From:                    payload.WantControlReply.From,
+					Sdp:                     payload.WantControlReply.Sdp,
+					SdpType:                 payload.WantControlReply.SdpType,
+					IdleOrNot:               payload.WantControlReply.IdleOrNot,
+					RestTimeSecOfControling: payload.WantControlReply.RestTimeSecOfControling,
+					NumOfWaiting:            payload.WantControlReply.NumOfWaiting,
+				})
+				// 	}
+				// }
 			}
 
 		case *rtc.Request_Description:
@@ -344,12 +349,15 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				Type: webrtc.NewSDPType(payload.Description.Type),
 			}
 			log.Debugf("description:%v,from:%v,to:%v", payload.Description.Sdp, client.GetID(), payload.Description.To)
-			clients := client.Session().Clients()
-			for _, c := range clients {
-				if c.GetID() == payload.Description.To {
-					c.OnSessionDescription(&desc, client.GetID(), payload.Description.To)
-				}
+			// clients := client.Session().Clients()
+			// for _, c := range clients {
+			//if c.GetID() == payload.Description.To {
+			c := client.Session().GetClient(payload.Description.To)
+			if c.OnSessionDescription != nil && c != nil {
+				c.OnSessionDescription(&desc, client.GetID(), payload.Description.To)
 			}
+			// 	}
+			// }
 
 		case *rtc.Request_Trickle:
 			var candidate webrtc.ICECandidateInit
@@ -372,16 +380,18 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				continue
 			}
 
-			clients := client.Session().Clients()
-			for _, c := range clients {
-				if c.GetID() == payload.Trickle.To {
-					log.Debugf("client.GetID():%v,trickle from %v to %v,candidate:%v", client.GetID(), payload.Trickle.From, payload.Trickle.To, candidate.Candidate)
-					if c.OnIceCandidate != nil {
-						//pub和sub问题是相对的，具体问题还有待进一步优化
-						//clients[c].OnIceCandidate(&candidate, int(payload.Trickle.Target))
-						c.OnIceCandidate(&candidate, client.GetID(), payload.Trickle.To)
-					}
+			//clients := client.Session().Clients()
+			// for _, c := range clients {
+			// 	if c.GetID() == payload.Trickle.To {
+			c := client.Session().GetClient(payload.Trickle.To)
+			if c.OnIceCandidate != nil && c != nil {
+				log.Debugf("client.GetID():%v,trickle from %v to %v,candidate:%v", client.GetID(), payload.Trickle.From, payload.Trickle.To, candidate.Candidate)
+				if c.OnIceCandidate != nil {
+					//pub和sub问题是相对的，具体问题还有待进一步优化
+					//clients[c].OnIceCandidate(&candidate, int(payload.Trickle.Target))
+					c.OnIceCandidate(&candidate, client.GetID(), payload.Trickle.To)
 				}
+				//}
 			}
 
 		case *rtc.Request_Subscription:
