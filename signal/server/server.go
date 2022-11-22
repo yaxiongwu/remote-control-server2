@@ -188,11 +188,11 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					},
 				})
 			}
-			client.OnWantControlReply = func(o *rtc.WantControlReply) {
-				log.Debugf("[S=>C] client.OnWantControlReply: %v", o)
+			client.OnWantConnectReply = func(o *rtc.WantConnectReply) {
+				log.Debugf("[S=>C] client.OnWantConnectReply: %v", o)
 				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_WantControl{
-						WantControl: o,
+					Payload: &rtc.Reply_WantConnect{
+						WantConnect: o,
 					},
 				})
 			}
@@ -233,25 +233,25 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				log.Errorf("err:%v", err)
 			}
 
-		case *rtc.Request_WantControl:
+		case *rtc.Request_WantConnect:
 
-			from := payload.WantControl.From
-			to := payload.WantControl.To
-			//name := payload.WantControl.Name
-			log.Infof("[C=>S] Request_WantControl:  from :%v,to:%v", from, to)
-			//wantControl只带了目的地址，比如网页上带了PiVedioSource，到了Pi那端，需要知道的是网页的id
-			//对连接用户的管理交给视频源，这里不回应wantControlReply，
-			// wantControlReply := client.WantControl(from, to)
+			from := payload.WantConnect.From
+			to := payload.WantConnect.To
+			//name := payload.WantConnect.Name
+			log.Infof("[C=>S] Request_WantConnect:  from :%v,to:%v", from, to)
+			//WantConnect只带了目的地址，比如网页上带了PiVedioSource，到了Pi那端，需要知道的是网页的id
+			//对连接用户的管理交给视频源，这里不回应WantConnectReply，
+			// WantConnectReply := client.WantConnect(from, to)
 
 			// err = sig.Send(&rtc.Reply{
-			// 	Payload: &rtc.Reply_WantControl{
-			// 		WantControl: wantControlReply,
+			// 	Payload: &rtc.Reply_WantConnect{
+			// 		WantConnect: WantConnectReply,
 			// 	},
 			// })
 			// if err != nil {
 			// 	log.Errorf("err:%v", err)
 			// }
-			client.WantControl(from, to)
+			client.WantConnect(from, to)
 			rtcTarget := rtc.Target_SUBSCRIBER
 			client.OnSessionDescription = func(o *webrtc.SessionDescription, from string, to string) {
 				err = sig.Send(&rtc.Reply{
@@ -290,53 +290,53 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				}
 			}
 
-			client.OnWantControlReply = func(o *rtc.WantControlReply) {
-				log.Debugf("[S=>C] client.OnWantControlReply: %v", o)
+			client.OnWantConnectReply = func(o *rtc.WantConnectReply) {
+				log.Debugf("[S=>C] client.OnWantConnectReply: %v", o)
 				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_WantControl{
-						WantControl: o,
+					Payload: &rtc.Reply_WantConnect{
+						WantConnect: o,
 					},
 				})
 			}
 
 			sourceClient := client.Session().GetSourceClient()
 			if sourceClient != nil {
-				log.Debugf("wantControl desc from client %v to client:%v,Uid:%v", client.GetID(), sourceClient.GetID(), payload.WantControl.From)
-				if sourceClient.OnWantControlReply != nil {
-					sourceClient.OnWantControlReply(&rtc.WantControlReply{
+				log.Debugf("WantConnect desc from client %v to client:%v,Uid:%v", client.GetID(), sourceClient.GetID(), payload.WantConnect.From)
+				if sourceClient.OnWantConnectReply != nil {
+					sourceClient.OnWantConnectReply(&rtc.WantConnectReply{
 						Success: true,
-						From:    payload.WantControl.From,
-						Sdp:     payload.WantControl.Sdp,
-						SdpType: payload.WantControl.SdpType,
-						//IdleOrNot: payload.WantControl.IdleOrNot,
+						From:    payload.WantConnect.From,
+						Sdp:     payload.WantConnect.Sdp,
+						SdpType: payload.WantConnect.SdpType,
+						//IdleOrNot: payload.WantConnect.IdleOrNot,
 					})
 				}
 			}
 
-			//网页向服务器发Request_WantControl,服务器向视频源发wantControlReply，视频源根据实际情况回复Request_WantControlReply,服务器收到后，转发wantcontrolReply给网页
-		case *rtc.Request_WantControlReply:
+			//网页向服务器发Request_WantConnect,服务器向视频源发WantConnectReply，视频源根据实际情况回复Request_WantConnectReply,服务器收到后，转发WantConnectReply给网页
+		case *rtc.Request_WantConnectReply:
 
-			from := payload.WantControlReply.From
-			to := payload.WantControlReply.To
-			//name := payload.WantControl.Name
-			log.Infof("[C=>S] Request_WantControlReply:  from :%v,to:%v", from, to)
+			from := payload.WantConnectReply.From
+			to := payload.WantConnectReply.To
+			//name := payload.WantConnect.Name
+			log.Infof("[C=>S] Request_WantConnectReply:  from :%v,to:%v", from, to)
 
 			//clients := client.Session().Clients()
 			log.Debugf("1")
-			c := client.Session().GetClient(payload.WantControlReply.To)
+			c := client.Session().GetClient(payload.WantConnectReply.To)
 			// for _, c := range clients {
-			// 	if c.GetID() == payload.WantControlReply.To {
+			// 	if c.GetID() == payload.WantConnectReply.To {
 
-			if c.OnWantControlReply != nil && c != nil {
+			if c.OnWantConnectReply != nil && c != nil {
 
-				c.OnWantControlReply(&rtc.WantControlReply{
-					Success:                 true,
-					From:                    payload.WantControlReply.From,
-					Sdp:                     payload.WantControlReply.Sdp,
-					SdpType:                 payload.WantControlReply.SdpType,
-					IdleOrNot:               payload.WantControlReply.IdleOrNot,
-					RestTimeSecOfControling: payload.WantControlReply.RestTimeSecOfControling,
-					NumOfWaiting:            payload.WantControlReply.NumOfWaiting,
+				c.OnWantConnectReply(&rtc.WantConnectReply{
+					Success:      true,
+					From:         payload.WantConnectReply.From,
+					Sdp:          payload.WantConnectReply.Sdp,
+					SdpType:      payload.WantConnectReply.SdpType,
+					IdleOrNot:    payload.WantConnectReply.IdleOrNot,
+					RestTimeSecs: payload.WantConnectReply.RestTimeSecs,
+					NumOfWaiting: payload.WantConnectReply.NumOfWaiting,
 				})
 				// 	}
 				// }

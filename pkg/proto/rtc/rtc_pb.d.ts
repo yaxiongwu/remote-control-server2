@@ -210,7 +210,7 @@ export namespace ViewSourceReply {
   export const Result: ResultMap;
 }
 
-export class WantControlRequest extends jspb.Message {
+export class WantConnectRequest extends jspb.Message {
   getFrom(): string;
   setFrom(value: string): void;
 
@@ -225,35 +225,39 @@ export class WantControlRequest extends jspb.Message {
   getSdp(): string;
   setSdp(value: string): void;
 
+  getConnectiontype(): ConnectTypeMap[keyof ConnectTypeMap];
+  setConnectiontype(value: ConnectTypeMap[keyof ConnectTypeMap]): void;
+
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): WantControlRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: WantControlRequest): WantControlRequest.AsObject;
+  toObject(includeInstance?: boolean): WantConnectRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: WantConnectRequest): WantConnectRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: WantControlRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): WantControlRequest;
-  static deserializeBinaryFromReader(message: WantControlRequest, reader: jspb.BinaryReader): WantControlRequest;
+  static serializeBinaryToWriter(message: WantConnectRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WantConnectRequest;
+  static deserializeBinaryFromReader(message: WantConnectRequest, reader: jspb.BinaryReader): WantConnectRequest;
 }
 
-export namespace WantControlRequest {
+export namespace WantConnectRequest {
   export type AsObject = {
     from: string,
     to: string,
     configMap: Array<[string, string]>,
     sdptype: string,
     sdp: string,
+    connectiontype: ConnectTypeMap[keyof ConnectTypeMap],
   }
 }
 
-export class WantControlReply extends jspb.Message {
+export class WantConnectReply extends jspb.Message {
   getSuccess(): boolean;
   setSuccess(value: boolean): void;
 
   getIdleornot(): boolean;
   setIdleornot(value: boolean): void;
 
-  getResttimesecofcontroling(): number;
-  setResttimesecofcontroling(value: number): void;
+  getResttimesecs(): number;
+  setResttimesecs(value: number): void;
 
   getNumofwaiting(): number;
   setNumofwaiting(value: number): void;
@@ -275,27 +279,31 @@ export class WantControlReply extends jspb.Message {
   getSdp(): string;
   setSdp(value: string): void;
 
+  getConnectiontype(): ConnectTypeMap[keyof ConnectTypeMap];
+  setConnectiontype(value: ConnectTypeMap[keyof ConnectTypeMap]): void;
+
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): WantControlReply.AsObject;
-  static toObject(includeInstance: boolean, msg: WantControlReply): WantControlReply.AsObject;
+  toObject(includeInstance?: boolean): WantConnectReply.AsObject;
+  static toObject(includeInstance: boolean, msg: WantConnectReply): WantConnectReply.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: WantControlReply, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): WantControlReply;
-  static deserializeBinaryFromReader(message: WantControlReply, reader: jspb.BinaryReader): WantControlReply;
+  static serializeBinaryToWriter(message: WantConnectReply, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): WantConnectReply;
+  static deserializeBinaryFromReader(message: WantConnectReply, reader: jspb.BinaryReader): WantConnectReply;
 }
 
-export namespace WantControlReply {
+export namespace WantConnectReply {
   export type AsObject = {
     success: boolean,
     idleornot: boolean,
-    resttimesecofcontroling: number,
+    resttimesecs: number,
     numofwaiting: number,
     error?: Error.AsObject,
     from: string,
     to: string,
     sdptype: string,
     sdp: string,
+    connectiontype: ConnectTypeMap[keyof ConnectTypeMap],
   }
 }
 
@@ -748,15 +756,15 @@ export class Request extends jspb.Message {
   getViewsource(): ViewSourceRequest | undefined;
   setViewsource(value?: ViewSourceRequest): void;
 
-  hasWantcontrol(): boolean;
-  clearWantcontrol(): void;
-  getWantcontrol(): WantControlRequest | undefined;
-  setWantcontrol(value?: WantControlRequest): void;
+  hasWantconnect(): boolean;
+  clearWantconnect(): void;
+  getWantconnect(): WantConnectRequest | undefined;
+  setWantconnect(value?: WantConnectRequest): void;
 
-  hasWantcontrolreply(): boolean;
-  clearWantcontrolreply(): void;
-  getWantcontrolreply(): WantControlReply | undefined;
-  setWantcontrolreply(value?: WantControlReply): void;
+  hasWantconnectreply(): boolean;
+  clearWantconnectreply(): void;
+  getWantconnectreply(): WantConnectReply | undefined;
+  setWantconnectreply(value?: WantConnectReply): void;
 
   getPayloadCase(): Request.PayloadCase;
   serializeBinary(): Uint8Array;
@@ -778,8 +786,8 @@ export namespace Request {
     register?: RegisterRequest.AsObject,
     onlinesource?: OnLineSourceRequest.AsObject,
     viewsource?: ViewSourceRequest.AsObject,
-    wantcontrol?: WantControlRequest.AsObject,
-    wantcontrolreply?: WantControlReply.AsObject,
+    wantconnect?: WantConnectRequest.AsObject,
+    wantconnectreply?: WantConnectReply.AsObject,
   }
 
   export enum PayloadCase {
@@ -791,8 +799,8 @@ export namespace Request {
     REGISTER = 5,
     ONLINESOURCE = 6,
     VIEWSOURCE = 7,
-    WANTCONTROL = 8,
-    WANTCONTROLREPLY = 9,
+    WANTCONNECT = 8,
+    WANTCONNECTREPLY = 9,
   }
 }
 
@@ -842,10 +850,10 @@ export class Reply extends jspb.Message {
   getViewsource(): ViewSourceReply | undefined;
   setViewsource(value?: ViewSourceReply): void;
 
-  hasWantcontrol(): boolean;
-  clearWantcontrol(): void;
-  getWantcontrol(): WantControlReply | undefined;
-  setWantcontrol(value?: WantControlReply): void;
+  hasWantconnect(): boolean;
+  clearWantconnect(): void;
+  getWantconnect(): WantConnectReply | undefined;
+  setWantconnect(value?: WantConnectReply): void;
 
   getPayloadCase(): Reply.PayloadCase;
   serializeBinary(): Uint8Array;
@@ -869,7 +877,7 @@ export namespace Reply {
     register?: RegisterReply.AsObject,
     onlinesource?: OnLineSourceReply.AsObject,
     viewsource?: ViewSourceReply.AsObject,
-    wantcontrol?: WantControlReply.AsObject,
+    wantconnect?: WantConnectReply.AsObject,
   }
 
   export enum PayloadCase {
@@ -883,24 +891,34 @@ export namespace Reply {
     REGISTER = 8,
     ONLINESOURCE = 9,
     VIEWSOURCE = 10,
-    WANTCONTROL = 11,
+    WANTCONNECT = 11,
   }
 }
 
 export interface RoleMap {
   ADMIN: 0;
   VIDEOSOURCE: 1;
-  CONTROL: 2;
+  CONTROLER: 2;
   OBSERVE: 3;
   UNKNOWN: 4;
 }
 
 export const Role: RoleMap;
 
+export interface ConnectTypeMap {
+  CONTROL: 0;
+  VIEW: 1;
+  MANAGE: 2;
+}
+
+export const ConnectType: ConnectTypeMap;
+
 export interface SourceTypeMap {
   CAR: 0;
   FEED: 1;
   CAMERA: 2;
+  BOAT: 3;
+  SUBMARINE: 4;
 }
 
 export const SourceType: SourceTypeMap;

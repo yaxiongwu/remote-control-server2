@@ -19,7 +19,7 @@ type Client interface {
 	CreateSession(sid string) error
 	Session() Session
 	Close() error
-	WantControl(sid, uid string) *rtc.WantControlReply
+	WantConnect(sid, uid string) *rtc.WantConnectReply
 	GetRole() int8
 
 	// InterOnOfferJSON2GRCP(*webrtc.SessionDescription) func()
@@ -98,8 +98,8 @@ type ClientLocal struct {
 	OnIceCandidate       func(*webrtc.ICECandidateInit, string, string)
 	OnICEConnStateChange func(webrtc.ICEConnectionState)
 	OnJoinReply          func(*webrtc.SessionDescription)
-	OnWantControlRequest func(*rtc.WantControlRequest)
-	OnWantControlReply   func(*rtc.WantControlReply)
+	OnWantConnectRequest func(*rtc.WantConnectRequest)
+	OnWantConnectReply   func(*rtc.WantConnectReply)
 }
 
 // NewPeer creates a new PeerLocal for signaling with the given SFU
@@ -254,7 +254,7 @@ func (c *ClientLocal) Join(sid, uid string) error {
 }
 
 // Join initializes this peer for a given sourceID
-func (c *ClientLocal) WantControl(from string, to string) *rtc.WantControlReply {
+func (c *ClientLocal) WantConnect(from string, to string) *rtc.WantConnectReply {
 
 	// if c.source != nil {
 	// 	//Logger.V(1).Info("peer already exists", "source_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
@@ -283,11 +283,11 @@ func (c *ClientLocal) WantControl(from string, to string) *rtc.WantControlReply 
 	s.AddClient(c)
 	c.session = s
 
-	return &rtc.WantControlReply{
-		Success:                 true,
-		IdleOrNot:               idleOrNot,
-		RestTimeSecOfControling: 101,
-		NumOfWaiting:            121,
+	return &rtc.WantConnectReply{
+		Success:      true,
+		IdleOrNot:    idleOrNot,
+		RestTimeSecs: 101,
+		NumOfWaiting: 121,
 	}
 }
 

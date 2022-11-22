@@ -13,4 +13,4 @@ protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=p
 
 scp * root@120.78:/root/remote-control-server2/pkg/proto/rtc 
 
-rm ../../../../remote-control-client-go2/pkg/proto/rtc/* && cp * ../../../../remote-control-client-go2/pkg/proto/rtc/ && rm ../../../../remote-control-client-js2/src/_library/proto/rtc/* &&cp ../../../../remote-control-client-js2/src/_library/proto/rtc/
+rm ../../../../remote-control-client-go2/pkg/proto/rtc/* && cp * ../../../../remote-control-client-go2/pkg/proto/rtc/ && rm ../../../../remote-control-client-js2/src/_library/proto/rtc/* &&cp * ../../../../remote-control-client-js2/src/_library/proto/rtc/
