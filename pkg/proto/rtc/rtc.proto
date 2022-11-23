@@ -87,7 +87,7 @@ message WantConnectRequest{
   string sdpType = 4;
   // sdp contents
   string sdp = 5;
-  ConnectType connectionType = 6;
+  ConnectType connectType = 6;
 }
 //控制申请的结果
 message WantConnectReply { 
@@ -101,8 +101,9 @@ message WantConnectReply {
     // 'offer' | 'answer'
   string sdpType = 8;
   // sdp contents
-  string sdp = 9;
-  ConnectType connectionType = 10;
+  string sdp = 9;  
+  ConnectType connectType = 10;
+  string cloudBroadcastUrl = 11;
 }
 
 
@@ -253,5 +254,6 @@ message Reply {
     OnLineSourceReply onLineSource = 9;
     ViewSourceReply viewSource =10;
     WantConnectReply wantConnect=11;
+    WantConnectRequest wantConnectRequest=12;
   }
 }

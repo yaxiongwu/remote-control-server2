@@ -2020,7 +2020,7 @@ proto.rtc.WantConnectRequest.toObject = function(includeInstance, msg) {
     configMap: (f = msg.getConfigMap()) ? f.toObject(includeInstance, undefined) : [],
     sdptype: jspb.Message.getFieldWithDefault(msg, 4, ""),
     sdp: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    connectiontype: jspb.Message.getFieldWithDefault(msg, 6, 0)
+    connecttype: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -2081,7 +2081,7 @@ proto.rtc.WantConnectRequest.deserializeBinaryFromReader = function(msg, reader)
       break;
     case 6:
       var value = /** @type {!proto.rtc.ConnectType} */ (reader.readEnum());
-      msg.setConnectiontype(value);
+      msg.setConnecttype(value);
       break;
     default:
       reader.skipField();
@@ -2144,7 +2144,7 @@ proto.rtc.WantConnectRequest.serializeBinaryToWriter = function(message, writer)
       f
     );
   }
-  f = message.getConnectiontype();
+  f = message.getConnecttype();
   if (f !== 0.0) {
     writer.writeEnum(
       6,
@@ -2249,10 +2249,10 @@ proto.rtc.WantConnectRequest.prototype.setSdp = function(value) {
 
 
 /**
- * optional ConnectType connectionType = 6;
+ * optional ConnectType connectType = 6;
  * @return {!proto.rtc.ConnectType}
  */
-proto.rtc.WantConnectRequest.prototype.getConnectiontype = function() {
+proto.rtc.WantConnectRequest.prototype.getConnecttype = function() {
   return /** @type {!proto.rtc.ConnectType} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
@@ -2261,7 +2261,7 @@ proto.rtc.WantConnectRequest.prototype.getConnectiontype = function() {
  * @param {!proto.rtc.ConnectType} value
  * @return {!proto.rtc.WantConnectRequest} returns this
  */
-proto.rtc.WantConnectRequest.prototype.setConnectiontype = function(value) {
+proto.rtc.WantConnectRequest.prototype.setConnecttype = function(value) {
   return jspb.Message.setProto3EnumField(this, 6, value);
 };
 
@@ -2307,7 +2307,8 @@ proto.rtc.WantConnectReply.toObject = function(includeInstance, msg) {
     to: jspb.Message.getFieldWithDefault(msg, 7, ""),
     sdptype: jspb.Message.getFieldWithDefault(msg, 8, ""),
     sdp: jspb.Message.getFieldWithDefault(msg, 9, ""),
-    connectiontype: jspb.Message.getFieldWithDefault(msg, 10, 0)
+    connecttype: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    cloudbroadcasturl: jspb.Message.getFieldWithDefault(msg, 11, "")
   };
 
   if (includeInstance) {
@@ -2383,7 +2384,11 @@ proto.rtc.WantConnectReply.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 10:
       var value = /** @type {!proto.rtc.ConnectType} */ (reader.readEnum());
-      msg.setConnectiontype(value);
+      msg.setConnecttype(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCloudbroadcasturl(value);
       break;
     default:
       reader.skipField();
@@ -2478,10 +2483,17 @@ proto.rtc.WantConnectReply.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getConnectiontype();
+  f = message.getConnecttype();
   if (f !== 0.0) {
     writer.writeEnum(
       10,
+      f
+    );
+  }
+  f = message.getCloudbroadcasturl();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
       f
     );
   }
@@ -2670,10 +2682,10 @@ proto.rtc.WantConnectReply.prototype.setSdp = function(value) {
 
 
 /**
- * optional ConnectType connectionType = 10;
+ * optional ConnectType connectType = 10;
  * @return {!proto.rtc.ConnectType}
  */
-proto.rtc.WantConnectReply.prototype.getConnectiontype = function() {
+proto.rtc.WantConnectReply.prototype.getConnecttype = function() {
   return /** @type {!proto.rtc.ConnectType} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
@@ -2682,8 +2694,26 @@ proto.rtc.WantConnectReply.prototype.getConnectiontype = function() {
  * @param {!proto.rtc.ConnectType} value
  * @return {!proto.rtc.WantConnectReply} returns this
  */
-proto.rtc.WantConnectReply.prototype.setConnectiontype = function(value) {
+proto.rtc.WantConnectReply.prototype.setConnecttype = function(value) {
   return jspb.Message.setProto3EnumField(this, 10, value);
+};
+
+
+/**
+ * optional string cloudBroadcastUrl = 11;
+ * @return {string}
+ */
+proto.rtc.WantConnectReply.prototype.getCloudbroadcasturl = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.rtc.WantConnectReply} returns this
+ */
+proto.rtc.WantConnectReply.prototype.setCloudbroadcasturl = function(value) {
+  return jspb.Message.setProto3StringField(this, 11, value);
 };
 
 
@@ -6175,7 +6205,7 @@ proto.rtc.Request.prototype.hasWantconnectreply = function() {
  * @private {!Array<!Array<number>>}
  * @const
  */
-proto.rtc.Reply.oneofGroups_ = [[1,2,3,4,5,7,8,9,10,11]];
+proto.rtc.Reply.oneofGroups_ = [[1,2,3,4,5,7,8,9,10,11,12]];
 
 /**
  * @enum {number}
@@ -6191,7 +6221,8 @@ proto.rtc.Reply.PayloadCase = {
   REGISTER: 8,
   ONLINESOURCE: 9,
   VIEWSOURCE: 10,
-  WANTCONNECT: 11
+  WANTCONNECT: 11,
+  WANTCONNECTREQUEST: 12
 };
 
 /**
@@ -6241,7 +6272,8 @@ proto.rtc.Reply.toObject = function(includeInstance, msg) {
     register: (f = msg.getRegister()) && proto.rtc.RegisterReply.toObject(includeInstance, f),
     onlinesource: (f = msg.getOnlinesource()) && proto.rtc.OnLineSourceReply.toObject(includeInstance, f),
     viewsource: (f = msg.getViewsource()) && proto.rtc.ViewSourceReply.toObject(includeInstance, f),
-    wantconnect: (f = msg.getWantconnect()) && proto.rtc.WantConnectReply.toObject(includeInstance, f)
+    wantconnect: (f = msg.getWantconnect()) && proto.rtc.WantConnectReply.toObject(includeInstance, f),
+    wantconnectrequest: (f = msg.getWantconnectrequest()) && proto.rtc.WantConnectRequest.toObject(includeInstance, f)
   };
 
   if (includeInstance) {
@@ -6327,6 +6359,11 @@ proto.rtc.Reply.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.rtc.WantConnectReply;
       reader.readMessage(value,proto.rtc.WantConnectReply.deserializeBinaryFromReader);
       msg.setWantconnect(value);
+      break;
+    case 12:
+      var value = new proto.rtc.WantConnectRequest;
+      reader.readMessage(value,proto.rtc.WantConnectRequest.deserializeBinaryFromReader);
+      msg.setWantconnectrequest(value);
       break;
     default:
       reader.skipField();
@@ -6435,6 +6472,14 @@ proto.rtc.Reply.serializeBinaryToWriter = function(message, writer) {
       11,
       f,
       proto.rtc.WantConnectReply.serializeBinaryToWriter
+    );
+  }
+  f = message.getWantconnectrequest();
+  if (f != null) {
+    writer.writeMessage(
+      12,
+      f,
+      proto.rtc.WantConnectRequest.serializeBinaryToWriter
     );
   }
 };
@@ -6807,6 +6852,43 @@ proto.rtc.Reply.prototype.clearWantconnect = function() {
  */
 proto.rtc.Reply.prototype.hasWantconnect = function() {
   return jspb.Message.getField(this, 11) != null;
+};
+
+
+/**
+ * optional WantConnectRequest wantConnectRequest = 12;
+ * @return {?proto.rtc.WantConnectRequest}
+ */
+proto.rtc.Reply.prototype.getWantconnectrequest = function() {
+  return /** @type{?proto.rtc.WantConnectRequest} */ (
+    jspb.Message.getWrapperField(this, proto.rtc.WantConnectRequest, 12));
+};
+
+
+/**
+ * @param {?proto.rtc.WantConnectRequest|undefined} value
+ * @return {!proto.rtc.Reply} returns this
+*/
+proto.rtc.Reply.prototype.setWantconnectrequest = function(value) {
+  return jspb.Message.setOneofWrapperField(this, 12, proto.rtc.Reply.oneofGroups_[0], value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.rtc.Reply} returns this
+ */
+proto.rtc.Reply.prototype.clearWantconnectrequest = function() {
+  return this.setWantconnectrequest(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.rtc.Reply.prototype.hasWantconnectrequest = function() {
+  return jspb.Message.getField(this, 12) != null;
 };
 
 

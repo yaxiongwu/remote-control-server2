@@ -94,12 +94,13 @@ type ClientLocal struct {
 	// OnIceCandidateGRCP2JSON       func(*webrtc.ICECandidateInit, int)
 	// OnICEConnStateChangeJSON2GRCP func(webrtc.ICEConnectionState)
 	// OnICEConnStateChangeGRCP2JSON func(webrtc.ICEConnectionState)
-	OnSessionDescription func(*webrtc.SessionDescription, string, string)
-	OnIceCandidate       func(*webrtc.ICECandidateInit, string, string)
-	OnICEConnStateChange func(webrtc.ICEConnectionState)
-	OnJoinReply          func(*webrtc.SessionDescription)
-	OnWantConnectRequest func(*rtc.WantConnectRequest)
-	OnWantConnectReply   func(*rtc.WantConnectReply)
+	OnSessionDescription      func(*webrtc.SessionDescription, string, string)
+	OnIceCandidate            func(*webrtc.ICECandidateInit, string, string)
+	OnICEConnStateChange      func(webrtc.ICEConnectionState)
+	OnJoinReply               func(*webrtc.SessionDescription)
+	OnWantConnectRequest      func(*rtc.WantConnectRequest)
+	OnWantConnectReply        func(*rtc.WantConnectReply)
+	OnWantConnectRequestReply func(*rtc.WantConnectRequest)
 }
 
 // NewPeer creates a new PeerLocal for signaling with the given SFU

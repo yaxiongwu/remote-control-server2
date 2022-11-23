@@ -225,8 +225,8 @@ export class WantConnectRequest extends jspb.Message {
   getSdp(): string;
   setSdp(value: string): void;
 
-  getConnectiontype(): ConnectTypeMap[keyof ConnectTypeMap];
-  setConnectiontype(value: ConnectTypeMap[keyof ConnectTypeMap]): void;
+  getConnecttype(): ConnectTypeMap[keyof ConnectTypeMap];
+  setConnecttype(value: ConnectTypeMap[keyof ConnectTypeMap]): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WantConnectRequest.AsObject;
@@ -245,7 +245,7 @@ export namespace WantConnectRequest {
     configMap: Array<[string, string]>,
     sdptype: string,
     sdp: string,
-    connectiontype: ConnectTypeMap[keyof ConnectTypeMap],
+    connecttype: ConnectTypeMap[keyof ConnectTypeMap],
   }
 }
 
@@ -279,8 +279,11 @@ export class WantConnectReply extends jspb.Message {
   getSdp(): string;
   setSdp(value: string): void;
 
-  getConnectiontype(): ConnectTypeMap[keyof ConnectTypeMap];
-  setConnectiontype(value: ConnectTypeMap[keyof ConnectTypeMap]): void;
+  getConnecttype(): ConnectTypeMap[keyof ConnectTypeMap];
+  setConnecttype(value: ConnectTypeMap[keyof ConnectTypeMap]): void;
+
+  getCloudbroadcasturl(): string;
+  setCloudbroadcasturl(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): WantConnectReply.AsObject;
@@ -303,7 +306,8 @@ export namespace WantConnectReply {
     to: string,
     sdptype: string,
     sdp: string,
-    connectiontype: ConnectTypeMap[keyof ConnectTypeMap],
+    connecttype: ConnectTypeMap[keyof ConnectTypeMap],
+    cloudbroadcasturl: string,
   }
 }
 
@@ -855,6 +859,11 @@ export class Reply extends jspb.Message {
   getWantconnect(): WantConnectReply | undefined;
   setWantconnect(value?: WantConnectReply): void;
 
+  hasWantconnectrequest(): boolean;
+  clearWantconnectrequest(): void;
+  getWantconnectrequest(): WantConnectRequest | undefined;
+  setWantconnectrequest(value?: WantConnectRequest): void;
+
   getPayloadCase(): Reply.PayloadCase;
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Reply.AsObject;
@@ -878,6 +887,7 @@ export namespace Reply {
     onlinesource?: OnLineSourceReply.AsObject,
     viewsource?: ViewSourceReply.AsObject,
     wantconnect?: WantConnectReply.AsObject,
+    wantconnectrequest?: WantConnectRequest.AsObject,
   }
 
   export enum PayloadCase {
@@ -892,6 +902,7 @@ export namespace Reply {
     ONLINESOURCE = 9,
     VIEWSOURCE = 10,
     WANTCONNECT = 11,
+    WANTCONNECTREQUEST = 12,
   }
 }
 

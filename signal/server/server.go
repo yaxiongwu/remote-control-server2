@@ -188,11 +188,12 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 					},
 				})
 			}
-			client.OnWantConnectReply = func(o *rtc.WantConnectReply) {
+			//服务器需要把web端发过来的wantconnectRequest以reply的方式发给视频源
+			client.OnWantConnectRequestReply = func(o *rtc.WantConnectRequest) {
 				log.Debugf("[S=>C] client.OnWantConnectReply: %v", o)
 				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_WantConnect{
-						WantConnect: o,
+					Payload: &rtc.Reply_WantConnectRequest{
+						WantConnectRequest: o,
 					},
 				})
 			}
@@ -238,7 +239,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			from := payload.WantConnect.From
 			to := payload.WantConnect.To
 			//name := payload.WantConnect.Name
-			log.Infof("[C=>S] Request_WantConnect:  from :%v,to:%v", from, to)
+			log.Infof("[C=>S] Request_WantConnect:  from :%v,to:%v,type:%v", from, to, payload.WantConnect.ConnectType)
 			//WantConnect只带了目的地址，比如网页上带了PiVedioSource，到了Pi那端，需要知道的是网页的id
 			//对连接用户的管理交给视频源，这里不回应WantConnectReply，
 			// WantConnectReply := client.WantConnect(from, to)
@@ -291,7 +292,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			}
 
 			client.OnWantConnectReply = func(o *rtc.WantConnectReply) {
-				log.Debugf("[S=>C] client.OnWantConnectReply: %v", o)
+				//log.Debugf("[S=>C] client.OnWantConnectReply: %v", o)
 				err = sig.Send(&rtc.Reply{
 					Payload: &rtc.Reply_WantConnect{
 						WantConnect: o,
@@ -302,14 +303,15 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			sourceClient := client.Session().GetSourceClient()
 			if sourceClient != nil {
 				log.Debugf("WantConnect desc from client %v to client:%v,Uid:%v", client.GetID(), sourceClient.GetID(), payload.WantConnect.From)
-				if sourceClient.OnWantConnectReply != nil {
-					sourceClient.OnWantConnectReply(&rtc.WantConnectReply{
-						Success: true,
-						From:    payload.WantConnect.From,
-						Sdp:     payload.WantConnect.Sdp,
-						SdpType: payload.WantConnect.SdpType,
-						//IdleOrNot: payload.WantConnect.IdleOrNot,
-					})
+				if sourceClient.OnWantConnectRequestReply != nil {
+					// sourceClient.OnWantConnectRequestReply(&rtc.WantConnectReply{
+					// 	Success:   true,
+					// 	From:      payload.WantConnect.From,
+					// 	Sdp:       payload.WantConnect.Sdp,
+					// 	SdpType:   payload.WantConnect.SdpType,
+					// 	ConnectTyp
+					// })
+					sourceClient.OnWantConnectRequestReply(payload.WantConnect)
 				}
 			}
 
@@ -320,24 +322,25 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			to := payload.WantConnectReply.To
 			//name := payload.WantConnect.Name
 			log.Infof("[C=>S] Request_WantConnectReply:  from :%v,to:%v", from, to)
-
+			//log.Debugf("Request_WantConnectReply:%v", payload.WantConnectReply)
 			//clients := client.Session().Clients()
-			log.Debugf("1")
+
 			c := client.Session().GetClient(payload.WantConnectReply.To)
 			// for _, c := range clients {
 			// 	if c.GetID() == payload.WantConnectReply.To {
 
 			if c.OnWantConnectReply != nil && c != nil {
 
-				c.OnWantConnectReply(&rtc.WantConnectReply{
-					Success:      true,
-					From:         payload.WantConnectReply.From,
-					Sdp:          payload.WantConnectReply.Sdp,
-					SdpType:      payload.WantConnectReply.SdpType,
-					IdleOrNot:    payload.WantConnectReply.IdleOrNot,
-					RestTimeSecs: payload.WantConnectReply.RestTimeSecs,
-					NumOfWaiting: payload.WantConnectReply.NumOfWaiting,
-				})
+				// c.OnWantConnectReply(&rtc.WantConnectReply{
+				// 	Success:      true,
+				// 	From:         payload.WantConnectReply.From,
+				// 	Sdp:          payload.WantConnectReply.Sdp,
+				// 	SdpType:      payload.WantConnectReply.SdpType,
+				// 	IdleOrNot:    payload.WantConnectReply.IdleOrNot,
+				// 	RestTimeSecs: payload.WantConnectReply.RestTimeSecs,
+				// 	NumOfWaiting: payload.WantConnectReply.NumOfWaiting,
+				// })
+				c.OnWantConnectReply(payload.WantConnectReply)
 				// 	}
 				// }
 			}
