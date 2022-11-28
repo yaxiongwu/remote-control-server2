@@ -81,18 +81,25 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 
 	client := stun.NewClient(s.STUN)
 	defer client.Close()
+	//defer client.Session().RemoveClient(client)
+
 	for {
 
 		in, err := sig.Recv()
 
 		if err != nil {
 
+			log.Errorf("signal error %v", err)
 			if err == io.EOF {
 				return nil
 			}
 
 			errStatus, _ := status.FromError(err)
 			if errStatus.Code() == codes.Canceled {
+				//客户端断开
+				if client != nil && client.Session() != nil {
+					client.Session().RemoveClient(client)
+				}
 				return nil
 			}
 
@@ -108,7 +115,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			name := payload.Register.Name
 			uid := payload.Register.Uid
 			sourceType := payload.Register.SourceType
-			log.Infof("[C=>S] createSession: name => %v, uid => %v", name, uid, sourceType)
+			log.Infof("[C=>S] createSession: name:%v, uid:%v,type:%v", name, uid, sourceType)
 			//需要查找是否有重名
 			err = client.CreateSession(uid, sourceType)
 

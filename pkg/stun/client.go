@@ -125,11 +125,11 @@ func (c *ClientLocal) CreateSession(sid string, sourceType rtc.SourceType) error
 		}
 	}
 
-	if c.session != nil {
-		if c.session.ID() == sid {
-			return nil
-		}
-	}
+	// if c.session != nil {
+	// 	if c.session.ID() == sid {
+	// 		return nil
+	// 	}
+	// }
 	c.session = NewSession(sid, sourceType)
 	return nil
 }
