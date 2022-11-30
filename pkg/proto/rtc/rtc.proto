@@ -9,25 +9,27 @@ service RTC {
 }
 
 enum Role {
-  Admin =0;
-  VideoSource = 1;
-  Controler = 2;
-  Observe = 3;
-  Unknown = 4; 
+  UnknownRole = 0;
+  Admin =1;
+  VideoSource = 2;
+  Controler = 3;
+  Observe = 4;  
 }
 
 enum ConnectType {
-  Control = 0;
-  View=1;
-  Manage = 2;
+  UnknownConnectType = 0;
+  Control = 1;
+  View=2;
+  Manage = 3;
 }
 
 enum SourceType {
-  Car = 0;
-  Feed = 1;
-  Camera = 2;
-  Boat = 3;
-  Submarine = 4;//潜艇
+  UnknownSourceType = 0;
+  Car = 1;
+  Feed = 2;
+  Camera = 3;
+  Boat = 4;
+  Submarine = 5;//潜艇
 }
 //创建一个新的视频源
 message RegisterRequest {

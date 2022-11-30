@@ -117,27 +117,27 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			sourceType := payload.Register.SourceType
 			log.Infof("[C=>S] createSession: name:%v, uid:%v,type:%v", name, uid, sourceType)
 			//需要查找是否有重名
-			err = client.CreateSession(uid, sourceType)
+			// err = client.CreateSession(uid, sourceType)
 
-			if err != nil {
-				err = sig.Send(&rtc.Reply{
-					Payload: &rtc.Reply_Register{
-						Register: &rtc.RegisterReply{
-							Error: &rtc.Error{
-								Code:   int32(1),
-								Reason: fmt.Sprintf("create seesion error: %v", err),
-							},
-						},
-					},
-				})
-				if err != nil {
-					log.Errorf("create seesion error: %v", err)
-				}
-				break
-			}
+			// if err != nil {
+			// 	err = sig.Send(&rtc.Reply{
+			// 		Payload: &rtc.Reply_Register{
+			// 			Register: &rtc.RegisterReply{
+			// 				Error: &rtc.Error{
+			// 					Code:   int32(1),
+			// 					Reason: fmt.Sprintf("create seesion error: %v", err),
+			// 				},
+			// 			},
+			// 		},
+			// 	})
+			// 	if err != nil {
+			// 		log.Errorf("create seesion error: %v", err)
+			// 	}
+			// 	break
+			// }
 
 			//client.Join(sid, uid)
-			client.Register(uid, name)
+			client.Register(uid, name, sourceType)
 			log.Debugf("client.GetID():%v", client.GetID())
 
 			rtcTarget = rtc.Target_PUBLISHER

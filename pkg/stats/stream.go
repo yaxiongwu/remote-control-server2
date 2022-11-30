@@ -5,7 +5,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/yaxiongwu/remote-control-sfu/pkg/buffer"
+	"github.com/pion/ion-sfu/pkg/buffer"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

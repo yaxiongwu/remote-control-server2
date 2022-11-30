@@ -21,6 +21,7 @@ type Client interface {
 	Close() error
 	WantConnect(sid, uid string) *rtc.WantConnectReply
 	GetRole() int8
+	GetInfo() ClientInfo
 
 	// InterOnOfferJSON2GRCP(*webrtc.SessionDescription) func()
 	// InterOnOfferGRCP2JSON(*webrtc.SessionDescription) func()
@@ -58,8 +59,10 @@ type JoinConfig struct {
 // SessionProvider provides the SessionLocal to the sfu.Peer
 // This allows the sfu.SFU{} implementation to be customized / wrapped by another package
 type SessionProvider interface {
-	GetSession(sid string) Session
-	GetSessions() []Session
+	GetSession(string) Session
+	GetSessions() map[string]Session
+	AddSession(Session) error
+	NewSession(string, rtc.SourceType) Session
 }
 
 /*
@@ -74,10 +77,15 @@ const (
 	UNKNOWN = 3
 )
 
+type ClientInfo struct {
+	Id   string
+	Name string
+}
 type ClientLocal struct {
 	sync.Mutex
-	id   string
-	name string
+	//id   string
+	//name string
+	info ClientInfo
 	//closed   bool
 	session          Session
 	provider         SessionProvider //这个provider有什么用？提供source之上的STUN?
@@ -115,44 +123,25 @@ func (c *ClientLocal) Session() Session {
 	return c.session
 }
 
-func (c *ClientLocal) CreateSession(sid string, sourceType rtc.SourceType) error {
-
-	s := c.provider.GetSessions()
-
-	for _, session := range s {
-		if session.ID() == sid {
-			return errors.New("Session already exists")
-		}
-	}
-
-	// if c.session != nil {
-	// 	if c.session.ID() == sid {
-	// 		return nil
-	// 	}
-	// }
-	c.session = NewSession(sid, sourceType)
-	return nil
-}
-
 // ID return the peer id
 func (c *ClientLocal) GetID() string {
-	return c.id
+	return c.info.Id
 }
 
 // ID return the peer id
 func (c *ClientLocal) SetID(cid string) error {
-	c.id = cid
+	c.info.Id = cid
 	return nil
 }
 
 // Name return the peer name
 func (c *ClientLocal) GetName() string {
-	return c.name
+	return c.info.Name
 }
 
 // ID return the peer id
 func (c *ClientLocal) SetName(name string) error {
-	c.name = name
+	c.info.Name = name
 	return nil
 }
 
@@ -170,7 +159,7 @@ func (c *ClientLocal) Close() error {
 		return nil //getonlineSources的时候没有加入到session中去
 	}
 
-	if c.session.GetClient(c.id) != nil {
+	if c.session.GetClient(c.info.Id) != nil {
 		c.session.RemoveClient(c)
 	}
 	// for i, c := range c.session.Clients() {
@@ -189,13 +178,36 @@ func (c *ClientLocal) Close() error {
 	return nil
 }
 
-func (c *ClientLocal) Register(uid, name string) error {
+func (c *ClientLocal) CreateSession(sid string, sourceType rtc.SourceType) error {
+	/*
+		session只能在stun里创建，如果在这里创建，client实例释放的时候，是不是此处创建的session作为内部变量会释放回收？
+		session自己一般管理clients，session无法获得上一级的stun，
+		client通过provider，跳过session，直接获取stun
+	*/
+
+	seesions := c.provider.GetSessions()
+
+	if seesions[sid] != nil {
+		return errors.New("Session already exists")
+	}
+
+	newSeesion := c.provider.NewSession(sid, sourceType) //在stun里创建，但是在什么释放呢？
+	c.session = newSeesion
+
+	return nil
+}
+
+func (c *ClientLocal) Register(uid, name string, sourceType rtc.SourceType) error {
 	if uid == "" {
 		uid = cuid.New()
 	}
-	c.id = uid
-	c.name = name
+	c.info.Id = uid
+	c.info.Name = name
+	c.CreateSession(uid, sourceType)
 	s := c.provider.GetSession(uid)
+	if s == nil {
+		return errors.New("no seesion exists")
+	}
 	s.SetSourceClient(c)
 	s.AddClient(c)
 	c.session = s
@@ -206,71 +218,40 @@ func (c *ClientLocal) Add(uid, name string) error {
 	if uid == "" {
 		uid = cuid.New()
 	}
-	c.id = uid
-	c.name = name
+	c.info.Id = uid
+	c.info.Name = name
 	s := c.provider.GetSession(uid)
+	if s == nil {
+		return errors.New("no seesion exists")
+	}
 	s.AddClient(c)
 	c.session = s
-	return nil
-}
-
-// Join initializes this peer for a given sessionID
-func (c *ClientLocal) Join(sid, uid string) error {
-
-	// if c.session != nil {
-	// 	//Logger.V(1).Info("peer already exists", "session_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
-	// 	return ErrTransportExists
-	// }
-	println("peer_Join,uid:%v", uid)
-	if uid == "" {
-		uid = cuid.New()
-	}
-	c.id = uid
-
-	s := c.provider.GetSession(sid)
-	//Logger.Printf("join,*c:%v,c:%v,&c:%v", *c, c, &c)
-	//需要处理断线、第二个用户登录等问题
-	clients := s.Clients()
-	for _, client := range clients {
-		/*
-			!!!!!!!!!!!!!!注意
-			断线之后没有清空数据，有两种方法管理连接：
-			1. grpc可以监听连接状态，在grpc.NewServe()函数中传入statsHandler就可以监听各状态和标签，但是跟client signal很难联系起来。
-			2. 往client中发数据，如果连接中断会报错“transport is closing”
-
-		*/
-		//每一个手机连进来的UID是唯一的，且不变的，如果有存这个手机的ID，可能是断网后重连的
-		println("clientID:%s", client.GetID())
-		if client.GetID() == uid {
-			s.RemoveClient(client)
-			s.SetFirstDatachannelDesc(true)
-			print("s.SetFirstDatachannelDesc:%s", client.GetID())
-		}
-	}
-
-	s.AddClient(c)
-	c.session = s
-
 	return nil
 }
 
 // Join initializes this peer for a given sourceID
-func (c *ClientLocal) WantConnect(from string, to string) *rtc.WantConnectReply {
+func (c *ClientLocal) WantConnect(from string, uid string) *rtc.WantConnectReply {
 
 	// if c.source != nil {
 	// 	//Logger.V(1).Info("peer already exists", "source_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
 	// 	return ErrTransportExists
 	// }
-	println("peer_Join,from:%v,to:%v", from, to)
+	println("WantConnect,from:%v,to:%v", from, uid)
 	if from == "" {
 		from = cuid.New()
 	}
-	c.id = from
+	c.info.Id = from
 	c.role = CONTROL
 
 	idleOrNot := true
 
-	s := c.provider.GetSession(to)
+	s := c.provider.GetSession(uid)
+	if s == nil {
+		return &rtc.WantConnectReply{
+			Success: true,
+			Error:   &rtc.Error{Reason: "no target"},
+		}
+	}
 	//Logger.Printf("join,*c:%v,c:%v,&c:%v", *c, c, &c)
 	//需要处理断线、第二个用户登录等问题
 	clients := s.Clients()
@@ -292,7 +273,7 @@ func (c *ClientLocal) WantConnect(from string, to string) *rtc.WantConnectReply 
 	}
 }
 
-func (c *ClientLocal) ProviderSessions() []Session {
+func (c *ClientLocal) ProviderSessions() map[string]Session {
 	p := c.provider
 	return p.GetSessions()
 
@@ -300,6 +281,10 @@ func (c *ClientLocal) ProviderSessions() []Session {
 
 func (c *ClientLocal) GetRole() int8 {
 	return c.role
+}
+
+func (c *ClientLocal) GetInfo() ClientInfo {
+	return c.info
 }
 
 // func (c *ClientLocal) OnOfferJSON2GRCP(*webrtc.SessionDescription) {

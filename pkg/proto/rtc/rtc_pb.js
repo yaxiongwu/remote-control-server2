@@ -6896,31 +6896,33 @@ proto.rtc.Reply.prototype.hasWantconnectrequest = function() {
  * @enum {number}
  */
 proto.rtc.Role = {
-  ADMIN: 0,
-  VIDEOSOURCE: 1,
-  CONTROLER: 2,
-  OBSERVE: 3,
-  UNKNOWN: 4
+  UNKNOWNROLE: 0,
+  ADMIN: 1,
+  VIDEOSOURCE: 2,
+  CONTROLER: 3,
+  OBSERVE: 4
 };
 
 /**
  * @enum {number}
  */
 proto.rtc.ConnectType = {
-  CONTROL: 0,
-  VIEW: 1,
-  MANAGE: 2
+  UNKNOWNCONNECTTYPE: 0,
+  CONTROL: 1,
+  VIEW: 2,
+  MANAGE: 3
 };
 
 /**
  * @enum {number}
  */
 proto.rtc.SourceType = {
-  CAR: 0,
-  FEED: 1,
-  CAMERA: 2,
-  BOAT: 3,
-  SUBMARINE: 4
+  UNKNOWNSOURCETYPE: 0,
+  CAR: 1,
+  FEED: 2,
+  CAMERA: 3,
+  BOAT: 4,
+  SUBMARINE: 5
 };
 
 /**

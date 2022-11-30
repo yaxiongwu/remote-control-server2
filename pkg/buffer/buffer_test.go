@@ -4,7 +4,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/yaxiongwu/remote-control-sfu/pkg/logger"
+	"github.com/pion/ion-sfu/pkg/logger"
 	"github.com/pion/rtcp"
 
 	"github.com/pion/rtp"

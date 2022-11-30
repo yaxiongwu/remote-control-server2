@@ -40,17 +40,19 @@ type SessionLocal struct {
 }
 
 // NewSession creates a new SessionLocal
-func NewSession(id string, sourceType rtc.SourceType) Session {
-	s := &SessionLocal{
-		id:                   id,
-		clients:              make(map[string]*ClientLocal),
-		firstDatachannelDesc: true,
-		sourceType:           sourceType,
-	}
-	// log1.SetFlags(log1.Ldate | log1.Lshortfile | log1.Ltime)
-	// go s.audioLevelObserver(cfg.Router.AudioLevelInterval)
-	return s
-}
+// func NewSession(id string, sourceType rtc.SourceType) Session {
+// 	s := &SessionLocal{
+// 		id:                   id,
+// 		clients:              make(map[string]*ClientLocal),
+// 		firstDatachannelDesc: true,
+// 		sourceType:           sourceType,
+// 	}
+// 	//fmt.Println("sourceType:%v", sourceType)
+// 	// log1.SetFlags(log1.Ldate | log1.Lshortfile | log1.Ltime)
+// 	// go s.audioLevelObserver(cfg.Router.AudioLevelInterval)
+
+// 	return s
+// }
 
 // ID return SessionLocal id
 func (s *SessionLocal) ID() string {
@@ -87,7 +89,7 @@ func (s *SessionLocal) RemoveClient(c *ClientLocal) {
 	cid := c.GetID()
 	//Logger.V(0).Info("RemovePeer from SessionLocal", "peer_id", pid, "session_id", s.id)
 	s.mu.Lock()
-	if s.clients[cid].id == c.id {
+	if s.clients[cid].info.Id == c.info.Id {
 		delete(s.clients, cid)
 	}
 	clientCount := len(s.clients)

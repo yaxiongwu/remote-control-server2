@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"net"
@@ -15,8 +16,10 @@ import (
 
 	log "github.com/yaxiongwu/remote-control-server2/pkg/logger"
 
+	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
+	"github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc"
 )
 
 type grpcConfig struct {
@@ -191,9 +194,52 @@ func main() {
 	// dc := nsfu.NewDatachannel(sfu.APIChannelLabel)
 	// dc.Use(datachannel.SubscriberAPI)
 	nstun := stun.NewSTUN()
+	go jsonGin(nstun)
 	err := server.WrapperedGRPCWebServe(nstun, addr, cert, key)
 	if err != nil {
 		logger.Error(err, "failed to serve SFU")
 		os.Exit(1)
 	}
+}
+
+type sourceInfo struct {
+	id   string
+	name string
+}
+
+func getSourceList(s *stun.STUN, sourceType rtc.SourceType) []stun.ClientInfo {
+	var sourceList []stun.ClientInfo
+	sources := s.GetSessions()
+	for _, value := range sources {
+		if value.GetSourceType() == sourceType {
+			sourceList = append(sourceList, value.GetSourceClient().GetInfo())
+		}
+		//logger.Info("source:", "source client info ", value.GetSourceClient().GetInfo())
+	}
+	return sourceList
+}
+
+func jsonGin(s *stun.STUN) bool {
+	r := gin.Default()
+	r.GET("/sourcesList", func(c *gin.Context) {
+		logger.Info("c.Query", "c.Query(sourceType) ", c.Query("sourceType"))
+		//var list []stun.ClientInfo
+
+		// if rtc.SourceType_value[c.Query("sourceType")] == nil {
+
+		// 	c.JSON(200, gin.H{
+		// 		"error": "no that sourceType", //[]byte会自动转换成base64传输
+		// 	})
+		// 	return
+		// }
+
+		list, _ := json.Marshal(getSourceList(s, rtc.SourceType(rtc.SourceType_value[c.Query("sourceType")])))
+		//logger.Info("getSourceList,", "getSourceList(s) ", list)
+		//fmt.Printf("list: %s", list)
+		c.JSON(200, gin.H{
+			"list": string(list), //[]byte会自动转换成base64传输
+		})
+	})
+	r.Run(":8080")
+	return true
 }

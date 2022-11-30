@@ -1,14 +1,14 @@
 FROM golang:stretch
 
-WORKDIR $GOPATH/src/github.com/yaxiongwu/remote-control-sfu
+WORKDIR $GOPATH/src/github.com/pion/ion-sfu
 
 COPY go.mod go.sum ./
-RUN cd $GOPATH/src/github.com/yaxiongwu/remote-control-sfu && go mod download
+RUN cd $GOPATH/src/github.com/pion/ion-sfu && go mod download
 
-COPY pkg/ $GOPATH/src/github.com/yaxiongwu/remote-control-sfu/pkg
-COPY cmd/ $GOPATH/src/github.com/yaxiongwu/remote-control-sfu/cmd
+COPY pkg/ $GOPATH/src/github.com/pion/ion-sfu/pkg
+COPY cmd/ $GOPATH/src/github.com/pion/ion-sfu/cmd
 
-WORKDIR $GOPATH/src/github.com/yaxiongwu/remote-control-sfu/cmd/signal/grpc
+WORKDIR $GOPATH/src/github.com/pion/ion-sfu/cmd/signal/grpc
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /sfu .
 
 FROM alpine:3.12.3
