@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,user-scalable=no"> -->
+  <meta name="viewport" content="user-scalable=no">
+  <title></title>
+  <script
+    src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-2626393b-7a4e-4688-8ebf-8250f67ec102/a697825f-253f-4e85-b658-d3cbdc44eb84.js">
+    </script>
+  <style type="text/css">
+    .video-div {
+       position:fixed;
+      /* top:20%;
+      left:0px; */
+      /* height:960px;
+      width:1280px; */
+      background-color: rgb(255, 0, 34);     
+    };
+
+    .video11 {
+      transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      /* Firefox */
+      -webkit-transform: rotate(90deg);
+      /* Safari 和 Chrome */
+    }
+  </style>
+</head>
+
+<body style="background-color: #333333;">
+  <div style="display:none;" id="getValue">{{.destination}}</div>
+  <!-- <div id="remotes" class="video-div"> -->
+    <video id="remoteVideo" class="video-div" controls></video>
+    <span id="size-tag" style="position: absolute; margin-left: 5px; top: 225px"></span>
+    <span id="br-tag" style="position: absolute; left: 215px; top: 225px"></span>
+  <!-- </div> -->
+
+  <!-- <div style="margin-top:200px;">
+    <textarea id="log" rows="10" cols="30">
+    </textarea>
+  </div> -->
+</body>
+<script type="text/javascript">
+  // const remotesDiv = document.getElementById("remotes");
+  const remoteVideo = document.getElementById("remoteVideo");
+  // const log = document.getElementById("log");
+  const url = 'http://120.78.200.246:5551';
+  const connectType = {
+    Control: 1,
+    View: 2,
+    Manage: 3,
+  }
+
+  //禁止页面滑动
+// document.body.addEventListener('touchmove', function(e){
+//         e.preventDefault();
+// }, { passive: false });  //passive 参数不能省略，用来兼容ios和android
+
+  function moveVideoDiv(){
+    const videoWidth = 640,videoHeight=480;
+    
+    remoteVideo.style.height=videoHeight*2+"px";
+    remoteVideo.style.width=videoWidth*2+"px";
+    //(document.documentElement.clientHeight - remoteVideo.style.height)
+    remoteVideo.style.left=videoHeight-videoWidth+document.documentElement.clientWidth/2 - videoHeight+"px";
+    remoteVideo.style.top=document.documentElement.clientHeight/2-videoHeight+"px";
+    remoteVideo.style.transform="rotate(90deg)";
+    
+    //remoteVideo.style.-webkit-transform=" rotate(90deg)";
+    //remoteVideo.style= "position:absolute;top: 50%;left: 50%;transform: rotate(90deg);-webkit-transform: rotate(90deg);-webkit-transform: translate(-50%, -50%);-moz-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);-o-transform: translate(-50%, -50%);transform: translate(-50%, -50%);";// +remoteVideo.videoWidth*2+"px;";   
+
+   
+  };
+  moveVideoDiv();
+
+  const myID = uidTime();
+  const wantConnect = async (myid) => {
+
+    const connector = new Ion.Connector(url, "token");
+    connector.onopen = function (service) {
+      console.log("[onopen]: service = ", service.name);
+    };
+
+    connector.onclose = function (service) {
+      console.log('[onclose]: service = ' + service.name);
+    };
+
+    rtc = new Ion.RTC(connector);
+
+    rtc.ontrack = (track, stream) => {
+      //console.log("got ", track.kind, " track", track.id, "for stream", stream.id);
+
+      if (track.kind === "video") {
+        track.onunmute = () => {
+
+          // log.value += "track.onunmute2\r\n";         
+
+          // log.value += document.documentElement.clientWidth.toString() + "\r\n";
+          // log.value += document.documentElement.clientHeight.toString() + "\r\n";
+          // log.value += window.screen.width.toString() + "\r\n";
+          // log.value += window.screen.height.toString() + "\r\n";
+          // log.value += window.innerWidth.toString() + "\r\n";
+          // log.value += window.innerHeight.toString() + "\r\n";
+          // log.value += window.devicePixelRatio.toString() + "\r\n";
+
+          if (!streams[stream.id]) {
+            // const remoteVideo = document.createElement("video");
+            remoteVideo.srcObject = stream;
+            remoteVideo.autoplay = true;
+            remoteVideo.muted = true;
+            //remoteVideo.style.width=document.documentElement.clientWidth;
+            //remoteVideo.style = "position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);-moz-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);-o-transform: translate(-50%, -50%);transform: translate(-50%, -50%);transform: rotate(90deg);-webkit-transform: rotate(90deg);";// +remoteVideo.videoWidth*2+"px;";   
+            //remoteVideo.style="width:1280px;height:960px";// +remoteVideo.videoWidth*2+";";   
+            remoteVideo.addEventListener("loadedmetadata", function () {
+              sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
+            });
+
+            remoteVideo.onresize = function () {
+              sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
+            };
+            // remotesDiv.appendChild(remoteVideo);
+
+            streams[stream.id] = stream;
+            stream.onremovetrack = () => {
+              if (streams[stream.id]) {
+                remotesDiv.removeChild(remoteVideo);
+                streams[stream.id] = null;
+              }
+            };
+            getStats();
+          }
+        };
+      }
+    };
+    rtc.wantConnect(myid, document.getElementById("getValue").innerHTML, connectType.Control);
+    const streams = {};
+
+  }
+
+  function uidTime() {
+    var uid = "", random;
+    const time = (new Date().getTime() - new Date(2022, 0).getTime()).toString();
+    for (i = 0; i < 8; i++) {
+      random = Math.floor(Math.random() * 16);
+      uid += random.toString(16);
+    }
+    return "web" + time + uid;
+  }
+
+
+  const getStats = () => {
+    let bytesPrev;
+    let timestampPrev;
+    setInterval(() => {
+      rtc.getSubStats(null).then((results) => {
+        results.forEach((report) => {
+          const now = report.timestamp;
+          let bitrate;
+          if (
+            report.type === "inbound-rtp" &&
+            report.mediaType === "video"
+          ) {
+            const bytes = report.bytesReceived;
+            if (timestampPrev) {
+              bitrate = (8 * (bytes - bytesPrev)) / (now - timestampPrev);
+              bitrate = Math.floor(bitrate);
+            }
+            bytesPrev = bytes;
+            timestampPrev = now;
+          }
+          if (bitrate) {
+            brTag.innerHTML = `${bitrate} kbps @ ${report.framesPerSecond} fps`;
+          }
+        });
+      });
+    }, 1000);
+  };
+  wantConnect(myID)
+</script>
+
+</html>

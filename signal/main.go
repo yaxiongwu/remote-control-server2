@@ -19,6 +19,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
+	"github.com/unrolled/secure"
 	"github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc"
 )
 
@@ -221,6 +222,7 @@ func getSourceList(s *stun.STUN, sourceType rtc.SourceType) []stun.ClientInfo {
 
 func jsonGin(s *stun.STUN) bool {
 	r := gin.Default()
+	r.Use(LoadTls())
 	r.GET("/sourcesList", func(c *gin.Context) {
 		logger.Info("c.Query", "c.Query(sourceType) ", c.Query("sourceType"))
 		//var list []stun.ClientInfo
@@ -240,6 +242,40 @@ func jsonGin(s *stun.STUN) bool {
 			"list": string(list), //[]byte会自动转换成base64传输
 		})
 	})
-	r.Run(":8080")
+	r.LoadHTMLGlob("web/*")
+	r.GET("/vedio", func(c *gin.Context) {
+		logger.Info("c.Query", "c.Query(id)", c.Query("id"))
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"id": c.Query("id"),
+		})
+	})
+	r.GET("/index/:destination", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "index.html", gin.H{
+			"destination": context.Param("destination"),
+		})
+	})
+	// 配置静态文件夹路径 第一个参数是api，第二个是文件夹路径
+	//r.StaticFS("/vedio", http.Dir("./web"))
+	// r.GET("/vedio", func(c *gin.Context) {
+	// 	c.HTML(http.StatusOK, "index.html", gin.H{
+	// 		"title": "index",
+	// 	})
+	// })
+	r.RunTLS(":8080", "bxzryd.pem", "bxzryd.key")
 	return true
+}
+
+func LoadTls() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		middleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     "localhost:8080",
+		})
+		err := middleware.Process(c.Writer, c.Request)
+		if err != nil {
+			logger.Error(err, "error")
+			return
+		}
+		c.Next()
+	}
 }
