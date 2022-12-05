@@ -5,18 +5,14 @@
   <meta charset="UTF-8">
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,user-scalable=no"> -->
   <meta name="viewport" content="user-scalable=no">
-  <title></title>
+  <title></title>  
   <script
     src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-2626393b-7a4e-4688-8ebf-8250f67ec102/a697825f-253f-4e85-b658-d3cbdc44eb84.js">
     </script>
   <style type="text/css">
     .video-div {
-       position:fixed;
-      /* top:20%;
-      left:0px; */
-      /* height:960px;
-      width:1280px; */
-      background-color: rgb(255, 0, 34);     
+      position: fixed;
+      /* background-color: rgb(255, 115, 0); */
     };
 
     .video11 {
@@ -26,26 +22,114 @@
       -webkit-transform: rotate(90deg);
       /* Safari 和 Chrome */
     }
+
+    input.ne-range[type=range]::-webkit-slider-thumb {
+      z-index: 10;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 0;
+      background-color: rgb(255, 0, 0);
+      box-shadow: 0 10px 10px rgba(0, 0, 0, 0.21);
+      -webkit-transition: border-color 0.15s, background-color 0.15s;
+      transition: border-color 0.15s, background-color 0.15s;
+      cursor: pointer;
+      background-clip: padding-box;
+      box-sizing: border-box;
+      -webkit-appearance: none !important;
+    }
+
+    input.ne-range[type=range]:focus {
+      outline: none;
+    }
+
+    input.ne-range[type=range]::-webkit-slider-thumb:active {
+      z-index: 10;
+      border: 0;
+      /* background-color: rgb(3, 8, 250); */
+      border-radius: 50%;
+      transition: border-color 0.15s, background-color 0.15s;
+    }
+
+    input.ne-range[type=range] {
+      z-index: 10;
+      width: 50%;
+      height: 10px;
+      border-radius: 8px;
+      /* margin: .8em 0; */
+      padding: 0;
+      /*cursor: pointer;*/
+      border: 0;
+      /* background: -webkit-linear-gradient(#FFF, #FFF) no-repeat #fc0909;
+      background-size: 0% 100%; */
+      position: relative;
+      outline: 0;
+      top: -3px;
+      -webkit-appearance: none !important;
+    }
   </style>
 </head>
 
-<body style="background-color: #333333;">
+<body style="background-color: #222222;">
   <div style="display:none;" id="getValue">{{.destination}}</div>
-  <!-- <div id="remotes" class="video-div"> -->
-    <video id="remoteVideo" class="video-div" controls></video>
-    <span id="size-tag" style="position: absolute; margin-left: 5px; top: 225px"></span>
-    <span id="br-tag" style="position: absolute; left: 215px; top: 225px"></span>
-  <!-- </div> -->
 
-  <!-- <div style="margin-top:200px;">
-    <textarea id="log" rows="10" cols="30">
-    </textarea>
-  </div> -->
+  <!-- <div id="remotes" class="video-div"> -->
+
+  <input onchange="powerSliderChanged()" oninput="powerSliderChanging()" style="width:50%; height:10px;"
+    class="ne-range" type="range" id="powerSlider" min="-10" max="10" step="1" value=" 0" />
+
+  <video id="remoteVideo" class="video-div" controls></video>
+  <span id="size-tag" style="position: absolute; margin-left: 5px; top: 225px"></span>
+  <span id="br-tag" style="position: absolute; left: 215px; top: 225px"></span>
+
+  <div id="rightBlock" style="display:flex;justify-content:flex-end;">
+    <div id="trunDiv" style="z-index: 9;width: 400px;margin-right:200px;">
+      <div style="padding-left:240px;">
+        <svg id="steeringWheel" t="1670036534728"
+          style="fill:#ffffff;transform: rotate(90deg);-webkit-transform: rotate(90deg);" width="100" height="100"
+          viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2717">
+          <path
+            d="M511.999488 1023.520069c282.518468 0 511.523139-229.003648 511.523139-511.524163 0-282.514375-229.004671-511.518023-511.523139-511.518023-282.520515 0-511.523139 229.003648-511.523139 511.518023C0.476349 794.516422 229.478973 1023.520069 511.999488 1023.520069zM942.930101 589.717036c-16.356526 91.784426-59.631122 173.844374-121.117498 237.19112-58.8442 60.647265-134.382617 104.10094-218.8678 122.499985 4.237511-43.818995 9.335622-104.541985 17.362436-156.401096 22.070668-142.7901 66.686818-204.836225 191.425797-229.057883 35.012422-6.80601 71.749114-6.969739 108.470457-6.149047C938.418344 557.199435 948.825368 564.821019 942.930101 589.717036zM96.153432 365.006158c21.745257-67.305919 58.428737-127.573537 106.029872-176.592974 79.903841-82.381266 194.868199-123.55706 309.833581-123.55706 114.926496 0 229.876528 41.175795 309.793672 123.55706 47.605228 49.019437 84.288708 109.287055 106.014522 176.592974 6.02625 22.604834-2.000564 33.266661-23.980157 32.045857-72.117504-2.860141-227.513714-5.135974-259.416308-6.78759 27.389814 32.022321 44.020586 74.111928 44.020586 120.151497 0 50.205449-19.744693 95.675036-51.676963 128.574331-11.413957 11.755742-24.345478 21.89159-38.522362 30.083156-26.677593 15.44783-56.466036 23.163559-86.234013 23.178909-29.80584-0.016373-59.59326-7.732102-86.269829-23.178909-14.156418-8.192589-27.131941-18.327414-38.523385-30.083156-31.934317-32.898271-51.676963-78.368882-51.676963-128.574331 0-46.039569 16.614399-88.129176 44.031842-120.151497-31.912827 1.651616-187.309036 3.927449-259.424494 6.78759C98.156042 398.272819 90.168114 387.610992 96.153432 365.006158zM103.777063 557.800116c36.72339-0.820692 73.462129-0.657986 108.472504 6.149047 124.753305 24.221658 169.373549 86.267782 191.446263 229.057883 8.004301 51.859112 13.116739 112.582101 17.358343 156.401096-84.504626-18.380626-160.021553-61.85272-218.885196-122.499985-61.467957-63.345724-104.740506-145.405671-121.100102-237.19112C75.173608 564.821019 85.565283 557.199435 103.777063 557.800116z"
+            p-id="2718"></path>
+          <path
+            d="M412.975171 612.639095c9.769504 10.067286 20.944008 18.621103 33.245172 25.385157 40.812521 22.400173 90.744747 22.400173 131.558291 0 12.281721-6.763031 23.489994-15.33629 33.227776-25.385157 25.347295-26.111704 41.014112-62.194504 41.014112-102.042047 0-39.832194-15.667841-75.914994-41.014112-102.011348-51.097772-52.639894-146.953933-52.639894-198.031239 0-25.330922 26.096355-40.99774 62.179155-40.99774 102.011348C371.976408 550.444591 387.644249 586.528414 412.975171 612.639095zM490.073106 455.355909c13.921058-5.897314 29.913287-5.897314 43.855834 0 21.011546 8.892531 35.82595 30.206976 35.82595 55.061037 0 23.472598-13.195533 43.777039-32.334429 53.462632-15.848966 8.022721-34.974559 8.022721-50.839899 0-19.165502-9.685593-32.338522-29.990035-32.338522-53.462632C454.243063 485.562884 469.05542 464.24844 490.073106 455.355909z"
+            p-id="2719"></path>
+        </svg>
+      </div>
+      <div style="padding-top:0px;">
+        <input id="turnSilder" onchange="trunSliderChanged()" oninput="trunSliderChanging()" class="ne-range"
+          style="width:80%; height:10px;transform: rotate(90deg);-webkit-transform: rotate(90deg);" min="-10" max="10"
+          type="range" step="1" value="0" />
+      </div>
+    </div>
+    <div id="buttonDiv" style="z-index: 9;width: 250px;height:250px;">
+      <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
+        height="100" t="1670042975911" class="icon" viewBox="0 0 1024 1024" version="1.1"
+        xmlns="http://www.w3.org/2000/svg" p-id="19726">
+        <path
+          d="M735.998 959.997c-123.712 0-224-100.288-224-224s100.288-224 224-224 224 100.288 224 224-100.287 224-224 224zM768 889.523C828.918 876.89 876.891 828.917 889.525 768h-63.679c-20.145 2.778-34.537 18.164-57.846 26.548v94.975zM736 768c17.673 0 32-14.327 32-32s-14.327-32-32-32-32 14.327-32 32 14.327 32 32 32z m-32 121.524v-94.983c-22.489-8.096-36.759-22.744-56.07-26.541h-65.458C595.106 828.918 643.081 876.892 704 889.524z m31.998-310.326c-75.633 0-138.754 53.55-153.528 124.802h66.186c26.751-5.922 44.007-32 87.344-32 44.426 0 61.448 27.394 88.958 32h64.569c-14.775-71.252-77.896-124.802-153.529-124.802z m-287.456-67.199C347.023 511.999 256 376.793 256 253.085c0-123.706 91.023-189.07 192.542-189.07 101.521 0 191.455 64.832 191.455 188.538 0.001 123.708-89.934 259.446-191.455 259.446zM336 496l112 96 112-96a348.186 348.186 0 0 1 41.763 3.392C519.495 546.167 464 634.598 464 736c0 33.796 6.181 66.144 17.446 95.998H95.997C64 832 64 797.091 64 797.091V656c110.001-164.764 272-160 272-160z"
+          p-id="19727"></path>
+      </svg>
+      <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
+        height="100" t="1670042675126" class="icon" viewBox="0 0 1024 1024" version="1.1"
+        xmlns="http://www.w3.org/2000/svg" p-id="8959">
+        <path
+          d="M512 64C264.992 64 64 264.96 64 512s200.96 448 448 448c247.008 0 448-200.96 448-448S759.04 64 512 64zM694.752 649.984c12.48 12.544 12.448 32.768-0.064 45.248-6.24 6.208-14.4 9.344-22.592 9.344-8.224 0-16.416-3.136-22.656-9.408l-137.6-138.016-138.048 136.576c-6.24 6.144-14.368 9.248-22.496 9.248-8.256 0-16.48-3.168-22.752-9.504-12.416-12.576-12.32-32.8 0.256-45.248l137.888-136.384-137.376-137.824c-12.48-12.512-12.448-32.768 0.064-45.248 12.512-12.512 32.736-12.448 45.248 0.064l137.568 137.984 138.048-136.576c12.544-12.448 32.832-12.32 45.248 0.256 12.448 12.576 12.32 32.832-0.256 45.248l-137.888 136.384L694.752 649.984z"
+          p-id="8960"></path>
+      </svg>
+    </div>
+  </div>
+ 
 </body>
 <script type="text/javascript">
-  // const remotesDiv = document.getElementById("remotes");
   const remoteVideo = document.getElementById("remoteVideo");
-  // const log = document.getElementById("log");
+  const powerSlider = document.getElementById("powerSlider"); 
+  const turnSilder = document.getElementById("turnSilder");
+  const trunDiv = document.getElementById("trunDiv");
+  const steeringWheel = document.getElementById("steeringWheel");
+  const buttonDiv = document.getElementById("buttonDiv");
+  const rightBlock = document.getElementById("rightBlock");
+
   const url = 'http://120.78.200.246:5551';
   const connectType = {
     Control: 1,
@@ -53,27 +137,58 @@
     Manage: 3,
   }
 
+  let channelDataEvent;
+
   //禁止页面滑动
-// document.body.addEventListener('touchmove', function(e){
-//         e.preventDefault();
-// }, { passive: false });  //passive 参数不能省略，用来兼容ios和android
+  // document.body.addEventListener('touchmove', function(e){
+  //         e.preventDefault();
+  // }, { passive: false });  //passive 参数不能省略，用来兼容ios和android
 
-  function moveVideoDiv(){
-    const videoWidth = 640,videoHeight=480;
-    
-    remoteVideo.style.height=videoHeight*2+"px";
-    remoteVideo.style.width=videoWidth*2+"px";
-    //(document.documentElement.clientHeight - remoteVideo.style.height)
-    remoteVideo.style.left=videoHeight-videoWidth+document.documentElement.clientWidth/2 - videoHeight+"px";
-    remoteVideo.style.top=document.documentElement.clientHeight/2-videoHeight+"px";
-    remoteVideo.style.transform="rotate(90deg)";
-    
-    //remoteVideo.style.-webkit-transform=" rotate(90deg)";
-    //remoteVideo.style= "position:absolute;top: 50%;left: 50%;transform: rotate(90deg);-webkit-transform: rotate(90deg);-webkit-transform: translate(-50%, -50%);-moz-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);-o-transform: translate(-50%, -50%);transform: translate(-50%, -50%);";// +remoteVideo.videoWidth*2+"px;";   
-
-   
-  };
+  function moveVideoDiv() {
+    const videoWidth = 640, videoHeight = 480;
+    remoteVideo.style.height = videoHeight * 2 + "px";
+    remoteVideo.style.width = videoWidth * 2 + "px";
+    remoteVideo.style.left = videoHeight - videoWidth + document.documentElement.clientWidth / 2 - videoHeight + "px";
+    remoteVideo.style.top = document.documentElement.clientHeight / 2 - videoHeight - 40 + "px";
+    remoteVideo.style.transform = "rotate(90deg)";
+    powerSlider.style.margin = document.documentElement.clientHeight / 2 - videoWidth - 110 + "px 0px 0px 100px";
+    rightBlock.style.margin = videoWidth * 2 + 100 + "px" + " 0px 0px 100px";
+    //buttonDiv.style.margin ="0px 0px 0px "+(videoHeight+200).toString()+"px";
+  }
   moveVideoDiv();
+
+  function trunSliderChanging() {
+    steeringWheel.style.transform = "rotate(" + (turnSilder.value * 6 + 90).toString() + "deg)";
+    if (channelDataEvent.channel.readyState === "open") {
+      //console.log("datachannel send:", localData.value)
+      channelDataEvent.channel.send("{\"d\":" + turnSilder.value.toString() + "}");
+    }
+  }
+  function trunSliderChanged() {
+    turnSilder.value = 0;
+    steeringWheel.style.transform = "rotate(90deg)";
+    if (channelDataEvent.channel.readyState === "open") {
+      //console.log("datachannel send:", localData.value)
+      channelDataEvent.channel.send("{\"d\":" + turnSilder.value.toString() + "}");
+    }
+  }
+
+  function powerSliderChanging() {
+    if (channelDataEvent.channel.readyState === "open") {
+      //console.log("datachannel send:", localData.value)
+      channelDataEvent.channel.send("{\"s\":" + powerSlider.value.toString() + "}");
+    }
+  }
+
+  function powerSliderChanged() {
+    if (powerSlider.value < 3 && powerSlider.value > -3) {
+      powerSlider.value = 0;
+      if (channelDataEvent.channel.readyState === "open") {
+        //console.log("datachannel send:", localData.value)
+        channelDataEvent.channel.send("{\"s\":0}");
+      }
+    }
+  }
 
   const myID = uidTime();
   const wantConnect = async (myid) => {
@@ -90,29 +205,12 @@
     rtc = new Ion.RTC(connector);
 
     rtc.ontrack = (track, stream) => {
-      //console.log("got ", track.kind, " track", track.id, "for stream", stream.id);
-
       if (track.kind === "video") {
         track.onunmute = () => {
-
-          // log.value += "track.onunmute2\r\n";         
-
-          // log.value += document.documentElement.clientWidth.toString() + "\r\n";
-          // log.value += document.documentElement.clientHeight.toString() + "\r\n";
-          // log.value += window.screen.width.toString() + "\r\n";
-          // log.value += window.screen.height.toString() + "\r\n";
-          // log.value += window.innerWidth.toString() + "\r\n";
-          // log.value += window.innerHeight.toString() + "\r\n";
-          // log.value += window.devicePixelRatio.toString() + "\r\n";
-
           if (!streams[stream.id]) {
-            // const remoteVideo = document.createElement("video");
             remoteVideo.srcObject = stream;
             remoteVideo.autoplay = true;
             remoteVideo.muted = true;
-            //remoteVideo.style.width=document.documentElement.clientWidth;
-            //remoteVideo.style = "position: absolute;top: 50%;left: 50%;-webkit-transform: translate(-50%, -50%);-moz-transform: translate(-50%, -50%);-ms-transform: translate(-50%, -50%);-o-transform: translate(-50%, -50%);transform: translate(-50%, -50%);transform: rotate(90deg);-webkit-transform: rotate(90deg);";// +remoteVideo.videoWidth*2+"px;";   
-            //remoteVideo.style="width:1280px;height:960px";// +remoteVideo.videoWidth*2+";";   
             remoteVideo.addEventListener("loadedmetadata", function () {
               sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
             });
@@ -120,8 +218,6 @@
             remoteVideo.onresize = function () {
               sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
             };
-            // remotesDiv.appendChild(remoteVideo);
-
             streams[stream.id] = stream;
             stream.onremovetrack = () => {
               if (streams[stream.id]) {
@@ -134,6 +230,13 @@
         };
       }
     };
+    rtc.ondatachannel = (ev) => {
+      channelDataEvent = ev;
+      ev.channel.onmessage = ({ data }) => {       
+        //alert("rev msg:" + data);
+      };
+    };
+
     rtc.wantConnect(myid, document.getElementById("getValue").innerHTML, connectType.Control);
     const streams = {};
 
@@ -179,5 +282,4 @@
   };
   wantConnect(myID)
 </script>
-
 </html>

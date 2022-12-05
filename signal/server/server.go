@@ -260,6 +260,7 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 			// 	log.Errorf("err:%v", err)
 			// }
 			client.WantConnect(from, to)
+
 			rtcTarget := rtc.Target_SUBSCRIBER
 			client.OnSessionDescription = func(o *webrtc.SessionDescription, from string, to string) {
 				err = sig.Send(&rtc.Reply{
@@ -307,6 +308,21 @@ func (s *STUNServer) Signal(sig rtc.RTC_SignalServer) error {
 				})
 			}
 
+			//没有session记录
+			if client.Session() == nil {
+				err = sig.Send(&rtc.Reply{
+					Payload: &rtc.Reply_WantConnect{
+						WantConnect: &rtc.WantConnectReply{
+							Success: false,
+							Error:   &rtc.Error{Reason: "Have no session"},
+						},
+					},
+				})
+				if err != nil {
+					log.Errorf("err:%v", err)
+				}
+				return nil
+			}
 			sourceClient := client.Session().GetSourceClient()
 			if sourceClient != nil {
 				log.Debugf("WantConnect desc from client %v to client:%v,Uid:%v", client.GetID(), sourceClient.GetID(), payload.WantConnect.From)

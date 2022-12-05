@@ -128,11 +128,16 @@ func (s *SessionLocal) Close() {
 }
 
 func (s *SessionLocal) SetSourceClient(client *ClientLocal) {
+
 	s.sourceClient = client
 }
 
 func (s *SessionLocal) GetSourceClient() *ClientLocal {
-	return s.sourceClient
+	if(s.sourceClient != nil) {
+		return s.sourceClient
+	}else{
+		return nil
+	}	
 }
 
 func (s *SessionLocal) GetSourceType() rtc.SourceType {

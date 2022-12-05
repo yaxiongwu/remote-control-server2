@@ -120,7 +120,12 @@ func NewClient(provider SessionProvider) *ClientLocal {
 }
 
 func (c *ClientLocal) Session() Session {
-	return c.session
+	if c.session != nil {
+		return c.session
+	} else {
+		return nil
+	}
+
 }
 
 // ID return the peer id
@@ -236,7 +241,7 @@ func (c *ClientLocal) WantConnect(from string, uid string) *rtc.WantConnectReply
 	// 	//Logger.V(1).Info("peer already exists", "source_id", sid, "peer_id", p.id, "publisher_id", p.publisher.id)
 	// 	return ErrTransportExists
 	// }
-	println("WantConnect,from:%v,to:%v", from, uid)
+	//println("WantConnect,from:%v,to:%v", from, uid)
 	if from == "" {
 		from = cuid.New()
 	}
@@ -244,7 +249,6 @@ func (c *ClientLocal) WantConnect(from string, uid string) *rtc.WantConnectReply
 	c.role = CONTROL
 
 	idleOrNot := true
-
 	s := c.provider.GetSession(uid)
 	if s == nil {
 		return &rtc.WantConnectReply{

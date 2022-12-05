@@ -57,7 +57,12 @@ func (s *STUN) NewSession(sid string, sourceType rtc.SourceType) Session {
 func (s *STUN) GetSession(sid string) Session {
 	s.RLock()
 	defer s.RUnlock()
-	return s.sessions[sid]
+	_, ok := s.sessions[sid]
+	if ok {
+		return s.sessions[sid]
+	} else {
+		return nil
+	}
 }
 
 // GetSessions return all sessions
