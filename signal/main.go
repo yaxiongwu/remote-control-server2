@@ -222,22 +222,10 @@ func getSourceList(s *stun.STUN, sourceType rtc.SourceType) []stun.ClientInfo {
 
 func jsonGin(s *stun.STUN) bool {
 	r := gin.Default()
-	r.Use(LoadTls())
+
 	r.GET("/sourcesList", func(c *gin.Context) {
 		logger.Info("c.Query", "c.Query(sourceType) ", c.Query("sourceType"))
-		//var list []stun.ClientInfo
-
-		// if rtc.SourceType_value[c.Query("sourceType")] == nil {
-
-		// 	c.JSON(200, gin.H{
-		// 		"error": "no that sourceType", //[]byte会自动转换成base64传输
-		// 	})
-		// 	return
-		// }
-
 		list, _ := json.Marshal(getSourceList(s, rtc.SourceType(rtc.SourceType_value[c.Query("sourceType")])))
-		//logger.Info("getSourceList,", "getSourceList(s) ", list)
-		//fmt.Printf("list: %s", list)
 		c.JSON(200, gin.H{
 			"list": string(list), //[]byte会自动转换成base64传输
 		})
@@ -254,14 +242,9 @@ func jsonGin(s *stun.STUN) bool {
 			"destination": context.Param("destination"),
 		})
 	})
-	// 配置静态文件夹路径 第一个参数是api，第二个是文件夹路径
-	//r.StaticFS("/vedio", http.Dir("./web"))
-	// r.GET("/vedio", func(c *gin.Context) {
-	// 	c.HTML(http.StatusOK, "index.html", gin.H{
-	// 		"title": "index",
-	// 	})
-	// })
+	r.Use(LoadTls())
 	r.RunTLS(":8080", "bxzryd.pem", "bxzryd.key")
+	//r.Run(":8080")
 	return true
 }
 

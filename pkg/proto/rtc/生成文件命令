@@ -1,9 +1,15 @@
 参考 https://grpc.io/docs/languages/go/quickstart/
 protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative rtc.proto
-protoc --dart_out=grpc:. rtc.proto
+
+protoc 生成dart:
+参考https://grpc.io/docs/languages/dart/quickstart/
+1.先安装dart。国内连不上google，不能用命令下载安装。到https://dart.dev/get-dart/archive 这里下载生成好的release版本
+2.解压，拷贝到/usr/local下，重命名为dart，找到文件夹下面的bin/dart，测试./dart运行情况，将路径export PTAH=$PATH:写入~/.bashrc中，source。
+3.运行 dart pub global activate protoc_plugin，根据运行的提示将 export PATH="$PATH:$HOME/.pub-cache/bin"写入~/.bashrc中，source。
+4.如果protoc安装好了，运行 protoc --dart_out=grpc:. rtc.proto
 
 
-proto 生成js,ts
+protoc 生成js,ts
 #sudo npm i -g ts-protoc-gen@0.15.0
 protoc rtc.proto --plugin=protoc-gen-ts=/usr/local/bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./ --ts_out=service=grpc-web:./
 
