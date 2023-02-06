@@ -1,0 +1,261 @@
+syntax = "proto3";
+
+option go_package = "github.com/yaxiongwu/remote-control-server2/pkg/proto/rtc";
+
+package rtc;
+
+service RTC {
+  rpc Signal(stream Request) returns (stream Reply) {}
+}
+
+enum Role {
+  UnknownRole = 0;
+  Admin =1;
+  VideoSource = 2;
+  Controler = 3;
+  Observe = 4;  
+}
+
+enum ConnectType {
+  UnknownConnectType = 0;
+  Control = 1;
+  View=2;
+  Manage = 3;
+}
+
+enum SourceType {
+  UnknownSourceType = 0;
+  Car = 1;
+  Feed = 2;
+  Camera = 3;
+  Boat = 4;
+  Submarine = 5;//潜艇
+}
+//创建一个新的视频源
+message RegisterRequest {
+  string sid = 1;
+  string uid = 2;
+  string name = 3;
+  SourceType   sourceType=4;
+  map<string, string> config = 5;
+}
+//创建视频源的回复
+message RegisterReply {
+  bool success = 1;
+  Error error = 2;  
+}
+//向服务器获取在线的视频源
+message OnLineSourceRequest {
+     SourceType   sourceType=1;
+     map<string, string> config = 4;
+}
+//在线的视频源
+message OnLineSources {
+  string uid = 1;
+  string name = 2;
+}
+//服务器返回在线的视频源
+message OnLineSourceReply {
+  repeated OnLineSources  onLineSources =1;
+  bool success = 2;
+  Error error = 3;
+}
+
+//观看视频申请
+message ViewSourceRequest{
+   //string sid = 1;
+   string uid = 2;
+   map<string, string> config = 3;
+   SessionDescription description = 4;
+}
+//申请观看视频的结果
+message ViewSourceReply {
+  enum Result{
+    Webrtc = 0;  //可以使用webrtc直连
+    Cloud = 1;    //转云直播
+    Error = 2;    //错误
+  }
+  bool success = 1;  
+  Error error = 2;
+  Result result = 3;
+}
+
+//控制申请
+message WantConnectRequest{
+   string from = 1;
+   string to = 2;
+   map<string, string> config = 3;
+    // 'offer' | 'answer'
+  string sdpType = 4;
+  // sdp contents
+  string sdp = 5;
+  ConnectType connectType = 6;
+}
+//控制申请的结果
+message WantConnectReply { 
+   bool success = 1;
+   bool idleOrNot = 2;  //是否空闲可控
+   uint32 restTimeSecs = 3; //现在正在控制的这个人还剩多少时间,单位秒
+   uint32 numOfWaiting = 4;  //排队的人数，不包括现在控制的那个
+   Error error = 5;
+   string from = 6;
+   string to = 7;
+    // 'offer' | 'answer'
+  string sdpType = 8;
+  // sdp contents
+  string sdp = 9;  
+  ConnectType connectType = 10;
+  string cloudBroadcastUrl = 11;
+}
+
+
+message JoinRequest {
+  string sid = 1;
+  string uid = 2;
+  map<string, string> config = 3;
+  SessionDescription description = 4;
+}
+
+message JoinReply {
+  bool success = 1;
+  Error error = 2;
+  SessionDescription description = 3;
+}
+
+enum Target {
+  PUBLISHER = 0;
+  SUBSCRIBER = 1;
+}
+
+enum MediaType {
+  MediaUnknown = 0;
+  UserMedia = 1;
+  ScreenCapture = 2;
+  Cavans = 3;
+  Streaming = 4;
+  VoIP = 5;
+}
+
+message TrackInfo {
+  // basic info
+  string id = 1;
+  string kind = 2;
+  bool muted = 3;
+  MediaType type = 4;
+  string streamId = 5;
+  string label = 6;
+
+  // extra info
+  string layer = 7;  // simulcast or svc layer
+  uint32 width = 8;
+  uint32 height = 9;
+  uint32 frameRate = 10;
+}
+
+message SessionDescription {
+  string from = 1;
+  string to = 2;
+  Target target = 3;
+  // 'offer' | 'answer'
+  string type = 4;
+  // sdp contents
+  string sdp = 5;
+  // sdp metdata
+  repeated TrackInfo trackInfos = 6;
+}
+
+message Trickle {
+  string from=1;
+  string to=2;
+  Target target = 3;
+  string init = 4;
+}
+
+message Error {
+  int32 code = 1;
+  string reason = 2;
+}
+
+message TrackEvent {
+  enum State {
+    ADD = 0;
+    UPDATE = 1;
+    REMOVE = 2;
+  }
+  State state = 1;
+  string uid = 2;
+  repeated TrackInfo tracks = 3;
+}
+
+message Subscription{
+  string trackId = 2;
+  bool mute = 3; // mute track or not
+  bool subscribe = 4; // sub track or not
+  string layer = 5;  // simulcast or svc layer
+}
+
+message SubscriptionRequest {
+  repeated Subscription subscriptions = 1;
+}
+
+message SubscriptionReply {
+  bool success = 1;
+  Error error = 2;
+}
+
+message UpdateTrackReply {
+  bool success = 1;
+  Error error = 2;
+}
+
+message ActiveSpeaker {
+  repeated AudioLevelSpeaker speakers = 1;
+}
+
+message AudioLevelSpeaker {
+  string sid = 1;
+  // audio level
+  float level = 2;
+  // speaker active or not
+  bool active = 3;
+}
+
+message Request {
+  oneof payload {
+    // Basic API Request
+    JoinRequest join = 1;
+    SessionDescription description = 2;
+    Trickle trickle = 3;
+
+    // Command
+    SubscriptionRequest subscription = 4;
+    RegisterRequest register=5;
+    OnLineSourceRequest onLineSource=6;
+    ViewSourceRequest viewSource =7;
+    WantConnectRequest wantConnect =8;
+    WantConnectReply   wantConnectReply =9;//最终由视频源决定wantConnectReply，生成的这个reply需要由request发往服务器再转发
+  }
+}
+
+message Reply {
+  oneof payload {
+    // Basic API Reply
+    JoinReply join = 1;
+    SessionDescription description = 2;
+    Trickle trickle = 3;
+
+    // Event
+    TrackEvent trackEvent = 4;
+
+    // Command Reply
+    SubscriptionReply subscription = 5;
+
+    // Error
+    Error error = 7;
+    RegisterReply register=8;
+    OnLineSourceReply onLineSource = 9;
+    ViewSourceReply viewSource =10;
+    WantConnectReply wantConnect=11;
+    WantConnectRequest wantConnectRequest=12;
+  }
+}

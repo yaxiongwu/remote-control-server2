@@ -1,0 +1,14 @@
+#控制端最长控制时间，单位秒
+MaxTimeControl = 600
+
+#围观最长控制时间，单位秒
+MaxTimeView = 600
+
+#围观的最大个数
+MaxClientsNum=2
+
+#调试级别 0 - INFO 1 - DEBUG 2 - TRACE
+LogLevel = 1
+
+#服务器地址
+Address = "120.78.200.246:5551"

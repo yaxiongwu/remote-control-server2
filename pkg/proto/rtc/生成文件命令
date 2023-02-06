@@ -1,0 +1,16 @@
+参考 https://grpc.io/docs/languages/go/quickstart/
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative rtc.proto
+protoc --dart_out=grpc:. rtc.proto
+
+
+proto 生成js,ts
+#sudo npm i -g ts-protoc-gen@0.15.0
+protoc rtc.proto --plugin=protoc-gen-ts=/usr/local/bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./ --ts_out=service=grpc-web:./
+
+
+
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative rtc.proto && protoc rtc.proto --plugin=protoc-gen-ts=/usr/local/bin/protoc-gen-ts --js_out=import_style=commonjs,binary:./ --ts_out=service=grpc-web:./
+
+scp * root@120.78:/root/remote-control-server2/pkg/proto/rtc 
+
+rm ../../../../remote-control-client-go2/pkg/proto/rtc/* && cp * ../../../../remote-control-client-go2/pkg/proto/rtc/ && rm ../../../../remote-control-client-js2/src/_library/proto/rtc/* &&cp * ../../../../remote-control-client-js2/src/_library/proto/rtc/
