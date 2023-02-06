@@ -196,7 +196,8 @@ func main() {
 	// dc.Use(datachannel.SubscriberAPI)
 	nstun := stun.NewSTUN()
 	go jsonGin(nstun)
-	err := server.WrapperedGRPCWebServe(nstun, addr, cert, key)
+	//err := server.WrapperedGRPCWebServe(nstun, addr, cert, key)
+	err := server.WrapperedGRPCWebServe(nstun, addr, "bxzryd.pem", "bxzryd.key")
 	if err != nil {
 		logger.Error(err, "failed to serve SFU")
 		os.Exit(1)

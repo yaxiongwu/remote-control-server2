@@ -5,15 +5,24 @@
   <meta charset="UTF-8">
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no,user-scalable=no"> -->
   <meta name="viewport" content="user-scalable=no">
-  <title></title>  
+  <title></title>
   <script
-    src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-2626393b-7a4e-4688-8ebf-8250f67ec102/a697825f-253f-4e85-b658-d3cbdc44eb84.js">
+    src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-2626393b-7a4e-4688-8ebf-8250f67ec102/4857522f-6587-45fb-bfeb-66181928a0f0.js">
     </script>
+  <!-- 微信 JS-SDK 如果不需要兼容小程序，则无需引用此 JS 文件。 -->
+  <script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <!-- uni 的 SDK，必须引用。 -->
+  <script type="text/javascript" src="//js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.0.1.52.js"></script>
+
   <style type="text/css">
+    /*body{
+      transform: rotate(90deg);
+    }*/
+
     .video-div {
       position: fixed;
       /* background-color: rgb(255, 115, 0); */
-    };
+    }
 
     .video11 {
       transform: rotate(90deg);
@@ -67,24 +76,112 @@
       top: -3px;
       -webkit-appearance: none !important;
     }
+
+    .over {
+      background-color: rgba(228, 224, 224, 0.7);
+      display: none;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 998;
+    }
+
+    .pop-body {
+      top: 42%;
+      left: 40%;
+      width: 600px;
+      height: 250px;
+      z-index: 999;
+      border-radius: 10px 10px 0 0;
+      display: none;
+    }
+
+    .pop {
+      background-color: #faf6f7;
+      position: fixed;
+      font-size: 54px;
+      color: #0a0a0a;
+      transform: rotate(90deg);
+    }
+
+    .hr-solid {
+      border: 0;
+      border-top: 1px solid #0a0a0a;
+      margin-top: 30px;
+      margin-bottom: 30px;
+
+    }
+
+    .pop .title {
+      line-height: 50px;
+      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    .pop .btnConfire {
+      text-align: center;
+      color: #dd1818;
+      position: absolute;
+      left: 50px;
+      width: 140px;
+      text-shadow: 5px 5px 4px rgba(8, 8, 8, 0.4);
+
+      /* border: 3px solid #73AD21;
+            border-radius: 10px 10px 10px 10px;
+              box-shadow:  5px 5px 6px 10px rgba(99,30,188,0.6);;
+              */
+
+    }
+
+    .pop .btnConcel {
+      text-align: center;
+      color: #5310ee;
+      position: absolute;
+      right: 50px;
+      width: 140px;
+      text-shadow: 5px 5px 4px rgba(8, 8, 8, 0.4);
+
+      /* border: 3px solid #73AD21;
+            border-radius: 10px 10px 10px 10px;
+              box-shadow:  5px 5px 6px 10px rgba(99,30,188,0.6);;
+              */
+    }
   </style>
 </head>
 
 <body style="background-color: #222222;">
+  <div class="over"></div>
+  <div class="pop pop-body" id="popAlertDiv">
+    <div class="title">
+      <span id="popTitleSpan">选择进入</span>
+      </dic>
+      <hr class="hr-solid">
+      <div>
+        <span onclick="popAlertConfire()" class="btnConfire">确定</span>
+        <span onclick="popAlertConcel()" class="btnConcel">取消</span>
+      </div>
+    </div>
+  </div>
+
   <div style="display:none;" id="getValue">{{.destination}}</div>
 
   <!-- <div id="remotes" class="video-div"> -->
-
-  <input onchange="powerSliderChanged()" oninput="powerSliderChanging()" style="width:50%; height:10px;"
-    class="ne-range" type="range" id="powerSlider" min="-10" max="10" step="1" value=" 0" />
+  <!--速度滑动条-->
+  <input onchange="speedSliderChanged()" oninput="speedSliderChanging()" style="width:50%; height:10px;display: none;"
+    class="ne-range" type="range" id="speedSlider" min="-10" max="10" step="1" value=" 0" />
 
   <video id="remoteVideo" class="video-div" controls></video>
+  <audio id="remoteAudio"></audio>
   <span id="size-tag" style="position: absolute; margin-left: 5px; top: 225px"></span>
   <span id="br-tag" style="position: absolute; left: 215px; top: 225px"></span>
 
   <div id="rightBlock" style="display:flex;justify-content:flex-end;">
-    <div id="trunDiv" style="z-index: 9;width: 400px;margin-right:200px;">
+    <div id="trunDiv" style="z-index: 9;width: 400px;margin-right:200px;display: none;">
       <div style="padding-left:240px;">
+        <!--方向盘-->
         <svg id="steeringWheel" t="1670036534728"
           style="fill:#ffffff;transform: rotate(90deg);-webkit-transform: rotate(90deg);" width="100" height="100"
           viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2717">
@@ -96,6 +193,7 @@
             p-id="2719"></path>
         </svg>
       </div>
+      <!--方向控制滑动条-->
       <div style="padding-top:0px;">
         <input id="turnSilder" onchange="trunSliderChanged()" oninput="trunSliderChanging()" class="ne-range"
           style="width:80%; height:10px;transform: rotate(90deg);-webkit-transform: rotate(90deg);" min="-10" max="10"
@@ -103,34 +201,42 @@
       </div>
     </div>
     <div id="buttonDiv" style="z-index: 9;width: 250px;height:250px;">
+      <!--控制按钮-->
       <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
         height="100" t="1670042975911" class="icon" viewBox="0 0 1024 1024" version="1.1"
-        xmlns="http://www.w3.org/2000/svg" p-id="19726">
+        xmlns="http://www.w3.org/2000/svg" p-id="19726" onclick="wantControl()">
         <path
           d="M735.998 959.997c-123.712 0-224-100.288-224-224s100.288-224 224-224 224 100.288 224 224-100.287 224-224 224zM768 889.523C828.918 876.89 876.891 828.917 889.525 768h-63.679c-20.145 2.778-34.537 18.164-57.846 26.548v94.975zM736 768c17.673 0 32-14.327 32-32s-14.327-32-32-32-32 14.327-32 32 14.327 32 32 32z m-32 121.524v-94.983c-22.489-8.096-36.759-22.744-56.07-26.541h-65.458C595.106 828.918 643.081 876.892 704 889.524z m31.998-310.326c-75.633 0-138.754 53.55-153.528 124.802h66.186c26.751-5.922 44.007-32 87.344-32 44.426 0 61.448 27.394 88.958 32h64.569c-14.775-71.252-77.896-124.802-153.529-124.802z m-287.456-67.199C347.023 511.999 256 376.793 256 253.085c0-123.706 91.023-189.07 192.542-189.07 101.521 0 191.455 64.832 191.455 188.538 0.001 123.708-89.934 259.446-191.455 259.446zM336 496l112 96 112-96a348.186 348.186 0 0 1 41.763 3.392C519.495 546.167 464 634.598 464 736c0 33.796 6.181 66.144 17.446 95.998H95.997C64 832 64 797.091 64 797.091V656c110.001-164.764 272-160 272-160z"
           p-id="19727"></path>
       </svg>
+      <!--退出按钮-->
       <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
         height="100" t="1670042675126" class="icon" viewBox="0 0 1024 1024" version="1.1"
-        xmlns="http://www.w3.org/2000/svg" p-id="8959">
+        xmlns="http://www.w3.org/2000/svg" p-id="8959" onclick="exit()">
         <path
           d="M512 64C264.992 64 64 264.96 64 512s200.96 448 448 448c247.008 0 448-200.96 448-448S759.04 64 512 64zM694.752 649.984c12.48 12.544 12.448 32.768-0.064 45.248-6.24 6.208-14.4 9.344-22.592 9.344-8.224 0-16.416-3.136-22.656-9.408l-137.6-138.016-138.048 136.576c-6.24 6.144-14.368 9.248-22.496 9.248-8.256 0-16.48-3.168-22.752-9.504-12.416-12.576-12.32-32.8 0.256-45.248l137.888-136.384-137.376-137.824c-12.48-12.512-12.448-32.768 0.064-45.248 12.512-12.512 32.736-12.448 45.248 0.064l137.568 137.984 138.048-136.576c12.544-12.448 32.832-12.32 45.248 0.256 12.448 12.576 12.32 32.832-0.256 45.248l-137.888 136.384L694.752 649.984z"
           p-id="8960"></path>
       </svg>
     </div>
   </div>
- 
+
 </body>
 <script type="text/javascript">
   const remoteVideo = document.getElementById("remoteVideo");
-  const powerSlider = document.getElementById("powerSlider"); 
+  const remoteAudio = document.getElementById("remoteAudio");
+  const speedSlider = document.getElementById("speedSlider");
   const turnSilder = document.getElementById("turnSilder");
   const trunDiv = document.getElementById("trunDiv");
   const steeringWheel = document.getElementById("steeringWheel");
   const buttonDiv = document.getElementById("buttonDiv");
   const rightBlock = document.getElementById("rightBlock");
+  const popAlertDiv = document.getElementById("popAlertDiv");
+  const popTitleSpan = document.getElementById("popTitleSpan");
+  var popAlertCallback;
+  var popAlertTitle = "";
 
-  const url = 'http://120.78.200.246:5551';
+  //const url = 'https://120.78.200.246:5551';
+  const url = 'https://www.bxzryd.cn:5551';
   const connectType = {
     Control: 1,
     View: 2,
@@ -150,8 +256,10 @@
     remoteVideo.style.width = videoWidth * 2 + "px";
     remoteVideo.style.left = videoHeight - videoWidth + document.documentElement.clientWidth / 2 - videoHeight + "px";
     remoteVideo.style.top = document.documentElement.clientHeight / 2 - videoHeight - 40 + "px";
-   // remoteVideo.style.transform = "rotate(90deg)";
-    powerSlider.style.margin = document.documentElement.clientHeight / 2 - videoWidth - 110 + "px 0px 0px 100px";
+    popAlertDiv.style.top = document.documentElement.clientHeight / 2 - 50;
+    popAlertDiv.style.left = document.documentElement.clientWidth / 2 - 50;
+    remoteVideo.style.transform = "rotate(90deg)";
+    speedSlider.style.margin = document.documentElement.clientHeight / 2 - videoWidth - 110 + "px 0px 0px 100px";
     rightBlock.style.margin = videoWidth * 2 + 100 + "px" + " 0px 0px 100px";
     //buttonDiv.style.margin ="0px 0px 0px "+(videoHeight+200).toString()+"px";
   }
@@ -173,21 +281,59 @@
     }
   }
 
-  function powerSliderChanging() {
+  function speedSliderChanging() {
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
-      channelDataEvent.channel.send("{\"s\":" + powerSlider.value.toString() + "}");
+      channelDataEvent.channel.send("{\"s\":" + speedSlider.value.toString() + "}");
     }
   }
-
-  function powerSliderChanged() {
-    if (powerSlider.value < 3 && powerSlider.value > -3) {
-      powerSlider.value = 0;
+  //速度滑动条改变后
+  function speedSliderChanged() {
+    if (speedSlider.value < 3 && speedSlider.value > -3) {
+      speedSlider.value = 0;
       if (channelDataEvent.channel.readyState === "open") {
         //console.log("datachannel send:", localData.value)
         channelDataEvent.channel.send("{\"s\":0}");
       }
     }
+  }
+  //控制按钮
+  function wantControl() {
+    //popAlertDiv.style.display = 'block';
+    // speedSlider.style.display = 'block';
+    // trunDiv.style.display = 'block';
+    if (channelDataEvent.channel.readyState === "open") {
+      //console.log("datachannel send:", localData.value)
+      channelDataEvent.channel.send("{\"control\":1}");
+    }
+  }
+  //退出按钮
+  function exit() {
+    // popTitleSpan.innerHTML = "真要退出吗？"
+    // popAlertCallback = exitCallback;
+    // popAlertDiv.style.display = 'block';
+    popWindows( "真要退出吗？",exitCallback);
+  }
+  //退出的回调函数
+  function exitCallback() {
+    //alert("退出");
+    //wx.miniProgram.navigateTo({ url: '/pages/source-list/list' })
+    wx.miniProgram.navigateBack({});
+  }
+  //按下弹出框的确认按钮
+  function popAlertConfire() {
+    popAlertCallback();
+    popAlertDiv.style.display = "none";
+  }
+  //按下弹出框的取消按钮
+  function popAlertConcel() {
+    popAlertDiv.style.display = "none";
+  }
+  //弹框
+  function popWindows(title,callback){
+    popTitleSpan.innerHTML = title;
+    popAlertCallback = callback;
+    popAlertDiv.style.display = 'block';
   }
 
   const myID = uidTime();
@@ -229,17 +375,30 @@
           }
         };
       }
+      if (track.kind === "audio") {
+        track.onunmute = () => {
+          if (!streams[stream.id]) {
+            remoteAudio.srcObject = stream;
+            remoteAudio.autoplay = true;
+          }
+        };
+      }
     };
     rtc.ondatachannel = (ev) => {
       channelDataEvent = ev;
-      ev.channel.onmessage = ({ data }) => {       
-        //alert("rev msg:" + data);
+      ev.channel.onmessage = ({ data }) => {
+        //  alert("rev msg:" + data);
+        if (data == "idle") {
+          speedSlider.style.display = 'block';
+          trunDiv.style.display = 'block';
+        } else if (data == "busy-controled") {
+          popWindows("远端正在被控制，请稍后再试");
+        }
       };
     };
 
-    rtc.wantConnect(myid, document.getElementById("getValue").innerHTML, connectType.Control);
+    rtc.wantConnect(myid, document.getElementById("getValue").innerHTML, connectType.View);
     const streams = {};
-
   }
 
   function uidTime() {
@@ -282,4 +441,5 @@
   };
   wantConnect(myID)
 </script>
+
 </html>
