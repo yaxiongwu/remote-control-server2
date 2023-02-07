@@ -217,7 +217,7 @@ func NewRTC(connector *Connector, config ...RTCConfig) (*RTC, error) {
 	//gst.CreatePipeline("vp8", []*webrtc.TrackLocalStaticSample{videoTrack}, videoSrc).Start()
 	//gst.CreatePipeline("h264_x264", []*webrtc.TrackLocalStaticSample{videoTrack}, videoSrc, rtmpudp.GetConn()).Start()
 	//gst.CreatePipeline("opus", []*webrtc.TrackLocalStaticSample{audioTrack}, audioSrc, rtmpudp.GetConn()).Start()
-	gst.CreatePipeline("h264_omx", []*webrtc.TrackLocalStaticSample{r.VedioTrack}, videoSrc).Start()
+	gst.CreatePipeline("h264_x264", []*webrtc.TrackLocalStaticSample{r.VedioTrack}, videoSrc).Start()
 	gst.CreatePipeline("opus", []*webrtc.TrackLocalStaticSample{r.AudioTrack}, audioSrc).Start()
 
 	return r, err
@@ -1179,7 +1179,7 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 	// 		r.OnDataChannel(dc)
 	// 	}
 	// })
-    client.pc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
+	client.pc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
 		r.OnTrack(track, receiver)
 	})
 
@@ -1197,19 +1197,19 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 		}
 		_, have_d := recvData["control"]
 		if have_d {
-			if(recvData["control"] ==1){//want control
+			if recvData["control"] == 1 { //want control
 				client.dataChannel.SendText("idle")
 				//如果有一个client的Role是controler，return ,else send message to pi from datachannel
-		      for _, c := range r.clients {
-			    if c.ConnectType == rtc.ConnectType_Control {
-			         client.dataChannel.SendText("busy-controled")
-			     }//if c.ConnectType ==
-		      }//for
-		
-		      client.DataChannelEable = true;			  
-			}//if(recvData["control"] ==1)
-		}//if have_d {
-		
+				for _, c := range r.clients {
+					if c.ConnectType == rtc.ConnectType_Control {
+						client.dataChannel.SendText("busy-controled")
+					} //if c.ConnectType ==
+				} //for
+
+				client.DataChannelEable = true
+			} //if(recvData["control"] ==1)
+		} //if have_d {
+
 		if client.DataChannelEable == true {
 			//log.Debugf("client data channel messages:%s", msg)
 			if r.OnDataChannelMessage != nil {

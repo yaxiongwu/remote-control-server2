@@ -5,7 +5,7 @@ import (
 	//"crypto/tls"
 	//"crypto/x509"
 	//"io/ioutil"
-	
+
 	"github.com/yaxiongwu/remote-control-client-go2/pkg/proto/rtc"
 
 	log "github.com/pion/ion-log"
@@ -53,21 +53,20 @@ func NewConnector(addr string, config ...ConnectorConfig) *Connector {
 		services: make(map[string]Service),
 		Metadata: make(metadata.MD),
 		ctx:      context.Background(),
-		config:&ConnectorConfig{
-			SSL:true,
+		config: &ConnectorConfig{
+			SSL: true,
 			//Cafile:"bxzryd.pem",
-			Cafile:"bxzryd.cn_bundle.crt",
+			Cafile: "../cred/bxzryd.cn_bundle.crt",
 			//Cafile:"bxzryd.cn_bundle.pem",
 			//Cafile:"bxzryd.cn_bundle.crt",
 			//Token:"",
-			},
+		},
 	}
 
 	if len(config) > 0 {
 		c.config = &config[0]
 	}
-	
-	
+
 	//c.config.SSL=true
 	//c.config.Cafile="bxzryd.pem"
 
@@ -78,59 +77,56 @@ func NewConnector(addr string, config ...ConnectorConfig) *Connector {
 
 	if c.config != nil && c.config.Token != "" {
 		c.Metadata.Append("authorization", c.config.Token)
-	}    
-   
+	}
+
 	var err error
 	if c.config != nil && c.config.SSL {
 		/*
-		var config *tls.Config
-		if c.config.Cafile != "" {
-			b, _ := ioutil.ReadFile(c.config.Cafile)
-			cp := x509.NewCertPool()
-			if !cp.AppendCertsFromPEM(b) {
-				log.Errorf("credentials: failed to append certificates")
-				return nil		
-		    }
+			var config *tls.Config
+			if c.config.Cafile != "" {
+				b, _ := ioutil.ReadFile(c.config.Cafile)
+				cp := x509.NewCertPool()
+				if !cp.AppendCertsFromPEM(b) {
+					log.Errorf("credentials: failed to append certificates")
+					return nil
+			    }
 
-			config = &tls.Config{
-				InsecureSkipVerify: false,
-				RootCAs:            cp,
+				config = &tls.Config{
+					InsecureSkipVerify: false,
+					RootCAs:            cp,
+				}
+			} else {
+				config = &tls.Config{
+					InsecureSkipVerify: false,
+				}
 			}
-		} else {
-			config = &tls.Config{
-				InsecureSkipVerify: false,
-			}
-		}
-		* */
-     
-     // creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn_bundle.crt","")
-      //creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn_bundle.pem","")
-     // creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn.csr","")
-     // creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn.key","")     
-     /*
-      if err != nil {
-			log.Errorf("credentials err: %v", err)
-			return nil
-		}
-		
+			* */
+
+		// creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn_bundle.crt","")
+		//creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn_bundle.pem","")
+		// creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn.csr","")
+		// creds,err:=credentials.NewClientTLSFromFile("bxzryd.cn.key","")
+		/*
+			      if err != nil {
+						log.Errorf("credentials err: %v", err)
+						return nil
+					}
+
 		*/
-		
-		creds, err := credentials.NewClientTLSFromFile("bxzryd.cn_bundle.crt", "")
-	if err != nil {
-		log.Errorf("NewClientTLSFromFile err: %v",err)
-	}
-	c.grpcConn, err  = grpc.Dial("www.bxzryd.cn:5551", grpc.WithTransportCredentials(creds))
-	
-	
-	
+
+		creds, err := credentials.NewClientTLSFromFile("../cred/bxzryd.cn_bundle.crt", "")
+		if err != nil {
+			log.Errorf("NewClientTLSFromFile err: %v", err)
+		}
+		c.grpcConn, err = grpc.Dial("www.bxzryd.cn:5551", grpc.WithTransportCredentials(creds))
+
 		//c.grpcConn, err = grpc.Dial(addr, grpc.WithTransportCredentials(credentials.NewTLS(config)), grpc.WithBlock())
 		//c.grpcConn, err = grpc.Dial(addr, grpc.WithTransportCredentials(creds), grpc.WithBlock())
 		if err != nil {
 			log.Errorf("did not connect: %v", err)
 			return nil
 		}
-		
-		
+
 	} else {
 		c.grpcConn, err = grpc.Dial(addr, grpc.WithInsecure(), grpc.WithBlock())
 	}
