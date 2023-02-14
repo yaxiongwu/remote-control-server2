@@ -4,7 +4,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net"
 
@@ -78,28 +77,28 @@ func main() {
 	}
 
 	err = rtc.RegisterNewVideoSource("PiVideoSource", "远程视频控制小车", rtcproto.SourceType_Car)
-	rtc.OnDataChannelMessage = func(msg webrtc.DataChannelMessage) {
-		log.Infof("recv msg:%s", msg)
-		recvData := make(map[string]int)
-		/*
-		 速度：100 	{"s":100}
-		 方向：-10  {"d":-10}
-		*/
-		err := json.Unmarshal(msg.Data, &recvData)
-		if err != nil {
-			log.Errorf("Unmarshal:err %v", err)
-			return
-		}
-		/*使用树莓派时开启*/
-		_, ok_d := recvData["d"]
-		if ok_d {
-			pi.DirectionControl(recvData["d"])
-		}
-		_, ok_s := recvData["s"]
-		if ok_s {
-			speed <- recvData["s"]
-		}
-	}
+	// rtc.OnDataChannelMessage = func(msg webrtc.DataChannelMessage) {
+	// 	log.Infof("recv msg:%s", msg)
+	// 	recvData := make(map[string]int)
+	// 	/*
+	// 	 速度：100 	{"s":100}
+	// 	 方向：-10  {"d":-10}
+	// 	*/
+	// 	err := json.Unmarshal(msg.Data, &recvData)
+	// 	if err != nil {
+	// 		log.Errorf("Unmarshal:err %v", err)
+	// 		return
+	// 	}
+	// 	/*使用树莓派时开启*/
+	// 	_, ok_d := recvData["d"]
+	// 	if ok_d {
+	// 		pi.DirectionControl(recvData["d"])
+	// 	}
+	// 	_, ok_s := recvData["s"]
+	// 	if ok_s {
+	// 		speed <- recvData["s"]
+	// 	}
+	// }
 
 	rtc.OnDataChannel = func(dc *webrtc.DataChannel) {
 		log.Infof("rtc.OnDatachannel:%v", dc.Label())
@@ -108,41 +107,50 @@ func main() {
 			//	dc.SendText("wuyaxiong nbcl")
 		})
 	}
-	rtc.OnDataChannel = func(dc *webrtc.DataChannel) {
-		recvData := make(map[string]int)
-		/*
-		 速度：100 	{"s":100}
-		 方向：-10  {"d":-10}
-		*/
-		log.Infof("rtc.OnDatachannel:%v", dc.Label())
-		dc.OnOpen(func() {
-			log.Infof("%v,dc.onopen,dc.ReadyState:%v", dc.Label(), dc.ReadyState())
-			//	dc.SendText("wuyaxiong nbcl")
-		})
-
-		dc.OnMessage(func(msg webrtc.DataChannelMessage) {
-			//log.Infof("get msg from:%v,msg:%s", dc.Label(), msg.Data)
-			// recvData["s"] = 0
-			// recvData["d"] = 0
-			err := json.Unmarshal(msg.Data, &recvData)
-			/*格式：
-			  {"s":10}
-			*/
-			if err != nil {
-				log.Errorf("Unmarshal:err %v", err)
-				return
-			}
-			/*使用树莓派时开启*/
-			_, ok_d := recvData["d"]
-			if ok_d {
-				pi.DirectionControl(recvData["d"])
-			}
-			_, ok_s := recvData["s"]
-			if ok_s {
-				speed <- recvData["s"]
-			}
-		})
+	rtc.ControlFunc = func(control string, data float64) {
+		switch control {
+		case "turn":
+			pi.DirectionControl(int(data))
+		case "speed":
+			speed <- int(data)
+		default:
+		}
 	}
+	// rtc.OnDataChannel = func(dc *webrtc.DataChannel) {
+	// 	recvData := make(map[string]int)
+	// 	/*
+	// 	 速度：100 	{"s":100}
+	// 	 方向：-10  {"d":-10}
+	// 	*/
+	// 	log.Infof("rtc.OnDatachannel:%v", dc.Label())
+	// 	dc.OnOpen(func() {
+	// 		log.Infof("%v,dc.onopen,dc.ReadyState:%v", dc.Label(), dc.ReadyState())
+	// 		//	dc.SendText("wuyaxiong nbcl")
+	// 	})
+
+	// 	dc.OnMessage(func(msg webrtc.DataChannelMessage) {
+	// 		//log.Infof("get msg from:%v,msg:%s", dc.Label(), msg.Data)
+	// 		// recvData["s"] = 0
+	// 		// recvData["d"] = 0
+	// 		err := json.Unmarshal(msg.Data, &recvData)
+	// 		/*格式：
+	// 		  {"s":10}
+	// 		*/
+	// 		if err != nil {
+	// 			log.Errorf("Unmarshal:err %v", err)
+	// 			return
+	// 		}
+	// 		/*使用树莓派时开启*/
+	// 		_, ok_d := recvData["d"]
+	// 		if ok_d {
+	// 			pi.DirectionControl(recvData["d"])
+	// 		}
+	// 		_, ok_s := recvData["s"]
+	// 		if ok_s {
+	// 			speed <- recvData["s"]
+	// 		}
+	// 	})
+	// }
 
 	rtc.OnTrack = func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
 		codec := track.Codec()

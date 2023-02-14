@@ -156,6 +156,7 @@ type RTC struct {
 	OnTrackEvent         func(event TrackEvent)
 	OnDataChannelMessage func(webrtc.DataChannelMessage)
 	OnSpeaker            func(event []string)
+	ControlFunc          func(control string, data float64)
 
 	producer *WebMProducer
 	recvByte int
@@ -1191,7 +1192,7 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 		}
 	})
 	log.Errorf("test")
-	client.pubPc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
+	client.subPc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
 		r.OnTrack(track, receiver)
 	})
 
@@ -1199,6 +1200,7 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 		log.Debugf("client data channel opened")
 		//client.dataChannel.SendText("wuyaxiong nb")
 	})
+
 	client.dataChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
 		//datachannel always receive message,but only controler can run r.OnDataChannelMessage
 		//recvData := make(map[string]interface{})
@@ -1209,7 +1211,7 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 			log.Errorf("Unmarshal:err %v", err)
 			return
 		}
-		//log.Debugf("received message:%v,data type:%T,data:%v", dataChannelMsg.Cmd, dataChannelMsg.Data, dataChannelMsg.Data)
+		log.Debugf("received message:%v,data type:%T,data:%v", dataChannelMsg.Cmd, dataChannelMsg.Data, dataChannelMsg.Data)
 		switch dataChannelMsg.Cmd {
 		case "offer":
 			var offer webrtc.SessionDescription
@@ -1327,18 +1329,52 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 				}
 			}
 		case "speed":
-			recvSpeed, ok := dataChannelMsg.Data.(int)
-			if ok {
-				log.Debugf("recvSpeed,%v", recvSpeed)
+			recvSpeed, ok := dataChannelMsg.Data.(float64)
+			if ok && client.DataChannelEable && r.ControlFunc != nil {
+				r.ControlFunc("speed", recvSpeed)
+				//log.Debugf("recvSpeed,%v", recvSpeed)
 			}
 		case "turn":
-			recvTurn, ok := dataChannelMsg.Data.(int)
-			if ok {
-				log.Debugf("recvTurn,%v", recvTurn)
+			recvTurn, ok := dataChannelMsg.Data.(float64)
+			if ok && client.DataChannelEable && r.ControlFunc != nil {
+				r.ControlFunc("turn", recvTurn)
+				//log.Debugf("recvTurn,%v", recvTurn)
 			}
 		case "control":
-			recvControl, ok := dataChannelMsg.Data.(int)
+			recvControl, ok := dataChannelMsg.Data.(float64)
+			log.Infof("recvControl,%v,%v", recvControl, ok)
 			if ok {
+				if recvControl == 1 {
+					hasController := false
+					var controlRes string
+					//如果有一个client的Role是controler，就回应忙，并附带时间信息
+					for _, c := range r.clients {
+						if c.ConnectType == rtc.ConnectType_Control {
+							hasController = true
+						}
+					}
+					if !hasController {
+						client.ConnectType = rtc.ConnectType_Control
+						client.DataChannelEable = true
+						controlRes = "ok"
+					} else {
+						client.ConnectType = rtc.ConnectType_View
+						client.DataChannelEable = false
+						controlRes = "终端已有人正在控制，请稍后再试"
+					}
+
+					respJson, err := json.Marshal(&DataChannelMsg{
+						Cmd:  "controlRes",
+						Data: controlRes,
+					})
+					if err != nil {
+						log.Errorf("json.Marshal err=%v", err)
+					} else {
+						log.Infof("c.subPc.OnICECandidate")
+						client.dataChannel.SendText(string(respJson))
+					}
+
+				}
 				log.Debugf("recvControl,%v", recvControl)
 			}
 		default:
