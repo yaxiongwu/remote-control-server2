@@ -72,8 +72,7 @@ func main() {
 
 	err = rtc.RegisterNewVideoSource("PiVideoSource", "远程视频控制小车", rtcproto.SourceType_Car)
 	rtc.OnDataChannelMessage = func(msg webrtc.DataChannelMessage) {
-		log.Infof("rtc.OnDataChannelMessage msg:%s", msg)
-
+		//log.Infof("rtc.OnDataChannelMessage msg:%s", msg)
 	}
 
 	rtc.OnDataChannel = func(dc *webrtc.DataChannel) {
