@@ -8,7 +8,7 @@ import (
 
 // Transport is pub/sub transport
 type Transport struct {
-	id             string
+	uid            string
 	api            *webrtc.DataChannel
 	rtc            *RTC
 	pc             *webrtc.PeerConnection
@@ -18,8 +18,9 @@ type Transport struct {
 }
 
 // NewTransport create a transport
-func NewTransport(role Target, rtc *RTC) *Transport {
+func NewTransport(uid string, role Target, rtc *RTC) *Transport {
 	t := &Transport{
+		uid:  uid,
 		role: role,
 		rtc:  rtc,
 	}
@@ -74,10 +75,10 @@ func NewTransport(role Target, rtc *RTC) *Transport {
 			t.SendCandidates = append(t.SendCandidates, c)
 		} else {
 			for _, cand := range t.SendCandidates {
-				t.rtc.SendTrickle(cand, role)
+				t.rtc.SendTrickle2(cand, uid)
 			}
 			t.SendCandidates = []*webrtc.ICECandidate{}
-			t.rtc.SendTrickle(c, role)
+			t.rtc.SendTrickle2(c, uid)
 		}
 	})
 	return t

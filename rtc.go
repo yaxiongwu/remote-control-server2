@@ -177,6 +177,16 @@ type RTC struct {
 	AudioTrack                    *webrtc.TrackLocalStaticSample
 }
 
+type DataChannelMsgDataSdp struct {
+	Type string `json:"type"`
+	Sdp  string `json:"sdp"`
+}
+type DataChannelMsg struct {
+	Cmd string `json:"cmd"`
+	//Data string `json:"data"`
+	Data interface{} `json:"data"`
+}
+
 func withConfig(config ...RTCConfig) *RTC {
 	r := &RTC{
 		notify: make(chan struct{}),
@@ -315,12 +325,12 @@ func (r *RTC) receiveTrickle2(candidate webrtc.ICECandidateInit, from string) {
 	for _, client := range r.clients {
 		if client.Id == from {
 			log.Debugf("candidates from :%v", from)
-			if client.pc.CurrentRemoteDescription() == nil {
-				log.Debugf("client.pc.CurrentRemoteDescription() == nil ")
-				client.RecvCandidates = append(client.RecvCandidates, candidate)
+			if client.pubPc.CurrentRemoteDescription() == nil {
+				log.Debugf("client.pubPc.CurrentRemoteDescription() == nil ")
+				client.pubRecvCandidates = append(client.pubRecvCandidates, candidate)
 			} else {
-				log.Debugf("client.pc.AddICECandidate() candidate:%v", candidate)
-				err := client.pc.AddICECandidate(candidate)
+				log.Debugf("client.pubPc.AddICECandidate() candidate:%v", candidate)
+				err := client.pubPc.AddICECandidate(candidate)
 				if err != nil {
 					log.Errorf("to=%v err=%v", from, err)
 				}
@@ -546,7 +556,7 @@ func (r *RTC) setClientRemoteSDP(sdp webrtc.SessionDescription, from string) err
 	for _, client := range r.clients {
 		if client.Id == from {
 			log.Infof("get remote description from:%v", from)
-			err := client.pc.SetRemoteDescription(sdp)
+			err := client.pubPc.SetRemoteDescription(sdp)
 			if err != nil {
 				log.Errorf("id=%v err=%v", r.uid, err)
 				return err
@@ -554,27 +564,27 @@ func (r *RTC) setClientRemoteSDP(sdp webrtc.SessionDescription, from string) err
 			//log.Infof("set remote description:%v", sdp)
 
 			// it's safe to add cand now after SetRemoteDescription
-			if client.RecvCandidates != nil {
-				if len(client.RecvCandidates) > 0 {
-					for _, candidate := range client.RecvCandidates {
-						log.Debugf("id=%v client.pc..AddICECandidate candidate=%v", r.uid, candidate)
-						err = client.pc.AddICECandidate(candidate)
+			if client.pubRecvCandidates != nil {
+				if len(client.pubRecvCandidates) > 0 {
+					for _, candidate := range client.pubRecvCandidates {
+						log.Debugf("id=%v client.pubPc..AddICECandidate candidate=%v", r.uid, candidate)
+						err = client.pubPc.AddICECandidate(candidate)
 						if err != nil {
 							log.Errorf("id=%v r.pub.pc.AddICECandidate err=%v", r.uid, err)
 						}
 					}
-					client.RecvCandidates = []webrtc.ICECandidateInit{}
+					client.pubRecvCandidates = []webrtc.ICECandidateInit{}
 				}
 			}
 
 			// it's safe to send cand now after join ok
-			if client.SendCandidates != nil {
-				if len(client.SendCandidates) > 0 {
-					for _, cand := range client.SendCandidates {
+			if client.pubSendCandidates != nil {
+				if len(client.pubSendCandidates) > 0 {
+					for _, cand := range client.pubSendCandidates {
 						log.Debugf("[C=>S] id=%v send sub.SendCandidates r.uid, r.rtc.trickle cand=%v", from, cand)
 						r.SendTrickle2(cand, from)
 					}
-					client.SendCandidates = []*webrtc.ICECandidate{}
+					client.pubSendCandidates = []*webrtc.ICECandidate{}
 				}
 			}
 		}
@@ -1164,22 +1174,24 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 		r.clients = append(r.clients, client)
 	}
 
-	if _, err := client.pc.AddTrack(r.VedioTrack); err != nil {
+	if _, err := client.pubPc.AddTrack(r.VedioTrack); err != nil {
 		log.Errorf("AddTrack error: %v", err)
 	}
-	if _, err := client.pc.AddTrack(r.AudioTrack); err != nil {
+	if _, err := client.pubPc.AddTrack(r.AudioTrack); err != nil {
 		log.Errorf("AddTrack error: %v", err)
 	}
 
-	client.dataChannel, _ = client.pc.CreateDataChannel("control", &webrtc.DataChannelInit{})
+	client.dataChannel, _ = client.pubPc.CreateDataChannel(API_CHANNEL, &webrtc.DataChannelInit{})
 
-	// client.pc.OnDataChannel(func(dc *webrtc.DataChannel) {
-
-	// 	if r.OnDataChannel != nil {
-	// 		r.OnDataChannel(dc)
-	// 	}
-	// })
-	client.pc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
+	client.pubPc.OnDataChannel(func(dc *webrtc.DataChannel) {
+		client.dataChannel = dc
+		log.Errorf("test")
+		if r.OnDataChannel != nil {
+			r.OnDataChannel(dc)
+		}
+	})
+	log.Errorf("test")
+	client.pubPc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
 		r.OnTrack(track, receiver)
 	})
 
@@ -1189,26 +1201,161 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 	})
 	client.dataChannel.OnMessage(func(msg webrtc.DataChannelMessage) {
 		//datachannel always receive message,but only controler can run r.OnDataChannelMessage
-		recvData := make(map[string]int)
-		err := json.Unmarshal(msg.Data, &recvData)
+		//recvData := make(map[string]interface{})
+		var dataChannelMsg DataChannelMsg
+		log.Debugf("received msg.Data:%s", msg.Data)
+		err := json.Unmarshal(msg.Data, &dataChannelMsg)
 		if err != nil {
 			log.Errorf("Unmarshal:err %v", err)
 			return
 		}
-		_, have_d := recvData["control"]
-		if have_d {
-			if recvData["control"] == 1 { //want control
-				client.dataChannel.SendText("idle")
-				//如果有一个client的Role是controler，return ,else send message to pi from datachannel
-				for _, c := range r.clients {
-					if c.ConnectType == rtc.ConnectType_Control {
-						client.dataChannel.SendText("busy-controled")
-					} //if c.ConnectType ==
-				} //for
+		//log.Debugf("received message:%v,data type:%T,data:%v", dataChannelMsg.Cmd, dataChannelMsg.Data, dataChannelMsg.Data)
+		switch dataChannelMsg.Cmd {
+		case "offer":
+			var offer webrtc.SessionDescription
+			var sdpType webrtc.SDPType
+			var recvSdp DataChannelMsgDataSdp
+			sdpString, ok := dataChannelMsg.Data.(string)
+			if ok {
+				err = json.Unmarshal([]byte(sdpString), &recvSdp)
 
-				client.DataChannelEable = true
-			} //if(recvData["control"] ==1)
-		} //if have_d {
+				if err != nil {
+					log.Errorf("Unmarshal sdp:err %v", err)
+					return
+				}
+			}
+			if recvSdp.Type == "offer" {
+				sdpType = webrtc.SDPTypeOffer
+			} else {
+				sdpType = webrtc.SDPTypeAnswer
+			}
+			offer = webrtc.SessionDescription{
+				Type: sdpType,
+				SDP:  recvSdp.Sdp,
+			}
+			err := client.subPc.SetRemoteDescription(offer)
+			if err != nil {
+				log.Errorf("id=%v Negotiate r.sub.pc.SetRemoteDescription err=%v", r.uid, err)
+				break
+			}
+
+			// 2. safe to send candiate to sfu after join ok
+			if len(client.subSendCandidates) > 0 {
+				for _, cand := range client.subSendCandidates {
+					log.Debugf("[C=>S] id=%v send sub.SendCandidates r.uid, r.rtc.trickle cand=%v", r.uid, cand)
+					//send from data channel
+					//r.SendTrickle(cand, Target_SUBSCRIBER)
+					candJson, err := json.Marshal(&DataChannelMsg{
+						Cmd:  "candi",
+						Data: cand.ToJSON(),
+					})
+					if err != nil {
+						log.Errorf("json.Marshal err=%v", err)
+						break
+					}
+					client.dataChannel.SendText(string(candJson))
+				}
+				client.subSendCandidates = []*webrtc.ICECandidate{}
+			}
+
+			// 3. safe to add candidate after SetRemoteDescription
+			if len(client.subRecvCandidates) > 0 {
+				for _, candidate := range client.subRecvCandidates {
+					log.Debugf("id=%v r.sub.pc.AddICECandidate candidate=%v", r.uid, candidate)
+					_ = client.subPc.AddICECandidate(candidate)
+				}
+				client.subRecvCandidates = []webrtc.ICECandidateInit{}
+			}
+
+			// 4. create answer after add ice candidate
+			answer, err := client.subPc.CreateAnswer(nil)
+			if err != nil {
+				log.Errorf("id=%v err=%v", r.uid, err)
+				return
+			}
+
+			// 5. set local sdp(answer)
+			err = client.subPc.SetLocalDescription(answer)
+			if err != nil {
+				log.Errorf("id=%v err=%v", r.uid, err)
+				return
+			}
+
+			// 6. send answer to sfu
+			//err = r.SendAnswer(answer)
+			//send from data channel
+			answerData := DataChannelMsgDataSdp{
+				Sdp:  answer.SDP,
+				Type: "answer",
+			}
+			answerDataJson, err := json.Marshal(&answerData)
+			answerJson, err := json.Marshal(&DataChannelMsg{
+				Cmd:  "answer",
+				Data: answerDataJson,
+			})
+			if err != nil {
+				log.Errorf("json.Marshal err=%v", err)
+				break
+			}
+			log.Infof("send anwer:%v", answer)
+			client.dataChannel.SendText(string(answerJson))
+			if err != nil {
+				log.Errorf("id=%v err=%v", r.uid, err)
+				return
+			}
+
+		case "candi":
+			candiString, ok := dataChannelMsg.Data.(string)
+			var resvCandidate webrtc.ICECandidateInit
+			if ok {
+				err = json.Unmarshal([]byte(candiString), &resvCandidate)
+
+				if err != nil {
+					log.Errorf("Unmarshal sdp:err %v", err)
+					return
+				}
+			}
+
+			if client.subPc.CurrentRemoteDescription() == nil {
+				client.subRecvCandidates = append(client.subRecvCandidates, resvCandidate)
+				log.Debugf("resvCandidate:%v", resvCandidate)
+			} else {
+				err := client.subPc.AddICECandidate(resvCandidate)
+				log.Debugf("resvCandidate:%v", resvCandidate)
+				if err != nil {
+					log.Errorf("id=%v err=%v", r.uid, err)
+				}
+			}
+		case "speed":
+			recvSpeed, ok := dataChannelMsg.Data.(int)
+			if ok {
+				log.Debugf("recvSpeed,%v", recvSpeed)
+			}
+		case "turn":
+			recvTurn, ok := dataChannelMsg.Data.(int)
+			if ok {
+				log.Debugf("recvTurn,%v", recvTurn)
+			}
+		case "control":
+			recvControl, ok := dataChannelMsg.Data.(int)
+			if ok {
+				log.Debugf("recvControl,%v", recvControl)
+			}
+		default:
+		}
+		// _, have_d := recvData["control"]
+		// if have_d {
+		// 	if recvData["control"] == 1 { //want control
+		// 		client.dataChannel.SendText("idle")
+		// 		//如果有一个client的Role是controler，return ,else send message to pi from datachannel
+		// 		for _, c := range r.clients {
+		// 			if c.ConnectType == rtc.ConnectType_Control {
+		// 				client.dataChannel.SendText("busy-controled")
+		// 			} //if c.ConnectType ==
+		// 		} //for
+		// 		client.DataChannelEable = true
+		// 	} //if(recvData["control"] ==1)
+		// } //if have_d {
 
 		if client.DataChannelEable == true {
 			//log.Debugf("client data channel messages:%s", msg)
@@ -1218,33 +1365,33 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 		}
 	})
 
-	offer, err := client.pc.CreateOffer(nil)
+	offer, err := client.pubPc.CreateOffer(nil)
 	//log.Infof("offer: %v", offer)
 	if err != nil {
 		log.Errorf("id=%v err=%v", r.uid, err)
 	}
 
 	// 2. pub set local sdp(offer)
-	err = client.pc.SetLocalDescription(offer)
+	err = client.pubPc.SetLocalDescription(offer)
 	if err != nil {
 		log.Errorf("id=%v err=%v", r.uid, err)
 	}
 
-	if len(client.SendCandidates) > 0 {
-		for _, cand := range client.SendCandidates {
+	if len(client.pubSendCandidates) > 0 {
+		for _, cand := range client.pubSendCandidates {
 			log.Debugf("[C=>S] id=%v send sub.SendCandidates r.uid, r.rtc.trickle cand=%v", uid, cand)
 			r.SendTrickle2(cand, uid)
 		}
-		client.SendCandidates = []*webrtc.ICECandidate{}
+		client.pubSendCandidates = []*webrtc.ICECandidate{}
 	}
 
 	// 3. safe to add candidate after SetRemoteDescription
-	if len(client.RecvCandidates) > 0 {
-		for _, candidate := range client.RecvCandidates {
+	if len(client.pubRecvCandidates) > 0 {
+		for _, candidate := range client.pubRecvCandidates {
 			log.Debugf("uid=%v r.sub.pc.AddICECandidate candidate=%v", uid, candidate)
-			_ = client.pc.AddICECandidate(candidate)
+			_ = client.pubPc.AddICECandidate(candidate)
 		}
-		client.RecvCandidates = []webrtc.ICECandidateInit{}
+		client.pubRecvCandidates = []webrtc.ICECandidateInit{}
 	}
 
 	err = r.SendWantConnectReply(offer, uid)
