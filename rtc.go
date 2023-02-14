@@ -1040,13 +1040,13 @@ func (r *RTC) onSingalHandle() error {
 				Type: sdpType,
 			}
 			if sdp.Type == webrtc.SDPTypeOffer {
-				log.Infof("[%v] [description] got offer call s.OnNegotiate sdp=%+v", r.uid, sdp)
+				//log.Infof("[%v] [description] got offer call s.OnNegotiate sdp=%+v", r.uid, sdp)
 				err := r.negotiate(sdp)
 				if err != nil {
 					log.Errorf("error: %v", err)
 				}
 			} else if sdp.Type == webrtc.SDPTypeAnswer {
-				log.Infof("[%v] [description] got answer call sdp=%+v", r.uid, sdp)
+				//log.Infof("[%v] [description] got answer call sdp=%+v", r.uid, sdp)
 				//err = r.setRemoteSDP(sdp)
 				err = r.setClientRemoteSDP(sdp, payload.Description.From)
 				if err != nil {
@@ -1205,13 +1205,13 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 		//datachannel always receive message,but only controler can run r.OnDataChannelMessage
 		//recvData := make(map[string]interface{})
 		var dataChannelMsg DataChannelMsg
-		log.Debugf("received msg.Data:%s", msg.Data)
+		//log.Debugf("received msg.Data:%s", msg.Data)
 		err := json.Unmarshal(msg.Data, &dataChannelMsg)
 		if err != nil {
 			log.Errorf("Unmarshal:err %v", err)
 			return
 		}
-		log.Debugf("received message:%v,data type:%T,data:%v", dataChannelMsg.Cmd, dataChannelMsg.Data, dataChannelMsg.Data)
+		//log.Debugf("received message:%v,data type:%T,data:%v", dataChannelMsg.Cmd, dataChannelMsg.Data, dataChannelMsg.Data)
 		switch dataChannelMsg.Cmd {
 		case "offer":
 			var offer webrtc.SessionDescription
@@ -1342,7 +1342,7 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 			}
 		case "control":
 			recvControl, ok := dataChannelMsg.Data.(float64)
-			log.Infof("recvControl,%v,%v", recvControl, ok)
+			//log.Infof("recvControl,%v,%v", recvControl, ok)
 			if ok {
 				if recvControl == 1 {
 					hasController := false
@@ -1370,12 +1370,12 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 					if err != nil {
 						log.Errorf("json.Marshal err=%v", err)
 					} else {
-						log.Infof("c.subPc.OnICECandidate")
+						//	log.Infof("c.subPc.OnICECandidate")
 						client.dataChannel.SendText(string(respJson))
 					}
 
 				}
-				log.Debugf("recvControl,%v", recvControl)
+				//log.Debugf("recvControl,%v", recvControl)
 			}
 		default:
 		}

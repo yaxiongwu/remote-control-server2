@@ -112,7 +112,7 @@ func NewClient(uid string, rtc *RTC, connectType rtclib.ConnectType) *Client {
 	// }
 	//pub从grpc走，sub从datachannel走
 	c.pubPc.OnICECandidate(func(i *webrtc.ICECandidate) {
-		log.Debugf("t.pc.OnICECandidate,myid:%v,%v", uid, i)
+		//	log.Debugf("t.pc.OnICECandidate,myid:%v,%v", uid, i)
 		if i == nil {
 			// Gathering done
 			log.Infof("gather candidate done")
@@ -132,7 +132,7 @@ func NewClient(uid string, rtc *RTC, connectType rtclib.ConnectType) *Client {
 	})
 	//pub从grpc走，sub从datachannel走
 	c.subPc.OnICECandidate(func(i *webrtc.ICECandidate) {
-		log.Debugf("subPc.OnICECandidate:%v", i)
+		//	log.Debugf("subPc.OnICECandidate:%v", i)
 		if i == nil {
 			// Gathering done
 			log.Infof("gather candidate done")
@@ -141,7 +141,7 @@ func NewClient(uid string, rtc *RTC, connectType rtclib.ConnectType) *Client {
 		//append before join session success
 		if c.subPc.CurrentRemoteDescription() == nil {
 			c.subSendCandidates = append(c.subSendCandidates, i)
-			log.Infof("c.subPc.CurrentRemoteDescription() == nil")
+			///log.Infof("c.subPc.CurrentRemoteDescription() == nil")
 		} else {
 			//log.Infof("c.subPc.CurrentRemoteDescription()  else")
 			for _, cand := range c.subSendCandidates {
@@ -155,7 +155,7 @@ func NewClient(uid string, rtc *RTC, connectType rtclib.ConnectType) *Client {
 					log.Errorf("json.Marshal err=%v", err)
 					break
 				}
-				log.Infof("c.subPc.OnICECandidate")
+				//	log.Infof("c.subPc.OnICECandidate")
 				c.dataChannel.SendText(string(candJson))
 
 			}
@@ -167,7 +167,7 @@ func NewClient(uid string, rtc *RTC, connectType rtclib.ConnectType) *Client {
 			if err != nil {
 				log.Errorf("json.Marshal err=%v", err)
 			} else {
-				log.Infof("c.subPc.OnICECandidate")
+				//log.Infof("c.subPc.OnICECandidate")
 				c.dataChannel.SendText(string(candJson))
 			}
 		}
