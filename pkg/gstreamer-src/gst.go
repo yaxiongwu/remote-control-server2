@@ -67,7 +67,8 @@ func CreatePipeline(codecName string, tracks []*webrtc.TrackLocalStaticSample, p
 		//pipelineStr = pipelineSrc + " ! video/x-raw,format=I420,framerate=40/1 ! omxh264enc control-rate=2 target-bitrate=10485760 interval-intraframes=14 periodicty-idr=2 ! " + pipelineStr
 		//pipelineStr = pipelineSrc + " ! video/x-raw,format=I420 ! x264enc speed-preset=ultrafast tune=zerolatency key-int-max=20 ! video/x-h264,stream-format=byte-stream ! " + pipelineStr
 		//pipelineStr = pipelineSrc + " ! video/x-raw,format=I420 ! omxh264enc speed-preset=ultrafast tune=zerolatency key-int-max=20 ! video/x-h264,stream-format=byte-stream ! " + pipelineStr
-		pipelineStr = pipelineSrc + " ! video/x-raw,format=I420,framerate=40/1 ! omxh264enc entropy-mode=1 b-frames=0 interval-intraframes=2 control-rate=1 target-bitrate=8000000 ! video/x-h264,stream-format=byte-stream ! " + pipelineStr
+		//framerate is important for delayed time, less delayed time when framerate=40/1,more when 20/1,but when framerate =50/1,the video is not clear
+		pipelineStr = "autovideosrc ! video/x-raw,format=I420,width=640,height=480,framerate=40/1 ! omxh264enc entropy-mode=1 b-frames=0 interval-intraframes=2 control-rate=1 target-bitrate=3000000 ! video/x-h264,stream-format=byte-stream ! " + pipelineStr
 		//pipelineStr = pipelineSrc + " ! video/x-raw,format=I420,framerate=40/1 ! omxh264enc entropy-mode=1 b-frames=0 interval-intraframes=2 control-rate=1 target-bitrate=8000000 ! " + pipelineStr
 		clockRate = videoClockRate
 		codecName = "h264"

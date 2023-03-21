@@ -67,6 +67,12 @@ ffmpeg -re -f lavfi -i testsrc=size=640x480:rate=30 -vcodec libx264 -cpu-used 5 
 gst-launch-1.0 -v v4l2src device=/dev/video0 ! 'video/x-raw, width=1024, height=768, framerate=30/1' ! queue ! videoconvert ! omxh264enc ! h264parse ! flvmux ! rtmpsink location='rtmp://live-push.bilivideo.com/live-bvc/?streamname=live_443203481_72219565&key=0c399147659bfa24be5454360c227c21&schedule=rtmp&pflag=1'
 gst-launch-1.0 -v v4l2src device=/dev/video0 ! 'video/x-raw, width=1024, height=768, framerate=30/1' ! queue ! videoconvert ! omxh264enc quant-i-frames=10 ! h264parse ! flvmux ! rtmpsink location='rtmp://live-push.bilivideo.com/live-bvc/?streamname=live_443203481_72219565&key=0c399147659bfa24be5454360c227c21&schedule=rtmp&pflag=1'
 
+gst-inspect-1.0 omxh264enc
+
+gst-launch-1.0 -v v4l2src device=/dev/video0 ! video/x-raw,format=I420,framerate=40/1 ! omxh264enc entropy-mode=1 b-frames=0 interval-intraframes=2 control-rate=1 target-bitrate=8000000 ! h264parse ! flvmux ! filesink location=5.h264
+gst-launch-1.0 -v v4l2src device=/dev/video0 ! 'video/x-raw, width=1024, height=768, framerate=30/1' ! queue ! videoconvert ! omxh264enc entropy-mode=1 b-frames=0 interval-intraframes=2 control-rate=1 target-bitrate=8000000 ! h264parse ! flvmux ! filesink location=5.h264
+gst-launch-1.0 -v v4l2src device=/dev/video0 ! 'video/x-raw, width=1024, height=768, framerate=30/1' ! queue ! videoconvert ! omxh264enc entropy-mode=1 b-frames=0 interval-intraframes=1 control-rate=1 target-bitrate=8000000 ! h264parse ! flvmux ! filesink location=6.h264
+
 maxperf-enable=1 打开最大性能模式
 iframeinterval=100 设置i帧间隔
 control-rate=0 bitrate=30000000 设置变码率和标准比特率（1定码率）

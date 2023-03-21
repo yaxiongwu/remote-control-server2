@@ -6071,3 +6071,1309 @@ github.com/yaxiongwu/remote-control-client-go/pkg/gstreamer-src.goHandlePipeline
 	/home/pi/remote-control-client-go-0927/pkg/gstreamer-src/gst.go:142 +0x84
 created by github.com/yaxiongwu/remote-control-client-go/pkg/gstreamer-src.goHandlePipelineBuffer
 	/home/pi/remote-control-client-go-0927/pkg/gstreamer-src/gst.go:139 +0x25c
+[2023-02-14 09:30:26.246]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 09:30:27.532]  INFO default: [rtc.go:886] [remote-control-client-go2.(*RTC).RegisterNewVideoSource] [C=>S] sid: PiVideoSource,uid:远程视频控制小车 
+[2023-02-14 09:31:01.174]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web35400662085b3a0a482" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 09:31:01.174] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web35400662085b3a0a482 ,type:View 
+[2023-02-14 09:31:01.175] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 09:31:01.240] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 09:31:01.245]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web35400662085b3a0a482] sdp={offer v=0
+o=- 5159070510778095588 1676367061 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 CF:5B:9D:46:11:1F:02:9A:4F:F8:9E:23:AC:AC:DA:F1:08:7B:D1:1C:4C:5E:88:47:AD:A2:5D:B3:7B:48:1C:A3
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:BffKhNvYPMLyjoyw
+a=ice-pwd:JwoTuyjnhWtmLccANMsHENwYpIVRvwym
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:2547330911 cname:pion2
+a=ssrc:2547330911 msid:pion2 video
+a=ssrc:2547330911 mslabel:pion2
+a=ssrc:2547330911 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:BffKhNvYPMLyjoyw
+a=ice-pwd:JwoTuyjnhWtmLccANMsHENwYpIVRvwym
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:1076998115 cname:pion1
+a=ssrc:1076998115 msid:pion1 audio
+a=ssrc:1076998115 mslabel:pion1
+a=ssrc:1076998115 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:BffKhNvYPMLyjoyw
+a=ice-pwd:JwoTuyjnhWtmLccANMsHENwYpIVRvwym
+ 0x2e8e5a0} 
+[2023-02-14 09:31:01.486]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web35400662085b3a0a482 
+[2023-02-14 09:31:01.491] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35400662085b3a0a482 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.4:38929 
+[2023-02-14 09:31:01.491] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 09:31:01.492] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.4:38929 destination=web35400662085b3a0a482 
+[2023-02-14 09:31:01.493] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35400662085b3a0a482 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:1d14:b0ca:3090:9db6:37609 
+[2023-02-14 09:31:01.493] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:1d14:b0ca:3090:9db6:37609 destination=web35400662085b3a0a482 
+[2023-02-14 09:31:01.494] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35400662085b3a0a482 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:10053 related 0.0.0.0:42653 
+[2023-02-14 09:31:01.494] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:10053 related 0.0.0.0:42653 destination=web35400662085b3a0a482 
+[2023-02-14 09:31:02.705] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 09:31:02.705] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 09:31:02.70551586 +0000 GMT m=+21.659965748 
+[2023-02-14 09:31:03.092] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 09:31:06.263]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 09:31:06.412] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to checking 
+[2023-02-14 09:31:06.412]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 4276526860441227940 1676367066 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 5B:32:F4:E1:48:94:9B:FE:1F:5A:D9:82:CD:E0:55:31:02:7F:9C:6E:35:8F:C5:4E:9F:00:D6:DD:C0:00:5E:B1
+a=extmap-allow-mixed
+a=group:BUNDLE 0
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:PpZlATHbISueqRoa
+a=ice-pwd:PkQBDbuNBXBJqhUGmYzEWMgRPiWHqqNu
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x2e01320} 
+[2023-02-14 09:31:06.413] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:814528513 1 udp 2113937151 10.111.176.57 50847 typ host generation 0 ufrag OvA3 network-cost 999 0x2e86a38 0x2f27100 <nil>} 
+[2023-02-14 09:31:06.414] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:4119177212 1 udp 2113939711 2409:8954:9cc8:422e:b4ee:ea4a:9c96:3ef5 36049 typ host generation 0 ufrag OvA3 network-cost 999 0x2e86ad0 0x2f27168 <nil>} 
+[2023-02-14 09:31:06.484] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:699958657 1 udp 1677729535 223.104.65.164 53466 typ srflx raddr 10.111.176.57 rport 50847 generation 0 ufrag OvA3 network-cost 999 0x2e86cf0 0x2f27488 <nil>} 
+[2023-02-14 09:31:06.599] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to connected 
+[2023-02-14 09:31:06.805]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 09:31:11.422]  INFO default: [client.go:138] [remote-control-client-go2.NewClient.func2] gather candidate done 
+[2023-02-14 09:31:20.699] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to disconnected 
+[2023-02-14 09:31:20.850] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to disconnected 
+[2023-02-14 09:31:46.719] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to failed 
+[2023-02-14 09:31:46.869] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to failed 
+[2023-02-14 09:41:18.165]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 09:43:55.633]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 09:47:28.820]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 09:47:29.621]  INFO default: [rtc.go:886] [remote-control-client-go2.(*RTC).RegisterNewVideoSource] [C=>S] sid: PiVideoSource,uid:远程视频控制小车 
+[2023-02-14 10:01:49.672]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 10:01:50.424]  INFO default: [rtc.go:886] [remote-control-client-go2.(*RTC).RegisterNewVideoSource] [C=>S] sid: PiVideoSource,uid:远程视频控制小车 
+[2023-02-14 10:01:56.517]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web35402517490758d622f" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 10:01:56.517] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web35402517490758d622f ,type:View 
+[2023-02-14 10:01:56.517] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 10:01:56.538] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 10:01:56.540]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web35402517490758d622f] sdp={offer v=0
+o=- 7383781148315955929 1676368916 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 B0:37:CA:41:8E:0B:BB:A8:46:5E:81:6C:1B:3C:5B:49:67:39:6A:B2:45:03:5B:59:72:33:B1:F0:CD:02:C7:F5
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:QZNtfzbjvxMMZlVQ
+a=ice-pwd:fZSBWwFHrTYQtiGwocqCkzQEitZtmmCr
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:1382529136 cname:pion2
+a=ssrc:1382529136 msid:pion2 video
+a=ssrc:1382529136 mslabel:pion2
+a=ssrc:1382529136 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:QZNtfzbjvxMMZlVQ
+a=ice-pwd:fZSBWwFHrTYQtiGwocqCkzQEitZtmmCr
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:371730948 cname:pion1
+a=ssrc:371730948 msid:pion1 audio
+a=ssrc:371730948 mslabel:pion1
+a=ssrc:371730948 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:QZNtfzbjvxMMZlVQ
+a=ice-pwd:fZSBWwFHrTYQtiGwocqCkzQEitZtmmCr
+ 0x2496750} 
+[2023-02-14 10:01:56.929]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web35402517490758d622f 
+[2023-02-14 10:01:56.932] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35402517490758d622f send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:57000 
+[2023-02-14 10:01:56.933] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 10:01:56.932] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:57000 destination=web35402517490758d622f 
+[2023-02-14 10:01:56.935] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35402517490758d622f send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:36248 
+[2023-02-14 10:01:56.935] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:36248 destination=web35402517490758d622f 
+[2023-02-14 10:01:56.936] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35402517490758d622f send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:12966 related 0.0.0.0:56265 
+[2023-02-14 10:01:56.936] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:12966 related 0.0.0.0:56265 destination=web35402517490758d622f 
+[2023-02-14 10:01:58.060] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 10:01:58.060] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 10:01:58.060307259 +0000 GMT m=+9.568409199 
+[2023-02-14 10:01:58.117] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 10:02:01.568]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 10:02:15.445] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to checking 
+[2023-02-14 10:02:15.448]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 8954282017236120012 1676368935 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 44:0A:D1:DD:F3:12:7D:D1:69:57:95:CC:08:DB:A9:BB:A8:93:2D:AB:A3:E8:AC:24:3E:75:13:01:85:41:E6:3B
+a=extmap-allow-mixed
+a=group:BUNDLE 0
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:rxahlbzwbGbNtnhO
+a=ice-pwd:eNiDwSCdiLQGKuYnNQszGpFLOpGFfVVj
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x261ddd0} 
+[2023-02-14 10:02:15.455] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:3473853841 1 udp 2113937151 192.168.1.7 34161 typ host generation 0 ufrag wzc+ network-cost 999 0x25be1c8 0x2984150 <nil>} 
+[2023-02-14 10:02:15.455] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:4022470346 1 udp 2113939711 240e:3b1:9ed8:9ce0:9cb1:2d58:ea90:df6 37699 typ host generation 0 ufrag wzc+ network-cost 999 0x25be258 0x29841b8 <nil>} 
+[2023-02-14 10:02:15.463] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to connected 
+[2023-02-14 10:02:15.747]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 10:02:20.458]  INFO default: [client.go:138] [remote-control-client-go2.NewClient.func2] gather candidate done 
+[2023-02-14 10:02:27.567] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to disconnected 
+[2023-02-14 10:02:28.213] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to disconnected 
+[2023-02-14 10:02:48.357]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web35402569420e8054c1b" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 10:02:48.357] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web35402569420e8054c1b ,type:View 
+[2023-02-14 10:02:48.357] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 10:02:48.373] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 10:02:48.375]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web35402569420e8054c1b] sdp={offer v=0
+o=- 483981757542454182 1676368968 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 CB:51:B1:4B:91:01:04:BA:CA:95:24:70:F4:E0:71:2A:5E:1B:7B:BB:A4:2E:0B:FB:6C:B4:BC:25:67:07:46:EF
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:pLyjgafIOMnQrfxd
+a=ice-pwd:nqwwkSwcSqdqCvqlYfuBkAvIziqxaWWd
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:1807300127 cname:pion2
+a=ssrc:1807300127 msid:pion2 video
+a=ssrc:1807300127 mslabel:pion2
+a=ssrc:1807300127 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:pLyjgafIOMnQrfxd
+a=ice-pwd:nqwwkSwcSqdqCvqlYfuBkAvIziqxaWWd
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:1642715606 cname:pion1
+a=ssrc:1642715606 msid:pion1 audio
+a=ssrc:1642715606 mslabel:pion1
+a=ssrc:1642715606 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:pLyjgafIOMnQrfxd
+a=ice-pwd:nqwwkSwcSqdqCvqlYfuBkAvIziqxaWWd
+ 0x2504b40} 
+[2023-02-14 10:02:48.499]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web35402569420e8054c1b 
+[2023-02-14 10:02:48.502] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35402569420e8054c1b send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:56031 
+[2023-02-14 10:02:48.503] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:56031 destination=web35402569420e8054c1b 
+[2023-02-14 10:02:48.502] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 10:02:48.503] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35402569420e8054c1b send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:39711 
+[2023-02-14 10:02:48.503] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:39711 destination=web35402569420e8054c1b 
+[2023-02-14 10:02:48.504] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35402569420e8054c1b send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:13026 related 0.0.0.0:42738 
+[2023-02-14 10:02:48.504] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:13026 related 0.0.0.0:42738 destination=web35402569420e8054c1b 
+[2023-02-14 10:02:49.584] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 10:02:49.584] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 10:02:49.58482253 +0000 GMT m=+61.092924395 
+[2023-02-14 10:02:49.639] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 10:02:53.402]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 10:02:53.582] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to failed 
+[2023-02-14 10:02:54.224] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to failed 
+                                                                                                                                               [2023-02-14 10:31:24.893]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 10:31:25.529]  INFO default: [rtc.go:886] [remote-control-client-go2.(*RTC).RegisterNewVideoSource] [C=>S] sid: PiVideoSource,uid:远程视频控制小车 
+[2023-02-14 10:31:36.161]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web354042967415a17f273" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 10:31:36.161] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web354042967415a17f273 ,type:View 
+[2023-02-14 10:31:36.161] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 10:31:36.189] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 10:31:36.192]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web354042967415a17f273] sdp={offer v=0
+o=- 3503212804780478207 1676370696 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 A6:75:3A:FC:31:B3:2E:3F:A2:4C:72:C4:B0:C8:9A:89:6B:B4:16:05:8B:25:8F:C7:B2:77:0B:30:F1:88:37:EE
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:agUjScImcPvMiTYX
+a=ice-pwd:LyqVLpMYUVjMVYSXFGatXFsjTGCsGRhV
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:3929421103 cname:pion2
+a=ssrc:3929421103 msid:pion2 video
+a=ssrc:3929421103 mslabel:pion2
+a=ssrc:3929421103 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:agUjScImcPvMiTYX
+a=ice-pwd:LyqVLpMYUVjMVYSXFGatXFsjTGCsGRhV
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:4114279487 cname:pion1
+a=ssrc:4114279487 msid:pion1 audio
+a=ssrc:4114279487 mslabel:pion1
+a=ssrc:4114279487 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:agUjScImcPvMiTYX
+a=ice-pwd:LyqVLpMYUVjMVYSXFGatXFsjTGCsGRhV
+ 0x2a1c630} 
+[2023-02-14 10:31:36.369]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web354042967415a17f273 
+[2023-02-14 10:31:36.371] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web354042967415a17f273 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:59604 
+[2023-02-14 10:31:36.371] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:59604 destination=web354042967415a17f273 
+[2023-02-14 10:31:36.371] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 10:31:36.371] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web354042967415a17f273 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:35710 
+[2023-02-14 10:31:36.372] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:35710 destination=web354042967415a17f273 
+[2023-02-14 10:31:36.389] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:10822 related 0.0.0.0:56822 destination=web354042967415a17f273 
+[2023-02-14 10:31:37.484] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 10:31:37.484] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 10:31:37.484431295 +0000 GMT m=+13.768745141 
+[2023-02-14 10:31:37.538] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 10:31:41.255]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 10:32:04.865] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to checking 
+[2023-02-14 10:32:04.866]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 785185181077843153 1676370724 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 32:85:AB:45:8A:8B:99:E7:F7:A5:10:40:9F:5D:73:BB:75:10:BE:B8:95:9D:29:9E:EB:9B:47:50:97:E5:28:13
+a=extmap-allow-mixed
+a=group:BUNDLE 0
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:RbYWXcyrTuTlrUml
+a=ice-pwd:yPvbKUMZGlCZRjHPRxAovKYhHDiCQWCv
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x2cbf050} 
+[2023-02-14 10:32:04.866] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:30793861 1 udp 2113937151 192.168.1.7 54628 typ host generation 0 ufrag 26lC network-cost 999 0x2b4d328 0x2895b30 <nil>} 
+[2023-02-14 10:32:04.867] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:4249658418 1 udp 2113939711 240e:3b1:9ed8:9ce0:9cb1:2d58:ea90:df6 39165 typ host generation 0 ufrag 26lC network-cost 999 0x2b4d3a0 0x2895b98 <nil>} 
+[2023-02-14 10:32:04.876] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to connected 
+[2023-02-14 10:32:05.117]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 10:32:09.906]  INFO default: [client.go:138] [remote-control-client-go2.NewClient.func2] gather candidate done 
+[2023-02-14 10:32:21.020] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to disconnected 
+[2023-02-14 10:32:21.693] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to disconnected 
+[2023-02-14 10:32:28.199]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web35404348816544f6de3" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 10:32:28.199] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web35404348816544f6de3 ,type:View 
+[2023-02-14 10:32:28.199] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 10:32:28.220] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 10:32:28.223]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web35404348816544f6de3] sdp={offer v=0
+o=- 7901350816710489069 1676370748 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 D3:56:DD:65:D8:09:D2:FB:E5:5E:E5:CD:6B:50:93:7B:5A:37:A6:5D:20:FB:95:C4:E2:A1:3D:87:44:02:E1:D8
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:qiaIfTPPFoOXndUf
+a=ice-pwd:qLUWdlDWDVmqmMMbYblkxMcfoLXLsRoZ
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:199368166 cname:pion2
+a=ssrc:199368166 msid:pion2 video
+a=ssrc:199368166 mslabel:pion2
+a=ssrc:199368166 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:qiaIfTPPFoOXndUf
+a=ice-pwd:qLUWdlDWDVmqmMMbYblkxMcfoLXLsRoZ
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:126809444 cname:pion1
+a=ssrc:126809444 msid:pion1 audio
+a=ssrc:126809444 mslabel:pion1
+a=ssrc:126809444 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:qiaIfTPPFoOXndUf
+a=ice-pwd:qLUWdlDWDVmqmMMbYblkxMcfoLXLsRoZ
+ 0x29f45a0} 
+[2023-02-14 10:32:28.495]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web35404348816544f6de3 
+[2023-02-14 10:32:28.501] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 10:32:28.501] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35404348816544f6de3 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:55353 
+[2023-02-14 10:32:28.502] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:55353 destination=web35404348816544f6de3 
+[2023-02-14 10:32:28.502] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35404348816544f6de3 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:41674 
+[2023-02-14 10:32:28.503] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:41674 destination=web35404348816544f6de3 
+[2023-02-14 10:32:28.503] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35404348816544f6de3 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:10893 related 0.0.0.0:47284 
+[2023-02-14 10:32:28.503] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:10893 related 0.0.0.0:47284 destination=web35404348816544f6de3 
+[2023-02-14 10:32:29.631] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 10:32:29.631] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 10:32:29.63193907 +0000 GMT m=+65.916252860 
+[2023-02-14 10:32:29.700] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 10:32:33.280]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 10:32:45.706] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to failed 
+[2023-02-14 10:32:47.033] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to failed 
+[2023-02-14 10:33:05.839] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to disconnected 
+[2023-02-14 10:33:31.853] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to failed 
+[2023-02-14 10:33:41.983]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 11:15:52.449]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 11:15:52.899]  INFO default: [rtc.go:886] [remote-control-client-go2.(*RTC).RegisterNewVideoSource] [C=>S] sid: PiVideoSource,uid:远程视频控制小车 
+[2023-02-14 11:19:37.865]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web35407177704889a2903" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 11:19:37.865] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web35407177704889a2903 ,type:View 
+[2023-02-14 11:19:37.865] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 11:19:37.884] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 11:19:37.888]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web35407177704889a2903] sdp={offer v=0
+o=- 3239243008097233990 1676373577 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 DD:41:32:37:81:9C:D2:A3:9F:F9:5C:2C:94:69:A4:02:76:FB:B9:36:E0:71:4A:03:93:5E:D2:BF:82:61:2F:FF
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:VGWkzPaDfotQEIFE
+a=ice-pwd:OVsLOXoiJRFbywyyFstMiwQjkBGzdPrT
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:1535902843 cname:pion2
+a=ssrc:1535902843 msid:pion2 video
+a=ssrc:1535902843 mslabel:pion2
+a=ssrc:1535902843 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:VGWkzPaDfotQEIFE
+a=ice-pwd:OVsLOXoiJRFbywyyFstMiwQjkBGzdPrT
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:2911319753 cname:pion1
+a=ssrc:2911319753 msid:pion1 audio
+a=ssrc:2911319753 mslabel:pion1
+a=ssrc:2911319753 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:VGWkzPaDfotQEIFE
+a=ice-pwd:OVsLOXoiJRFbywyyFstMiwQjkBGzdPrT
+ 0x29046c0} 
+[2023-02-14 11:19:38.259]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web35407177704889a2903 
+[2023-02-14 11:19:38.261] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35407177704889a2903 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:45759 
+[2023-02-14 11:19:38.261] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:45759 destination=web35407177704889a2903 
+[2023-02-14 11:19:38.261] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 11:19:38.262] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35407177704889a2903 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:38304 
+[2023-02-14 11:19:38.262] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:38304 destination=web35407177704889a2903 
+[2023-02-14 11:19:38.262] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web35407177704889a2903 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:11366 related 0.0.0.0:54212 
+[2023-02-14 11:19:38.262] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:11366 related 0.0.0.0:54212 destination=web35407177704889a2903 
+[2023-02-14 11:19:39.449] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 11:19:39.449] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 11:19:39.449891443 +0000 GMT m=+228.178683295 
+[2023-02-14 11:19:39.715] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 11:19:42.917]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 11:20:28.509] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to checking 
+[2023-02-14 11:20:28.509]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 3972824652731309628 1676373628 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 6D:5A:94:20:CF:AB:96:5A:FE:A7:D4:04:83:89:C8:4F:4D:33:D6:B0:BE:B4:7D:97:EA:20:53:23:C9:28:BC:C7
+a=group:BUNDLE 0
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:ttBxsRwbaOfvjdWQ
+a=ice-pwd:BBqKUucnyXrOZlmLXPVyPGfodvDMbLMe
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x2b2ccf0} 
+[2023-02-14 11:20:28.509] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:699757296 1 udp 2113937151 10.137.227.110 52823 typ host generation 0 ufrag yT5S network-cost 999 0x2b7ab50 0x28939c0 <nil>} 
+[2023-02-14 11:20:28.510] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:4152086617 1 udp 2113939711 2409:8950:b9e:d77:708c:c27b:eb5:33c0 56518 typ host generation 0 ufrag yT5S network-cost 999 0x2b7abf0 0x2893a28 <nil>} 
+[2023-02-14 11:20:28.581] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:842163049 1 udp 1677729535 39.144.190.124 5522 typ srflx raddr 10.137.227.110 rport 52823 generation 0 ufrag yT5S network-cost 999 0x2b7ada8 0x2893c30 <nil>} 
+[2023-02-14 11:20:28.633] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to connected 
+[2023-02-14 11:20:28.773]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 11:20:38.531]  INFO default: [client.go:138] [remote-control-client-go2.NewClient.func2] gather candidate done 
+[2023-02-14 11:21:27.613] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to disconnected 
+[2023-02-14 11:21:27.623] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to disconnected 
+[2023-02-14 11:21:53.626] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to failed 
+[2023-02-14 11:21:53.636] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to failed 
+[2023-02-14 11:34:29.870]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 
+[2023-02-14 11:34:30.641]  INFO default: [rtc.go:886] [remote-control-client-go2.(*RTC).RegisterNewVideoSource] [C=>S] sid: PiVideoSource,uid:远程视频控制小车 
+[2023-02-14 11:36:46.873]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web354082056186acf6eea" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 11:36:46.873] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web354082056186acf6eea ,type:View 
+[2023-02-14 11:36:46.873] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 11:36:46.898] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 11:36:46.901]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web354082056186acf6eea] sdp={offer v=0
+o=- 7315910523273919720 1676374606 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 51:E3:66:DC:3B:C6:72:2F:BB:00:3A:67:54:8A:98:6E:8B:9B:B5:71:61:BC:A9:59:0E:95:E1:8A:51:24:5F:36
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:PBXjIcrdIQEpaDdf
+a=ice-pwd:izcotUaThgaDeSCBjYKThOgUHubALujU
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:1065138356 cname:pion2
+a=ssrc:1065138356 msid:pion2 video
+a=ssrc:1065138356 mslabel:pion2
+a=ssrc:1065138356 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:PBXjIcrdIQEpaDdf
+a=ice-pwd:izcotUaThgaDeSCBjYKThOgUHubALujU
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:2390615563 cname:pion1
+a=ssrc:2390615563 msid:pion1 audio
+a=ssrc:2390615563 mslabel:pion1
+a=ssrc:2390615563 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:PBXjIcrdIQEpaDdf
+a=ice-pwd:izcotUaThgaDeSCBjYKThOgUHubALujU
+ 0x161c2d0} 
+[2023-02-14 11:36:47.135]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web354082056186acf6eea 
+[2023-02-14 11:36:47.137] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web354082056186acf6eea send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:42722 
+[2023-02-14 11:36:47.137] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:42722 destination=web354082056186acf6eea 
+[2023-02-14 11:36:47.137] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 11:36:47.137] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web354082056186acf6eea send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:36631 
+[2023-02-14 11:36:47.137] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:36631 destination=web354082056186acf6eea 
+[2023-02-14 11:36:47.138] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web354082056186acf6eea send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:12686 related 0.0.0.0:51743 
+[2023-02-14 11:36:47.138] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:12686 related 0.0.0.0:51743 destination=web354082056186acf6eea 
+[2023-02-14 11:36:48.338] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 11:36:48.338] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 11:36:48.338647191 +0000 GMT m=+139.616267596 
+[2023-02-14 11:36:48.789] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 11:36:51.930]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+[2023-02-14 11:37:13.959] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to checking 
+[2023-02-14 11:37:13.959]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 3480322937180648248 1676374633 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 C6:6A:8C:FA:79:09:6F:1E:9A:93:79:01:E8:3D:71:02:8F:E7:1E:61:50:48:8A:E8:49:A7:C1:6D:0D:F3:C1:7E
+a=group:BUNDLE 0
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x17fe2d0} 
+[2023-02-14 11:37:13.964] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:1662560720 1 udp 2113937151 10.64.64.98 49202 typ host generation 0 ufrag IBKX network-cost 999 0x18f81b8 0x16843b0 <nil>} 
+[2023-02-14 11:37:13.967] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:2417202861 1 udp 2113939711 2408:8456:9c40:ba1:45f1:b0:70d3:5bb6 42284 typ host generation 0 ufrag IBKX network-cost 999 0x18f82d0 0x1684558 <nil>} 
+[2023-02-14 11:37:14.045] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to connected 
+[2023-02-14 11:37:14.052] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:842163049 1 udp 1677729535 112.97.162.44 29170 typ srflx raddr 10.64.64.98 rport 49202 generation 0 ufrag IBKX network-cost 999 0x18f83b0 0x1684638 <nil>} 
+[2023-02-14 11:37:14.392]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 11:37:18.970]  INFO default: [client.go:138] [remote-control-client-go2.NewClient.func2] gather candidate done 
+[2023-02-14 11:37:19.052]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 3480322937180648248 1676374634 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 C6:6A:8C:FA:79:09:6F:1E:9A:93:79:01:E8:3D:71:02:8F:E7:1E:61:50:48:8A:E8:49:A7:C1:6D:0D:F3:C1:7E
+a=group:BUNDLE 0 1
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+a=candidate:2255131730 1 udp 2130706431 192.168.1.6 34318 typ host
+a=candidate:2255131730 2 udp 2130706431 192.168.1.6 34318 typ host
+a=candidate:1068810794 1 udp 1694498815 119.125.91.80 12744 typ srflx raddr 0.0.0.0 rport 50408
+a=candidate:1068810794 2 udp 1694498815 119.125.91.80 12744 typ srflx raddr 0.0.0.0 rport 50408
+a=candidate:3681733409 1 udp 2130706431 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997 55605 typ host
+a=candidate:3681733409 2 udp 2130706431 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997 55605 typ host
+a=end-of-candidates
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:1
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x1505710} 
+[2023-02-14 11:37:19.112] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:1662560720 1 udp 2113937151 10.64.64.98 47522 typ host generation 0 ufrag IBKX network-cost 999 0x1622d08 0x18c8840 <nil>} 
+[2023-02-14 11:37:19.113] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:2417202861 1 udp 2113939711 2408:8456:9c40:ba1:45f1:b0:70d3:5bb6 49957 typ host generation 0 ufrag IBKX network-cost 999 0x1622d88 0x18c88a8 <nil>} 
+[2023-02-14 11:37:19.143]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 11:37:20.460]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 3480322937180648248 1676374635 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 C6:6A:8C:FA:79:09:6F:1E:9A:93:79:01:E8:3D:71:02:8F:E7:1E:61:50:48:8A:E8:49:A7:C1:6D:0D:F3:C1:7E
+a=group:BUNDLE 0 1 2
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+a=candidate:3681733409 1 udp 2130706431 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997 55605 typ host
+a=candidate:3681733409 2 udp 2130706431 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997 55605 typ host
+a=candidate:2255131730 1 udp 2130706431 192.168.1.6 34318 typ host
+a=candidate:2255131730 2 udp 2130706431 192.168.1.6 34318 typ host
+a=candidate:1068810794 1 udp 1694498815 119.125.91.80 12744 typ srflx raddr 0.0.0.0 rport 50408
+a=candidate:1068810794 2 udp 1694498815 119.125.91.80 12744 typ srflx raddr 0.0.0.0 rport 50408
+a=end-of-candidates
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:1
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:2
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x161cf30} 
+[2023-02-14 11:37:20.532] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:1662560720 1 udp 2113937151 10.64.64.98 37307 typ host generation 0 ufrag IBKX network-cost 999 0x148f670 0x1596920 <nil>} 
+[2023-02-14 11:37:20.532] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:2417202861 1 udp 2113939711 2408:8456:9c40:ba1:45f1:b0:70d3:5bb6 45115 typ host generation 0 ufrag IBKX network-cost 999 0x148f6e8 0x1596988 <nil>} 
+[2023-02-14 11:37:20.555]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 11:37:36.817]  INFO default: [rtc.go:1302] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] send anwer:{answer v=0
+o=- 3480322937180648248 1676374636 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 C6:6A:8C:FA:79:09:6F:1E:9A:93:79:01:E8:3D:71:02:8F:E7:1E:61:50:48:8A:E8:49:A7:C1:6D:0D:F3:C1:7E
+a=group:BUNDLE 0 1 2 3
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:0
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+a=candidate:3681733409 1 udp 2130706431 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997 55605 typ host
+a=candidate:3681733409 2 udp 2130706431 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997 55605 typ host
+a=candidate:2255131730 1 udp 2130706431 192.168.1.6 34318 typ host
+a=candidate:2255131730 2 udp 2130706431 192.168.1.6 34318 typ host
+a=candidate:1068810794 1 udp 1694498815 119.125.91.80 12744 typ srflx raddr 0.0.0.0 rport 50408
+a=candidate:1068810794 2 udp 1694498815 119.125.91.80 12744 typ srflx raddr 0.0.0.0 rport 50408
+a=end-of-candidates
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:1
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:2
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+m=audio 9 UDP/TLS/RTP/SAVPF 111 9 0 8
+c=IN IP4 0.0.0.0
+a=setup:active
+a=mid:3
+a=ice-ufrag:PwIWMjqYUfKyJLuq
+a=ice-pwd:eSijaZdbUYcHkqNYXrSiwsoXaejJSQsO
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=rtcp-fb:111 transport-cc 
+a=rtpmap:9 G722/8000
+a=rtpmap:0 PCMU/8000
+a=rtpmap:8 PCMA/8000
+a=recvonly
+ 0x1505950} 
+[2023-02-14 11:37:36.817] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:1662560720 1 udp 2113937151 10.64.64.98 44067 typ host generation 0 ufrag IBKX network-cost 999 0x148f2d8 0x17e9100 <nil>} 
+[2023-02-14 11:37:36.818] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:2417202861 1 udp 2113939711 2408:8456:9c40:ba1:45f1:b0:70d3:5bb6 46156 typ host generation 0 ufrag IBKX network-cost 999 0x148f350 0x17e9168 <nil>} 
+[2023-02-14 11:37:36.850] DEBUG default: [rtc.go:1326] [remote-control-client-go2.(*RTC).getWantConnectRequest.func4] resvCandidate:{candidate:842163049 1 udp 1677729535 112.97.162.44 29173 typ srflx raddr 10.64.64.98 rport 44067 generation 0 ufrag IBKX network-cost 999 0x18f81e0 0x18d6700 <nil>} 
+[2023-02-14 11:37:36.915]  INFO default: [main.go:157] [main.main.func3] track.Codec():{{audio/opus 48000 2 minptime=10;useinbandfec=1 [{transport-cc }]} 111 } 
+decode init size: 18172
+[2023-02-14 11:37:48.495] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to disconnected 
+[2023-02-14 11:37:48.855] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to disconnected 
+[2023-02-14 11:38:14.506] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to failed 
+[2023-02-14 11:38:14.868] DEBUG default: [client.go:177] [remote-control-client-go2.NewClient.func3] IECConnectionStateChange to failed 
+[2023-02-14 11:38:54.843]  INFO default: [rtc.go:1057] [remote-control-client-go2.(*RTC).onSingalHandle] rtc.Reply_WantConnect :from:"web3540833362803691a52" to:"PiVideoSource" connectType:View,type:View 
+[2023-02-14 11:38:54.844] DEBUG default: [rtc.go:1136] [remote-control-client-go2.(*RTC).getWantConnectRequest] getWantConnectRequest from web3540833362803691a52 ,type:View 
+[2023-02-14 11:38:54.844] DEBUG default: [rtc.go:1159] [remote-control-client-go2.(*RTC).getWantConnectRequest] len(r.clients):0 
+[2023-02-14 11:38:54.860] ERROR default: [rtc.go:1194] [remote-control-client-go2.(*RTC).getWantConnectRequest] test 
+[2023-02-14 11:38:54.865]  INFO default: [rtc.go:781] [remote-control-client-go2.(*RTC).SendWantConnectReply] [C=>S] [PiVideoSource] to [web3540833362803691a52] sdp={offer v=0
+o=- 7082564891621909586 1676374734 IN IP4 0.0.0.0
+s=-
+t=0 0
+a=fingerprint:sha-256 AA:38:DB:A5:18:E8:08:74:5E:BB:A8:9B:F3:51:36:D2:7A:B9:7B:6F:2A:A9:1C:77:19:83:17:AB:51:9E:DF:69
+a=extmap-allow-mixed
+a=group:BUNDLE 0 1 2
+m=video 9 UDP/TLS/RTP/SAVPF 96 98 100 102 127 125 108 123
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:0
+a=ice-ufrag:SaZaLrkpiTcJMUWz
+a=ice-pwd:rjzLwLnbhkWZMljMwZFwkcZFNuzmPZwj
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:96 VP8/90000
+a=rtcp-fb:96 goog-remb 
+a=rtcp-fb:96 ccm fir
+a=rtcp-fb:96 nack 
+a=rtcp-fb:96 nack pli
+a=rtpmap:98 VP9/90000
+a=fmtp:98 profile-id=0
+a=rtcp-fb:98 goog-remb 
+a=rtcp-fb:98 ccm fir
+a=rtcp-fb:98 nack 
+a=rtcp-fb:98 nack pli
+a=rtpmap:100 VP9/90000
+a=fmtp:100 profile-id=1
+a=rtcp-fb:100 goog-remb 
+a=rtcp-fb:100 ccm fir
+a=rtcp-fb:100 nack 
+a=rtcp-fb:100 nack pli
+a=rtpmap:102 H264/90000
+a=fmtp:102 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42001f
+a=rtcp-fb:102 goog-remb 
+a=rtcp-fb:102 ccm fir
+a=rtcp-fb:102 nack 
+a=rtcp-fb:102 nack pli
+a=rtpmap:127 H264/90000
+a=fmtp:127 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42001f
+a=rtcp-fb:127 goog-remb 
+a=rtcp-fb:127 ccm fir
+a=rtcp-fb:127 nack 
+a=rtcp-fb:127 nack pli
+a=rtpmap:125 H264/90000
+a=fmtp:125 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f
+a=rtcp-fb:125 goog-remb 
+a=rtcp-fb:125 ccm fir
+a=rtcp-fb:125 nack 
+a=rtcp-fb:125 nack pli
+a=rtpmap:108 H264/90000
+a=fmtp:108 level-asymmetry-allowed=1;packetization-mode=0;profile-level-id=42e01f
+a=rtcp-fb:108 goog-remb 
+a=rtcp-fb:108 ccm fir
+a=rtcp-fb:108 nack 
+a=rtcp-fb:108 nack pli
+a=rtpmap:123 H264/90000
+a=fmtp:123 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=640032
+a=rtcp-fb:123 goog-remb 
+a=rtcp-fb:123 ccm fir
+a=rtcp-fb:123 nack 
+a=rtcp-fb:123 nack pli
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01
+a=extmap:4 urn:ietf:params:rtp-hdrext:framemarking
+a=ssrc:3368377415 cname:pion2
+a=ssrc:3368377415 msid:pion2 video
+a=ssrc:3368377415 mslabel:pion2
+a=ssrc:3368377415 label:video
+a=msid:pion2 video
+a=sendrecv
+m=audio 9 UDP/TLS/RTP/SAVPF 111
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:1
+a=ice-ufrag:SaZaLrkpiTcJMUWz
+a=ice-pwd:rjzLwLnbhkWZMljMwZFwkcZFNuzmPZwj
+a=rtcp-mux
+a=rtcp-rsize
+a=rtpmap:111 opus/48000/2
+a=fmtp:111 minptime=10;useinbandfec=1
+a=extmap:1 urn:ietf:params:rtp-hdrext:sdes:mid
+a=extmap:2 urn:ietf:params:rtp-hdrext:sdes:rtp-stream-id
+a=extmap:3 urn:ietf:params:rtp-hdrext:ssrc-audio-level
+a=ssrc:3517697919 cname:pion1
+a=ssrc:3517697919 msid:pion1 audio
+a=ssrc:3517697919 mslabel:pion1
+a=ssrc:3517697919 label:audio
+a=msid:pion1 audio
+a=sendrecv
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+a=setup:actpass
+a=mid:2
+a=sendrecv
+a=sctp-port:5000
+a=ice-ufrag:SaZaLrkpiTcJMUWz
+a=ice-pwd:rjzLwLnbhkWZMljMwZFwkcZFNuzmPZwj
+ 0x1842510} 
+[2023-02-14 11:38:55.139]  INFO default: [rtc.go:559] [remote-control-client-go2.(*RTC).setClientRemoteSDP] get remote description from:web3540833362803691a52 
+[2023-02-14 11:38:55.141] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web3540833362803691a52 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 host 192.168.1.6:48259 
+[2023-02-14 11:38:55.141] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 host 192.168.1.6:48259 destination=web3540833362803691a52 
+[2023-02-14 11:38:55.141] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web3540833362803691a52 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:39166 
+[2023-02-14 11:38:55.141] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp6 host 240e:3b1:9ed8:9ce0:19c7:124d:b9b8:5997:39166 destination=web3540833362803691a52 
+[2023-02-14 11:38:55.142] DEBUG default: [rtc.go:585] [remote-control-client-go2.(*RTC).setClientRemoteSDP] [C=>S] id=web3540833362803691a52 send sub.SendCandidates r.uid, r.rtc.trickle cand=udp4 srflx 119.125.91.80:12898 related 0.0.0.0:46278 
+[2023-02-14 11:38:55.142] DEBUG default: [rtc.go:687] [remote-control-client-go2.(*RTC).SendTrickle2] [C=>S] candidate=udp4 srflx 119.125.91.80:12898 related 0.0.0.0:46278 destination=web3540833362803691a52 
+[2023-02-14 11:38:55.142] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to checking 
+[2023-02-14 11:38:56.380] DEBUG default: [client.go:184] [remote-control-client-go2.NewClient.func4] IECConnectionStateChange to connected 
+[2023-02-14 11:38:56.380] DEBUG default: [client.go:211] [remote-control-client-go2.NewClient.func4] startTime: 2023-02-14 11:38:56.380288827 +0000 GMT m=+267.657909214 
+[2023-02-14 11:38:56.773] DEBUG default: [rtc.go:1200] [remote-control-client-go2.(*RTC).getWantConnectRequest.func3] client data channel opened 
+[2023-02-14 11:38:59.895]  INFO default: [client.go:118] [remote-control-client-go2.NewClient.func1] gather candidate done 
+                                                                                                                                          [2023-03-17 10:59:15.039]  INFO default: [connector.go:139] [remote-control-client-go2.NewConnector] gRPC connected: 120.78.200.246:5551 

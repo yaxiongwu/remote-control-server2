@@ -228,7 +228,7 @@ func NewRTC(connector *Connector, config ...RTCConfig) (*RTC, error) {
 	//gst.CreatePipeline("vp8", []*webrtc.TrackLocalStaticSample{videoTrack}, videoSrc).Start()
 	//gst.CreatePipeline("h264_x264", []*webrtc.TrackLocalStaticSample{videoTrack}, videoSrc, rtmpudp.GetConn()).Start()
 	//gst.CreatePipeline("opus", []*webrtc.TrackLocalStaticSample{audioTrack}, audioSrc, rtmpudp.GetConn()).Start()
-	gst.CreatePipeline("h264_x264", []*webrtc.TrackLocalStaticSample{r.VedioTrack}, videoSrc).Start()
+	gst.CreatePipeline("h264_omx", []*webrtc.TrackLocalStaticSample{r.VedioTrack}, videoSrc).Start()
 	gst.CreatePipeline("opus", []*webrtc.TrackLocalStaticSample{r.AudioTrack}, audioSrc).Start()
 
 	return r, err
