@@ -63,9 +63,9 @@ func main() {
 	// gst.CreatePipeline("h264_omx", []*webrtc.TrackLocalStaticSample{videoTrack}, videoSrc, rtmpudp.GetConn()).Start()
 	// gst.CreatePipeline("opus", []*webrtc.TrackLocalStaticSample{audioTrack}, audioSrc, rtmpudp.GetConn()).Start()
 
-	speed := make(chan int)
-	pi := sdk.Init(26, 19, 13, 6)
-	pi.SpeedControl(speed)
+	//speed := make(chan int)
+	//pi := sdk.Init(26, 19, 13, 6)
+	//pi.SpeedControl(speed)
 
 	connector := sdk.NewConnector(config.Address)
 	rtc, err := sdk.NewRTC(connector)
@@ -99,6 +99,8 @@ func main() {
 	// 		speed <- recvData["s"]
 	// 	}
 	// }
+	
+   	pi :=sdk.Init()
 
 	rtc.OnDataChannel = func(dc *webrtc.DataChannel) {
 		log.Infof("rtc.OnDatachannel:%v", dc.Label())
@@ -110,9 +112,10 @@ func main() {
 	rtc.ControlFunc = func(control string, data float64) {
 		switch control {
 		case "turn":
-			pi.DirectionControl(int(data))
+			pi.DirectionControl(int(data))			
 		case "speed":
-			speed <- int(data)
+			//speed <- int(data)
+			pi.SpeedControl(int(data))
 		default:
 		}
 	}

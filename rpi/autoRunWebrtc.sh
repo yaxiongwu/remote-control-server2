@@ -1,4 +1,10 @@
 #!/bin/sh
 cd /home/pi/webrtc/remote-control-client-go2/rpi
-chmod +x main
-nohup ./main &
+#sudo chmod +x main 
+#mkdir yyyyyyS
+#echo "2wsx4rfv^YHN*IK<" |sudo nohup ./main &
+#nohup ./main0 &
+#echo "2wsx4rfv^YHN*IK<" |su root 
+#sudo nohup ./main &
+./1.sh
+

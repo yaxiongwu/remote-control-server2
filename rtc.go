@@ -562,7 +562,7 @@ func (r *RTC) setClientRemoteSDP(sdp webrtc.SessionDescription, from string) err
 				log.Errorf("id=%v err=%v", r.uid, err)
 				return err
 			}
-			//log.Infof("set remote description:%v", sdp)
+			log.Infof("set remote description:%v", sdp)
 
 			// it's safe to add cand now after SetRemoteDescription
 			if client.pubRecvCandidates != nil {
@@ -1186,12 +1186,12 @@ func (r *RTC) getWantConnectRequest(uid string, connectType rtc.ConnectType) err
 
 	client.pubPc.OnDataChannel(func(dc *webrtc.DataChannel) {
 		client.dataChannel = dc
-		log.Errorf("test")
+	
 		if r.OnDataChannel != nil {
 			r.OnDataChannel(dc)
 		}
 	})
-	log.Errorf("test")
+	
 	client.subPc.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
 		r.OnTrack(track, receiver)
 	})
