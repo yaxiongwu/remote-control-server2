@@ -8,6 +8,10 @@
   这两种方式启动时使用的都是完全root用户环境，不管如何切换到pi，跟直接使用Terminal终端的env命令输出结果不一致，可以在Terminal中使用su - root，再su - pi，然后env，与直接打开Terminal，env结果对比。
   这里可能涉及到交互式、登录与非登录的区别问题，但是以bash -il 命令也没能解决问题。
   最终在直接打开Terminal中env得到的参数保存到env文件中，去掉su - root && su - pi &&env中出现的，source ./env，使得环境跟Terminal中的当前实际用户环境一致，可以解决这个问题。
+  不一样的地方那个很多，但是最终只有这两项起作用：
+  export XAUTHORITY=/home/pi/.Xauthority
+  export DISPLAY=:0.0
+  具体功能待分析。
   但为什么会报 ”AL lib: (EE) ALCcaptureAlsa_open“ 错误值得研究，暂时没有时间深究。另外如何启动后成为当前用户的环境也值得研究。
   
 

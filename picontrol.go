@@ -19,8 +19,8 @@ package engine
 
 void wiringInit(){
   wiringPiSetup();
-  pinMode(pwm0_0,PWM_OUTPUT);
-  pinMode(pwm0_1,OUTPUT);	
+  pinMode(pwm0_1,OUTPUT);
+  pinMode(pwm0_0,PWM_OUTPUT);  
   pinMode(pwm1_0,PWM_OUTPUT);
   pinMode(pwm1_1,OUTPUT);	
   pwmSetMode(mode);
