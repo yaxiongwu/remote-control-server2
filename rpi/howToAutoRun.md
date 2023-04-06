@@ -13,6 +13,16 @@
   export DISPLAY=:0.0
   具体功能待分析。
   但为什么会报 ”AL lib: (EE) ALCcaptureAlsa_open“ 错误值得研究，暂时没有时间深究。另外如何启动后成为当前用户的环境也值得研究。
+  问题解决：当使用连接HDMI时，音频有三个,使用cat /proc/asound/cards命令查看，
+   0：HDMI
+   1:headphones
+   2:USB Pnp Sound Device
+   但是如果没有使用HDMI时，音频只有两个：
+   0:headphones
+   1:USB Pnp Sound Device
+   而在调试程序的时候，连接了HDMI，开始就用sudo amixer cset numid=3 1，使得root里设置了播放设备为1,有HDMI时，1为headphones，
+   但是在断开HDMI，自动运行时，没有了HDMI，1变成了USB 录音设备，无法播放声音，导致无法打开的错误。
+   所以应该设置sudo amixer cset numid=3 0
   
 
 1.go build生成可执行文件
@@ -26,5 +36,5 @@
   chmod +x /etc/rc.local 
 4.在/etc/rc.local文件的
     exit 0前添加：
-    sleep 10
+    sleep 30
     su - pi -c "bash /home/pi/remote-control-client-go2-0927/rpi/autoRunWebrtc.sh"
