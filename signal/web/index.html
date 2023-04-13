@@ -7,7 +7,7 @@
   <meta name="viewport" content="user-scalable=no">
   <title></title>
   <script
-    src="https://vkceyugu.cdn.bspapp.com/VKCEYUGU-2626393b-7a4e-4688-8ebf-8250f67ec102/4857522f-6587-45fb-bfeb-66181928a0f0.js">
+    src="https://mp-512f98d5-7387-4714-b38d-aca91adcdb93.cdn.bspapp.com/cloudstorage/da18ecd5-c313-42bc-8bcf-46d1549c1266.js">
     </script>
   <!-- 微信 JS-SDK 如果不需要兼容小程序，则无需引用此 JS 文件。 -->
   <script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
@@ -171,15 +171,15 @@
   <!-- <div id="remotes" class="video-div"> -->
   <!--速度滑动条-->
   <input onchange="speedSliderChanged()" oninput="speedSliderChanging()" style="width:50%; height:10px;display: none;"
-    class="ne-range" type="range" id="speedSlider" min="-10" max="10" step="1" value=" 0" />
+    class="ne-range" type="range" id="speedSlider" min="-16" max="16" step="2" value=" 0" />
 
   <video id="remoteVideo" class="video-div" controls></video>
   <audio id="remoteAudio"></audio>
   <span id="size-tag" style="position: absolute; margin-left: 5px; top: 225px"></span>
-  <span id="br-tag" style="position: absolute; left: 215px; top: 225px"></span>
+  <span id="br-tag" style="position: absolute; left: 215px; top: 225px;color:#faf6f7;width: 50px;"></span>
 
   <div id="rightBlock" style="display:flex;justify-content:flex-end;">
-    <div id="trunDiv" style="z-index: 9;width: 400px;margin-right:200px;display: none;">
+    <div id="turnDiv" style="z-index: 9;width: 400px;margin-right:100px;display: none;">
       <div style="padding-left:240px;">
         <!--方向盘-->
         <svg id="steeringWheel" t="1670036534728"
@@ -195,12 +195,23 @@
       </div>
       <!--方向控制滑动条-->
       <div style="padding-top:0px;">
-        <input id="turnSilder" onchange="trunSliderChanged()" oninput="trunSliderChanging()" class="ne-range"
-          style="width:80%; height:10px;transform: rotate(90deg);-webkit-transform: rotate(90deg);" min="-10" max="10"
-          type="range" step="1" value="0" />
+        <input id="turnSilder" onchange="turnSliderChanged()" oninput="turnSliderChanging()" class="ne-range"
+          style="width:80%; height:10px;transform: rotate(90deg);-webkit-transform: rotate(90deg);" min="-16" max="16"
+          type="range" step="2" value="0" />
       </div>
     </div>
-    <div id="buttonDiv" style="z-index: 9;width: 250px;height:250px;">
+    <div id="buttonDiv" style="z-index: 9;width: 380px;height:150px;">
+      <!--麦克风按钮-->
+      <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
+        height="100" t="1675741695374" class="icon" viewBox="0 0 1024 1024" version="1.1"
+        xmlns="http://www.w3.org/2000/svg" p-id="17457" onclick="micphone()">
+        <path
+          d="M512 705.728c105.888 0 192-86.112 192-192L704 257.952c0-105.888-86.112-192-192-192s-192 86.112-192 192l0 255.776C320 619.584 406.112 705.728 512 705.728z"
+          fill="#d81e06" p-id="17458"></path>
+        <path
+          d="M864 479.776 864 352c0-17.664-14.304-32-32-32s-32 14.336-32 32l0 127.776c0 160.16-129.184 290.464-288 290.464-158.784 0-288-130.304-288-290.464L224 352c0-17.664-14.336-32-32-32s-32 14.336-32 32l0 127.776c0 184.608 140.864 336.48 320 352.832L480 896 288 896c-17.664 0-32 14.304-32 32s14.336 32 32 32l448 0c17.696 0 32-14.304 32-32s-14.304-32-32-32l-192 0 0-63.36C723.136 816.256 864 664.384 864 479.776z"
+          fill="#d81e06" p-id="17459"></path>
+      </svg>
       <!--控制按钮-->
       <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
         height="100" t="1670042975911" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -217,6 +228,9 @@
           d="M512 64C264.992 64 64 264.96 64 512s200.96 448 448 448c247.008 0 448-200.96 448-448S759.04 64 512 64zM694.752 649.984c12.48 12.544 12.448 32.768-0.064 45.248-6.24 6.208-14.4 9.344-22.592 9.344-8.224 0-16.416-3.136-22.656-9.408l-137.6-138.016-138.048 136.576c-6.24 6.144-14.368 9.248-22.496 9.248-8.256 0-16.48-3.168-22.752-9.504-12.416-12.576-12.32-32.8 0.256-45.248l137.888-136.384-137.376-137.824c-12.48-12.512-12.448-32.768 0.064-45.248 12.512-12.512 32.736-12.448 45.248 0.064l137.568 137.984 138.048-136.576c12.544-12.448 32.832-12.32 45.248 0.256 12.448 12.576 12.32 32.832-0.256 45.248l-137.888 136.384L694.752 649.984z"
           p-id="8960"></path>
       </svg>
+
+
+
     </div>
   </div>
 
@@ -226,14 +240,44 @@
   const remoteAudio = document.getElementById("remoteAudio");
   const speedSlider = document.getElementById("speedSlider");
   const turnSilder = document.getElementById("turnSilder");
-  const trunDiv = document.getElementById("trunDiv");
+  const turnDiv = document.getElementById("turnDiv");
   const steeringWheel = document.getElementById("steeringWheel");
   const buttonDiv = document.getElementById("buttonDiv");
   const rightBlock = document.getElementById("rightBlock");
   const popAlertDiv = document.getElementById("popAlertDiv");
   const popTitleSpan = document.getElementById("popTitleSpan");
+ // const brTagSpan = document.getElementById("br-tag");
+  
   var popAlertCallback;
   var popAlertTitle = "";
+  var rtc_copy;
+  var rtc;
+  var deviceorientationX=0;
+
+  if (window.DeviceOrientationEvent) {
+       window.addEventListener("deviceorientation",function (event) {        
+          var tmp = parseInt( event.beta);
+          if(tmp >16) {
+            tmp=16;
+          }else if(tmp <-16){
+            tmp=-16;
+          }else if(tmp >= -4 &&tmp <= 4 ){ //保持稳定
+            tmp=0;
+          }
+          if(tmp !=deviceorientationX){
+             deviceorientationX =tmp;
+              //    brTagSpan.innerHTML=deviceorientationX.toString() ;
+             turnSilder.value=deviceorientationX;
+             steeringWheel.style.transform = "rotate(" + (deviceorientationX * 6 + 90).toString() + "deg)";
+             if (channelDataEvent.channel.readyState === "open") {      
+               channelDataEvent.channel.send(`{"cmd":"turn","data":` + deviceorientationX.toString() + "}");              
+             }
+          }         
+        });
+        } //else {
+      //     brTagSpan.innerHTM="DeviceOrientationEvent is not supported";
+      //   }
+
 
   //const url = 'https://120.78.200.246:5551';
   const url = 'https://www.bxzryd.cn:5551';
@@ -244,7 +288,8 @@
   }
 
   let channelDataEvent;
-
+  const connector = new Ion.Connector(url, "token");
+  rtc = new Ion.RTC(connector);
   //禁止页面滑动
   // document.body.addEventListener('touchmove', function(e){
   //         e.preventDefault();
@@ -264,27 +309,28 @@
     //buttonDiv.style.margin ="0px 0px 0px "+(videoHeight+200).toString()+"px";
   }
   moveVideoDiv();
-
-  function trunSliderChanging() {
+//方向滑动条改变中
+  function turnSliderChanging() {
     steeringWheel.style.transform = "rotate(" + (turnSilder.value * 6 + 90).toString() + "deg)";
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
-      channelDataEvent.channel.send("{\"d\":" + turnSilder.value.toString() + "}");
+      channelDataEvent.channel.send(`{"cmd":"turn","data":` + turnSilder.value.toString() + "}");
     }
   }
-  function trunSliderChanged() {
+  //方向滑动条改变后
+  function turnSliderChanged() {
     turnSilder.value = 0;
     steeringWheel.style.transform = "rotate(90deg)";
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
-      channelDataEvent.channel.send("{\"d\":" + turnSilder.value.toString() + "}");
+      channelDataEvent.channel.send(`{"cmd":"turn","data":` + turnSilder.value.toString() + "}");
     }
   }
-
+//速度滑动条改变中
   function speedSliderChanging() {
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
-      channelDataEvent.channel.send("{\"s\":" + speedSlider.value.toString() + "}");
+      channelDataEvent.channel.send(`{"cmd":"speed","data":` + speedSlider.value.toString() + "}");
     }
   }
   //速度滑动条改变后
@@ -293,31 +339,37 @@
       speedSlider.value = 0;
       if (channelDataEvent.channel.readyState === "open") {
         //console.log("datachannel send:", localData.value)
-        channelDataEvent.channel.send("{\"s\":0}");
+        channelDataEvent.channel.send(`{"cmd":"speed","data":0}`);
       }
     }
   }
   //控制按钮
   function wantControl() {
-    //popAlertDiv.style.display = 'block';
-    // speedSlider.style.display = 'block';
-    // trunDiv.style.display = 'block';
+
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
-      channelDataEvent.channel.send("{\"control\":1}");
+      channelDataEvent.channel.send(`{"cmd":"control","data":1}`);
     }
+    rtc.wantControl().then((respString) => {
+      console.log("recv respString: " + respString);
+      speedSlider.style.display = 'block';
+      turnDiv.style.display = 'block';
+    }).catch((respString) => alert(respString))
+
   }
   //退出按钮
   function exit() {
+
     // popTitleSpan.innerHTML = "真要退出吗？"
     // popAlertCallback = exitCallback;
     // popAlertDiv.style.display = 'block';
-    popWindows( "真要退出吗？",exitCallback);
+    popWindows("真要退出吗？", exitCallback);
   }
   //退出的回调函数
   function exitCallback() {
     //alert("退出");
     //wx.miniProgram.navigateTo({ url: '/pages/source-list/list' })
+    rtc.leave();
     wx.miniProgram.navigateBack({});
   }
   //按下弹出框的确认按钮
@@ -330,16 +382,19 @@
     popAlertDiv.style.display = "none";
   }
   //弹框
-  function popWindows(title,callback){
+  function popWindows(title, callback) {
     popTitleSpan.innerHTML = title;
     popAlertCallback = callback;
     popAlertDiv.style.display = 'block';
   }
+  //麦克风按钮
+  function micphone() {
+    rtc.publishThroughDataChannel(true, false);
+  }
 
   const myID = uidTime();
   const wantConnect = async (myid) => {
-
-    const connector = new Ion.Connector(url, "token");
+    //  const connector = new Ion.Connector(url, "token");
     connector.onopen = function (service) {
       console.log("[onopen]: service = ", service.name);
     };
@@ -348,8 +403,6 @@
       console.log('[onclose]: service = ' + service.name);
     };
 
-    rtc = new Ion.RTC(connector);
-
     rtc.ontrack = (track, stream) => {
       if (track.kind === "video") {
         track.onunmute = () => {
@@ -357,13 +410,13 @@
             remoteVideo.srcObject = stream;
             remoteVideo.autoplay = true;
             remoteVideo.muted = true;
-            remoteVideo.addEventListener("loadedmetadata", function () {
-              sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
-            });
+            // remoteVideo.addEventListener("loadedmetadata", function () {
+            //   sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
+            // });
 
-            remoteVideo.onresize = function () {
-              sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
-            };
+            // remoteVideo.onresize = function () {
+            //   sizeTag.innerHTML = `${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`;
+            // };
             streams[stream.id] = stream;
             stream.onremovetrack = () => {
               if (streams[stream.id]) {
@@ -371,7 +424,7 @@
                 streams[stream.id] = null;
               }
             };
-            getStats();
+            // getStats();
           }
         };
       }
@@ -386,18 +439,20 @@
     };
     rtc.ondatachannel = (ev) => {
       channelDataEvent = ev;
+      /*  如果这里使用了onmenssage，别的地方的channel的onmessage会被这个函数替代，只能添加一个回调函数来调取
       ev.channel.onmessage = ({ data }) => {
-        //  alert("rev msg:" + data);
+          alert("rev msg:" + data);
         if (data == "idle") {
           speedSlider.style.display = 'block';
-          trunDiv.style.display = 'block';
+          turnDiv.style.display = 'block';
         } else if (data == "busy-controled") {
           popWindows("远端正在被控制，请稍后再试");
         }
       };
+      */
     };
 
-    rtc.wantConnect(myid, document.getElementById("getValue").innerHTML, connectType.View);
+    rtc.wantConnect2(myid, "PiVideoSource", connectType.View);
     const streams = {};
   }
 
@@ -411,34 +466,33 @@
     return "web" + time + uid;
   }
 
-
-  const getStats = () => {
-    let bytesPrev;
-    let timestampPrev;
-    setInterval(() => {
-      rtc.getSubStats(null).then((results) => {
-        results.forEach((report) => {
-          const now = report.timestamp;
-          let bitrate;
-          if (
-            report.type === "inbound-rtp" &&
-            report.mediaType === "video"
-          ) {
-            const bytes = report.bytesReceived;
-            if (timestampPrev) {
-              bitrate = (8 * (bytes - bytesPrev)) / (now - timestampPrev);
-              bitrate = Math.floor(bitrate);
-            }
-            bytesPrev = bytes;
-            timestampPrev = now;
-          }
-          if (bitrate) {
-            brTag.innerHTML = `${bitrate} kbps @ ${report.framesPerSecond} fps`;
-          }
-        });
-      });
-    }, 1000);
-  };
+  // const getStats = () => {
+  //   let bytesPrev;
+  //   let timestampPrev;
+  //   setInterval(() => {
+  //     rtc.getSubStats(null).then((results) => {
+  //       results.forEach((report) => {
+  //         const now = report.timestamp;
+  //         let bitrate;
+  //         if (
+  //           report.type === "inbound-rtp" &&
+  //           report.mediaType === "video"
+  //         ) {
+  //           const bytes = report.bytesReceived;
+  //           if (timestampPrev) {
+  //             bitrate = (8 * (bytes - bytesPrev)) / (now - timestampPrev);
+  //             bitrate = Math.floor(bitrate);
+  //           }
+  //           bytesPrev = bytes;
+  //           timestampPrev = now;
+  //         }
+  //         if (bitrate) {
+  //           brTag.innerHTML = `${bitrate} kbps @ ${report.framesPerSecond} fps`;
+  //         }
+  //       });
+  //     });
+  //   }, 1000);
+  // };
   wantConnect(myID)
 </script>
 
