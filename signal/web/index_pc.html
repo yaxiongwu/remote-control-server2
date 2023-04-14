@@ -9,10 +9,6 @@
   <script
     src="https://mp-512f98d5-7387-4714-b38d-aca91adcdb93.cdn.bspapp.com/cloudstorage/da18ecd5-c313-42bc-8bcf-46d1549c1266.js">
     </script>
-  <!-- 微信 JS-SDK 如果不需要兼容小程序，则无需引用此 JS 文件。 -->
-  <script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
-  <!-- uni 的 SDK，必须引用。 -->
-  <script type="text/javascript" src="//js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.0.1.52.js"></script>
 
   <style type="text/css">
     /*body{
@@ -24,18 +20,10 @@
       /* background-color: rgb(255, 115, 0); */
     }
 
-    .video11 {
-      transform: rotate(90deg);
-      -moz-transform: rotate(90deg);
-      /* Firefox */
-      -webkit-transform: rotate(90deg);
-      /* Safari 和 Chrome */
-    }
-
     input.ne-range[type=range]::-webkit-slider-thumb {
       z-index: 10;
-      width: 80px;
-      height: 80px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 0;
       background-color: rgb(255, 0, 0);
@@ -102,8 +90,7 @@
       background-color: #faf6f7;
       position: fixed;
       font-size: 54px;
-      color: #0a0a0a;
-      transform: rotate(90deg);
+      color: #0a0a0a;     
     }
 
     .hr-solid {
@@ -123,26 +110,21 @@
 
     .pop .btnConfire {
       text-align: center;
-      color: #dd1818;
+      color: #444444;
       position: absolute;
       left: 50px;
       width: 140px;
-      text-shadow: 5px 5px 4px rgba(8, 8, 8, 0.4);
-
-      /* border: 3px solid #73AD21;
-            border-radius: 10px 10px 10px 10px;
-              box-shadow:  5px 5px 6px 10px rgba(99,30,188,0.6);;
-              */
+      text-shadow: 5px 5px 4px rgba(8, 8, 8, 0.3);
 
     }
 
     .pop .btnConcel {
       text-align: center;
-      color: #5310ee;
+      color: #444444;
       position: absolute;
       right: 50px;
       width: 140px;
-      text-shadow: 5px 5px 4px rgba(8, 8, 8, 0.4);
+      text-shadow: 5px 5px 4px rgba(8, 8, 8, 0.3);
 
       /* border: 3px solid #73AD21;
             border-radius: 10px 10px 10px 10px;
@@ -166,25 +148,48 @@
     </div>
   </div>
 
-  <div style="display:none;" id="getValue">{{.destination}}</div>
-
   <!-- <div id="remotes" class="video-div"> -->
-  <!--速度滑动条-->
-  <input onchange="speedSliderChanged()" oninput="speedSliderChanging()" style="width:50%; height:10px;display: none;"
-    class="ne-range" type="range" id="speedSlider" min="-16" max="16" step="2" value=" 0" />
+
 
   <video id="remoteVideo" class="video-div" controls></video>
   <audio id="remoteAudio"></audio>
   <span id="size-tag" style="position: absolute; margin-left: 5px; top: 225px"></span>
   <span id="br-tag" style="position: absolute; left: 215px; top: 225px;color:#faf6f7;width: 50px;"></span>
 
-  <div id="rightBlock" style="display:flex;justify-content:flex-end;">
-    <div id="turnDiv" style="z-index: 9;width: 400px;margin-right:100px;display: none;">
-      <div style="padding-left:240px;">
+  <div id="rightBlock" style="display:flex;flex-direction: column; justify-content: space-around;">
+    <div id="buttonDiv" style="z-index: 9;width:100px;height:280px;">
+      <!--麦克风按钮-->
+      <svg style="fill:#ff0000;" width="60" height="60" t="1675741695374" class="icon" viewBox="0 0 1024 1024"
+        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17457" onclick="micphone()">
+        <path
+          d="M512 705.728c105.888 0 192-86.112 192-192L704 257.952c0-105.888-86.112-192-192-192s-192 86.112-192 192l0 255.776C320 619.584 406.112 705.728 512 705.728z"
+          fill="#d81e06" p-id="17458"></path>
+        <path
+          d="M864 479.776 864 352c0-17.664-14.304-32-32-32s-32 14.336-32 32l0 127.776c0 160.16-129.184 290.464-288 290.464-158.784 0-288-130.304-288-290.464L224 352c0-17.664-14.336-32-32-32s-32 14.336-32 32l0 127.776c0 184.608 140.864 336.48 320 352.832L480 896 288 896c-17.664 0-32 14.304-32 32s14.336 32 32 32l448 0c17.696 0 32-14.304 32-32s-14.304-32-32-32l-192 0 0-63.36C723.136 816.256 864 664.384 864 479.776z"
+          fill="#d81e06" p-id="17459"></path>
+      </svg>
+      <!--控制按钮-->
+      <svg style="fill:#ff0000;" width="60" height="60" t="1670042975911" class="icon" viewBox="0 0 1024 1024"
+        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19726" onclick="wantControl()">
+        <path
+          d="M735.998 959.997c-123.712 0-224-100.288-224-224s100.288-224 224-224 224 100.288 224 224-100.287 224-224 224zM768 889.523C828.918 876.89 876.891 828.917 889.525 768h-63.679c-20.145 2.778-34.537 18.164-57.846 26.548v94.975zM736 768c17.673 0 32-14.327 32-32s-14.327-32-32-32-32 14.327-32 32 14.327 32 32 32z m-32 121.524v-94.983c-22.489-8.096-36.759-22.744-56.07-26.541h-65.458C595.106 828.918 643.081 876.892 704 889.524z m31.998-310.326c-75.633 0-138.754 53.55-153.528 124.802h66.186c26.751-5.922 44.007-32 87.344-32 44.426 0 61.448 27.394 88.958 32h64.569c-14.775-71.252-77.896-124.802-153.529-124.802z m-287.456-67.199C347.023 511.999 256 376.793 256 253.085c0-123.706 91.023-189.07 192.542-189.07 101.521 0 191.455 64.832 191.455 188.538 0.001 123.708-89.934 259.446-191.455 259.446zM336 496l112 96 112-96a348.186 348.186 0 0 1 41.763 3.392C519.495 546.167 464 634.598 464 736c0 33.796 6.181 66.144 17.446 95.998H95.997C64 832 64 797.091 64 797.091V656c110.001-164.764 272-160 272-160z"
+          p-id="19727"></path>
+      </svg>
+      <!--退出按钮-->
+      <svg style="fill:#ff0000;" width="60" height="60" t="1670042675126" class="icon" viewBox="0 0 1024 1024"
+        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8959" onclick="exit()">
+        <path
+          d="M512 64C264.992 64 64 264.96 64 512s200.96 448 448 448c247.008 0 448-200.96 448-448S759.04 64 512 64zM694.752 649.984c12.48 12.544 12.448 32.768-0.064 45.248-6.24 6.208-14.4 9.344-22.592 9.344-8.224 0-16.416-3.136-22.656-9.408l-137.6-138.016-138.048 136.576c-6.24 6.144-14.368 9.248-22.496 9.248-8.256 0-16.48-3.168-22.752-9.504-12.416-12.576-12.32-32.8 0.256-45.248l137.888-136.384-137.376-137.824c-12.48-12.512-12.448-32.768 0.064-45.248 12.512-12.512 32.736-12.448 45.248 0.064l137.568 137.984 138.048-136.576c12.544-12.448 32.832-12.32 45.248 0.256 12.448 12.576 12.32 32.832-0.256 45.248l-137.888 136.384L694.752 649.984z"
+          p-id="8960"></path>
+      </svg>
+    </div>
+
+    <div id="turnDiv" style="z-index: 9;width: 200px;margin-right:0px;display: none;">
+     
+      <div style="padding-left:72px;">
         <!--方向盘-->
-        <svg id="steeringWheel" t="1670036534728"
-          style="fill:#ffffff;transform: rotate(90deg);-webkit-transform: rotate(90deg);" width="100" height="100"
-          viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2717">
+        <svg id="steeringWheel" t="1670036534728" style="fill:#ffffff;" width="60" height="60" viewBox="0 0 1024 1024"
+          version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2717">
           <path
             d="M511.999488 1023.520069c282.518468 0 511.523139-229.003648 511.523139-511.524163 0-282.514375-229.004671-511.518023-511.523139-511.518023-282.520515 0-511.523139 229.003648-511.523139 511.518023C0.476349 794.516422 229.478973 1023.520069 511.999488 1023.520069zM942.930101 589.717036c-16.356526 91.784426-59.631122 173.844374-121.117498 237.19112-58.8442 60.647265-134.382617 104.10094-218.8678 122.499985 4.237511-43.818995 9.335622-104.541985 17.362436-156.401096 22.070668-142.7901 66.686818-204.836225 191.425797-229.057883 35.012422-6.80601 71.749114-6.969739 108.470457-6.149047C938.418344 557.199435 948.825368 564.821019 942.930101 589.717036zM96.153432 365.006158c21.745257-67.305919 58.428737-127.573537 106.029872-176.592974 79.903841-82.381266 194.868199-123.55706 309.833581-123.55706 114.926496 0 229.876528 41.175795 309.793672 123.55706 47.605228 49.019437 84.288708 109.287055 106.014522 176.592974 6.02625 22.604834-2.000564 33.266661-23.980157 32.045857-72.117504-2.860141-227.513714-5.135974-259.416308-6.78759 27.389814 32.022321 44.020586 74.111928 44.020586 120.151497 0 50.205449-19.744693 95.675036-51.676963 128.574331-11.413957 11.755742-24.345478 21.89159-38.522362 30.083156-26.677593 15.44783-56.466036 23.163559-86.234013 23.178909-29.80584-0.016373-59.59326-7.732102-86.269829-23.178909-14.156418-8.192589-27.131941-18.327414-38.523385-30.083156-31.934317-32.898271-51.676963-78.368882-51.676963-128.574331 0-46.039569 16.614399-88.129176 44.031842-120.151497-31.912827 1.651616-187.309036 3.927449-259.424494 6.78759C98.156042 398.272819 90.168114 387.610992 96.153432 365.006158zM103.777063 557.800116c36.72339-0.820692 73.462129-0.657986 108.472504 6.149047 124.753305 24.221658 169.373549 86.267782 191.446263 229.057883 8.004301 51.859112 13.116739 112.582101 17.358343 156.401096-84.504626-18.380626-160.021553-61.85272-218.885196-122.499985-61.467957-63.345724-104.740506-145.405671-121.100102-237.19112C75.173608 564.821019 85.565283 557.199435 103.777063 557.800116z"
             p-id="2718"></path>
@@ -194,44 +199,21 @@
         </svg>
       </div>
       <!--方向控制滑动条-->
-      <div style="padding-top:0px;">
+      <div style="padding-top:24px;">
         <input id="turnSilder" onchange="turnSliderChanged()" oninput="turnSliderChanging()" class="ne-range"
-          style="width:80%; height:10px;transform: rotate(90deg);-webkit-transform: rotate(90deg);" min="-16" max="16"
-          type="range" step="2" value="0" />
+          style="width:100%; height:6px;" min="-16" max="16" type="range" step="2" value="0" />
       </div>
+      <!--速度滑动条-->
+      <div style="padding-top:200px;">
+        <input onchange="speedSliderChanged()" oninput="speedSliderChanging()"
+          style="width:100%; height:6px;transform: rotate(-90deg);-webkit-transform: rotate(-90deg);"
+          class="ne-range" type="range" id="speedSlider" min="-16" max="16" step="2" value=" 0" />
+      </div>>
     </div>
-    <div id="buttonDiv" style="z-index: 9;width: 380px;height:150px;">
-      <!--麦克风按钮-->
-      <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
-        height="100" t="1675741695374" class="icon" viewBox="0 0 1024 1024" version="1.1"
-        xmlns="http://www.w3.org/2000/svg" p-id="17457" onclick="micphone()">
-        <path
-          d="M512 705.728c105.888 0 192-86.112 192-192L704 257.952c0-105.888-86.112-192-192-192s-192 86.112-192 192l0 255.776C320 619.584 406.112 705.728 512 705.728z"
-          fill="#d81e06" p-id="17458"></path>
-        <path
-          d="M864 479.776 864 352c0-17.664-14.304-32-32-32s-32 14.336-32 32l0 127.776c0 160.16-129.184 290.464-288 290.464-158.784 0-288-130.304-288-290.464L224 352c0-17.664-14.336-32-32-32s-32 14.336-32 32l0 127.776c0 184.608 140.864 336.48 320 352.832L480 896 288 896c-17.664 0-32 14.304-32 32s14.336 32 32 32l448 0c17.696 0 32-14.304 32-32s-14.304-32-32-32l-192 0 0-63.36C723.136 816.256 864 664.384 864 479.776z"
-          fill="#d81e06" p-id="17459"></path>
-      </svg>
-      <!--控制按钮-->
-      <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
-        height="100" t="1670042975911" class="icon" viewBox="0 0 1024 1024" version="1.1"
-        xmlns="http://www.w3.org/2000/svg" p-id="19726" onclick="wantControl()">
-        <path
-          d="M735.998 959.997c-123.712 0-224-100.288-224-224s100.288-224 224-224 224 100.288 224 224-100.287 224-224 224zM768 889.523C828.918 876.89 876.891 828.917 889.525 768h-63.679c-20.145 2.778-34.537 18.164-57.846 26.548v94.975zM736 768c17.673 0 32-14.327 32-32s-14.327-32-32-32-32 14.327-32 32 14.327 32 32 32z m-32 121.524v-94.983c-22.489-8.096-36.759-22.744-56.07-26.541h-65.458C595.106 828.918 643.081 876.892 704 889.524z m31.998-310.326c-75.633 0-138.754 53.55-153.528 124.802h66.186c26.751-5.922 44.007-32 87.344-32 44.426 0 61.448 27.394 88.958 32h64.569c-14.775-71.252-77.896-124.802-153.529-124.802z m-287.456-67.199C347.023 511.999 256 376.793 256 253.085c0-123.706 91.023-189.07 192.542-189.07 101.521 0 191.455 64.832 191.455 188.538 0.001 123.708-89.934 259.446-191.455 259.446zM336 496l112 96 112-96a348.186 348.186 0 0 1 41.763 3.392C519.495 546.167 464 634.598 464 736c0 33.796 6.181 66.144 17.446 95.998H95.997C64 832 64 797.091 64 797.091V656c110.001-164.764 272-160 272-160z"
-          p-id="19727"></path>
-      </svg>
-      <!--退出按钮-->
-      <svg style="fill:#ff0000;transform: rotate(90deg);-webkit-transform: rotate(90deg);padding-left:20px;" width="100"
-        height="100" t="1670042675126" class="icon" viewBox="0 0 1024 1024" version="1.1"
-        xmlns="http://www.w3.org/2000/svg" p-id="8959" onclick="exit()">
-        <path
-          d="M512 64C264.992 64 64 264.96 64 512s200.96 448 448 448c247.008 0 448-200.96 448-448S759.04 64 512 64zM694.752 649.984c12.48 12.544 12.448 32.768-0.064 45.248-6.24 6.208-14.4 9.344-22.592 9.344-8.224 0-16.416-3.136-22.656-9.408l-137.6-138.016-138.048 136.576c-6.24 6.144-14.368 9.248-22.496 9.248-8.256 0-16.48-3.168-22.752-9.504-12.416-12.576-12.32-32.8 0.256-45.248l137.888-136.384-137.376-137.824c-12.48-12.512-12.448-32.768 0.064-45.248 12.512-12.512 32.736-12.448 45.248 0.064l137.568 137.984 138.048-136.576c12.544-12.448 32.832-12.32 45.248 0.256 12.448 12.576 12.32 32.832-0.256 45.248l-137.888 136.384L694.752 649.984z"
-          p-id="8960"></path>
-      </svg>
+  </div>
 
+  <div>
 
-
-    </div>
   </div>
 
 </body>
@@ -246,37 +228,14 @@
   const rightBlock = document.getElementById("rightBlock");
   const popAlertDiv = document.getElementById("popAlertDiv");
   const popTitleSpan = document.getElementById("popTitleSpan");
- // const brTagSpan = document.getElementById("br-tag");
-  
+  // const brTagSpan = document.getElementById("br-tag");
+
+
   var popAlertCallback;
   var popAlertTitle = "";
   var rtc_copy;
   var rtc;
-  var deviceorientationX=0;
 
-  if (window.DeviceOrientationEvent) {
-       window.addEventListener("deviceorientation",function (event) {        
-          var tmp = parseInt( event.beta);
-          if(tmp >16) {
-            tmp=16;
-          }else if(tmp <-16){
-            tmp=-16;
-          }else if(tmp >= -4 &&tmp <= 4 ){ //保持稳定
-            tmp=0;
-          }
-          if(tmp !=deviceorientationX){
-             deviceorientationX =tmp;
-              //    brTagSpan.innerHTML=deviceorientationX.toString() ;
-             turnSilder.value=deviceorientationX;
-             steeringWheel.style.transform = "rotate(" + (deviceorientationX * 6 + 90).toString() + "deg)";
-             if (channelDataEvent.channel.readyState === "open") {      
-               channelDataEvent.channel.send(`{"cmd":"turn","data":` + deviceorientationX.toString() + "}");              
-             }
-          }         
-        });
-        } //else {
-      //     brTagSpan.innerHTM="DeviceOrientationEvent is not supported";
-      //   }
 
 
   //const url = 'https://120.78.200.246:5551';
@@ -295,23 +254,31 @@
   //         e.preventDefault();
   // }, { passive: false });  //passive 参数不能省略，用来兼容ios和android
 
+  //加载之后
+  function loadedPup() {
+    //alert("wuyaxiong");
+    //turnDiv.style.display = 'block';
+  }
+  loadedPup();
+  //移动，排版控件
   function moveVideoDiv() {
     const videoWidth = 640, videoHeight = 480;
     remoteVideo.style.height = videoHeight * 2 + "px";
     remoteVideo.style.width = videoWidth * 2 + "px";
-    remoteVideo.style.left = videoHeight - videoWidth + document.documentElement.clientWidth / 2 - videoHeight + "px";
-    remoteVideo.style.top = document.documentElement.clientHeight / 2 - videoHeight - 40 + "px";
-    popAlertDiv.style.top = document.documentElement.clientHeight / 2 - 50;
-    popAlertDiv.style.left = document.documentElement.clientWidth / 2 - 50;
-    remoteVideo.style.transform = "rotate(90deg)";
-    speedSlider.style.margin = document.documentElement.clientHeight / 2 - videoWidth - 110 + "px 0px 0px 100px";
-    rightBlock.style.margin = videoWidth * 2 + 100 + "px" + " 0px 0px 100px";
+    // remoteVideo.style.left = videoHeight - videoWidth + document.documentElement.clientWidth / 2 - videoHeight + "px";
+    // remoteVideo.style.top = document.documentElement.clientHeight / 2 - videoHeight - 40 + "px";
+    // popAlertDiv.style.top = document.documentElement.clientHeight / 2 - 50;
+    // popAlertDiv.style.left = document.documentElement.clientWidth / 2 - 50;
+
+    //speedSlider.style.margin = document.documentElement.clientHeight / 2 - videoWidth - 110 + "px 0px 0px 100px";
+    // rightBlock.style.margin = videoWidth * 2 + 100 + "px" + " 0px 0px 100px";
+    rightBlock.style.marginLeft = videoWidth * 2 + "px";
     //buttonDiv.style.margin ="0px 0px 0px "+(videoHeight+200).toString()+"px";
   }
   moveVideoDiv();
-//方向滑动条改变中
+  //方向滑动条改变中
   function turnSliderChanging() {
-    steeringWheel.style.transform = "rotate(" + (turnSilder.value * 6 + 90).toString() + "deg)";
+    //steeringWheel.style.transform = "rotate(" + (turnSilder.value * 6 + 90).toString() + "deg)";
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
       channelDataEvent.channel.send(`{"cmd":"turn","data":` + turnSilder.value.toString() + "}");
@@ -326,7 +293,7 @@
       channelDataEvent.channel.send(`{"cmd":"turn","data":` + turnSilder.value.toString() + "}");
     }
   }
-//速度滑动条改变中
+  //速度滑动条改变中
   function speedSliderChanging() {
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
@@ -345,14 +312,13 @@
   }
   //控制按钮
   function wantControl() {
-
+   
     if (channelDataEvent.channel.readyState === "open") {
       //console.log("datachannel send:", localData.value)
       channelDataEvent.channel.send(`{"cmd":"control","data":1}`);
     }
     rtc.wantControl().then((respString) => {
-      console.log("recv respString: " + respString);
-      speedSlider.style.display = 'block';
+      console.log("recv respString: " + respString);     
       turnDiv.style.display = 'block';
     }).catch((respString) => alert(respString))
 
@@ -366,11 +332,8 @@
     popWindows("真要退出吗？", exitCallback);
   }
   //退出的回调函数
-  function exitCallback() {
-    //alert("退出");
-    //wx.miniProgram.navigateTo({ url: '/pages/source-list/list' })
-    rtc.leave();
-    wx.miniProgram.navigateBack({});
+  function exitCallback() {    
+    rtc.leave(); 
   }
   //按下弹出框的确认按钮
   function popAlertConfire() {
@@ -493,7 +456,170 @@
   //     });
   //   }, 1000);
   // };
-  wantConnect(myID)
+  wantConnect(myID);
+
+
+  var haveEvents = 'GamepadEvent' in window;
+  var haveWebkitEvents = 'WebKitGamepadEvent' in window;
+  var controllers = {};
+  var rAF = window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.requestAnimationFrame;
+  var lastAxes = 0, lastSpeed = 0, lastBrake = 0, lastAccelerator = 0;
+  var isGoahead = true;
+
+  function connecthandler(e) {
+    addgamepad(e.gamepad);
+  }
+  function addgamepad(gamepad) {
+    controllers[gamepad.index] = gamepad;
+    var d = document.createElement("div");
+    d.setAttribute("id", "controller" + gamepad.index);
+    var t = document.createElement("h1");
+    t.appendChild(document.createTextNode("gamepad: " + gamepad.id));
+    d.appendChild(t);
+    rAF(updateStatus);
+  }
+
+  function disconnecthandler(e) {
+    removegamepad(e.gamepad);
+  }
+
+  function removegamepad(gamepad) {
+    var d = document.getElementById("controller" + gamepad.index);
+    document.body.removeChild(d);
+    delete controllers[gamepad.index];
+  }
+
+
+
+  function updateStatus() {
+    scangamepads();
+    //  for (j in controllers) {
+    var controller = controllers[0];
+
+
+    for (var i = 0; i < controller.buttons.length; i++) {
+      /*
+      科腾方向盘，驱动显示为xbox 360 controler
+      0：B
+      1:A键
+      2：Y
+      3：X
+      4:L 档把退
+      5:R 档把进
+      6：刹车
+      7:油门
+      8:-
+      9:+
+      10:L3
+      11:R3
+      12:方向按键上
+      13:方向按键下
+      14:方向按键左
+      15:方向按键右             
+      */
+      var val = controller.buttons[i];
+      var pressed = val == 1.0;
+      var touched = false;
+      if (typeof (val) == "object") {
+        pressed = val.pressed;
+        if ('touched' in val) {
+          touched = val.touched;
+        }
+        val = val.value;
+        if (val != 0) {
+          var tmp = 0;
+          switch (i) {
+            case 4://档把退
+              isGoahead = false;
+              break;
+            case 5://档把进
+              isGoahead = true;
+              break;
+            case 6://刹车                          
+              tmp = parseInt(val * 8) * 2;
+              if (lastBrake != tmp) {
+                lastBrake = tmp;
+                if (isGoahead) {//往前走,lastSpeed>0
+                  lastSpeed = lastSpeed - tmp;
+                  if (lastSpeed < 0) {
+                    lastSpeed = 0;
+                  }
+                } else {//往后走,lastSpeed<0
+                  lastSpeed = lastSpeed + tmp;
+                  if (lastSpeed > 0) {
+                    lastSpeed = 0;
+                  }
+                }
+                speedSlider.value = lastSpeed;
+                if (channelDataEvent.channel.readyState === "open") {
+                  channelDataEvent.channel.send(`{"cmd":"speed","data":` + lastSpeed.toString() + "}");
+                }
+              }
+              break;
+            case 7://油门                         
+              tmp = parseInt(val * 8) * 2;
+              if (lastAccelerator != tmp) {
+                lastAccelerator = tmp;
+                lastSpeed = isGoahead ? tmp : -tmp;
+                speedSlider.value = lastSpeed;
+                console.log("lastSpeed:"+lastSpeed);
+                if (channelDataEvent.channel.readyState === "open") {
+                  channelDataEvent.channel.send(`{"cmd":"speed","data":` + lastSpeed.toString() + "}");
+                }
+              }
+              break;
+            default: break;
+          }
+        }//  if (val != 0) {                    
+      }
+      // var pct = Math.round(val * 100) + "%";                  
+    }
+
+    // 科腾方向盘，驱动显示为xbox 360 controler,方向盘为axes[0]
+    //for (var i = 0; i < controller.axes.length; i++) {
+    var axesVal = parseInt(controller.axes[0].toFixed(4) * 50);
+    if (axesVal != 0) {
+
+      if (axesVal > 16) {
+        axesVal = 16;
+      } else if (axesVal < -16) {
+        axesVal = -16;
+      } else if (axesVal >= -4 && axesVal <= 4) { //保持稳定
+        axesVal = 0;
+      }
+      if (axesVal != lastAxes) {
+        lastAxes = axesVal;
+        //    brTagSpan.innerHTML=deviceorientationX.toString() ;
+        turnSilder.value = axesVal;
+        steeringWheel.style.transform = "rotate(" + (axesVal * 6).toString() + "deg)";
+        if (channelDataEvent.channel.readyState === "open") {      
+          channelDataEvent.channel.send(`{"cmd":"turn","data":` + axesVal.toString() + "}");              
+        }
+      }
+    }
+    rAF(updateStatus);
+  }
+
+  function scangamepads() {
+    var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
+    for (var i = 0; i < gamepads.length; i++) {
+      if (gamepads[i] && (gamepads[i].index in controllers)) {
+        controllers[gamepads[i].index] = gamepads[i];
+      }
+    }
+  }
+
+  if (haveEvents) {
+    window.addEventListener("gamepadconnected", connecthandler);
+    window.addEventListener("gamepaddisconnected", disconnecthandler);
+  } else if (haveWebkitEvents) {
+    window.addEventListener("webkitgamepadconnected", connecthandler);
+    window.addEventListener("webkitgamepaddisconnected", disconnecthandler);
+  } else {
+    setInterval(scangamepads, 1000);
+  }
 </script>
 
 </html>

@@ -239,7 +239,12 @@ func jsonGin(s *stun.STUN) bool {
 		})
 	})
 	r.GET("/index/:destination", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "index.html", gin.H{
+		context.HTML(http.StatusOK, "index_phone.html", gin.H{
+			"destination": context.Param("destination"),
+		})
+	})
+	r.GET("/index_pc/:destination", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "index_pc.html", gin.H{
 			"destination": context.Param("destination"),
 		})
 	})
