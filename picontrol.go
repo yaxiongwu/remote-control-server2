@@ -80,14 +80,14 @@ void directionControl(int lastSpeed,int direction){
       speedControl(lastSpeed,lastSpeed);
       return;
       }
-
+    direction=direction/2;//减慢速度
     int tempSpeed=0;
-    printf("lastSpeed:%d,dire:%d\r\n",lastSpeed,direction);
+    printf("lastSpeed:%d,dir:%d\r\n",lastSpeed,direction);
     switch (lastSpeed){
-      case -8:
-      case -7:
-      case -6:
-      case -5:
+      case -16:
+      case -14:
+      case -12:
+      case -10:
          if(direction >=0 ){  //turn right
 	  tempSpeed=lastSpeed+direction;
 	  if(tempSpeed>0) tempSpeed=0;
@@ -98,10 +98,10 @@ void directionControl(int lastSpeed,int direction){
 	  pwmWrite(pwm1_0,-64*tempSpeed);
 	 }
        break;
+      case -8:
+      case -6:
       case -4:
-      case -3:
       case -2:
-      case -1:
          if(direction >=0 ){  //turn right
 	  tempSpeed=lastSpeed-direction;
 	  if(tempSpeed<-16) tempSpeed=-16;
@@ -113,10 +113,10 @@ void directionControl(int lastSpeed,int direction){
 	 }
         break;
 	  case 0:
-      case 1:
       case 2:
-      case 3:
       case 4:
+      case 6:
+      case 8:
         if(direction >=0 ){  //turn right
 	  tempSpeed=lastSpeed+direction;
 	  if(tempSpeed>16) tempSpeed=16;
@@ -128,15 +128,16 @@ void directionControl(int lastSpeed,int direction){
 	 }
        break;
 
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-        if(direction >=0 ){  //turn right
+      case 10:
+      case 12:
+      case 14:
+      case 16:
+     if(direction >=0 ){  //turn right
 	  tempSpeed=lastSpeed-direction;
 	  if(tempSpeed<0) tempSpeed=0;
+	  printf("tempSpeed: %f\n", tempSpeed);
 	  pwmWrite(pwm0_0,64*tempSpeed);
-	 }else{  //turn left
+	 }else{  //turn left,direction<0
 	  tempSpeed=lastSpeed+direction;
 	  if(tempSpeed<0) tempSpeed=0;
 	  pwmWrite(pwm1_0,64*tempSpeed);

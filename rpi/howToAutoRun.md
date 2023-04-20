@@ -20,6 +20,7 @@
    而在调试程序的时候，连接了HDMI，开始就用sudo amixer cset numid=3 1，使得root里设置了播放设备为1,有HDMI时，1为headphones，
   没有HDMI，1变成了USB 录音设备，无法播放声音，导致无法打开的错误。
    所以在没有连接hdmi时，应该设置sudo amixer cset numid=3 0。
+   命令speaker-test  -t3 测试声音输出
   
 
 1.go build生成可执行文件

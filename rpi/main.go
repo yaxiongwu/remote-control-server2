@@ -6,8 +6,8 @@ package main
 import (
 	"fmt"
 	"net"
+	"strings"
 
-	"github.com/hajimehoshi/oto/v2"
 	sdk "github.com/yaxiongwu/remote-control-client-go2"
 
 	//ilog "github.com/pion/ion-log"
@@ -26,9 +26,8 @@ import (
 	log "github.com/pion/ion-log"
 	_ "github.com/pion/mediadevices/pkg/driver/camera"     // This is required to register camera adapter
 	_ "github.com/pion/mediadevices/pkg/driver/microphone" // This is required to register microphone adapter
-	"github.com/pion/rtp"
 	"github.com/pion/webrtc/v3"
-	opusdecoder "github.com/yaxiongwu/remote-control-client-go2/pkg/opus/decoder"
+	gstsink "github.com/yaxiongwu/remote-control-client-go2/pkg/gstreamer-sink"
 	rtcproto "github.com/yaxiongwu/remote-control-client-go2/pkg/proto/rtc"
 )
 
@@ -99,8 +98,8 @@ func main() {
 	// 		speed <- recvData["s"]
 	// 	}
 	// }
-	
-   	pi :=sdk.Init()
+
+	pi := sdk.Init()
 
 	rtc.OnDataChannel = func(dc *webrtc.DataChannel) {
 		log.Infof("rtc.OnDatachannel:%v", dc.Label())
@@ -112,7 +111,7 @@ func main() {
 	rtc.ControlFunc = func(control string, data float64) {
 		switch control {
 		case "turn":
-			pi.DirectionControl(int(data))			
+			pi.DirectionControl(int(data))
 		case "speed":
 			//speed <- int(data)
 			pi.SpeedControl(int(data))
@@ -156,59 +155,89 @@ func main() {
 	// }
 
 	rtc.OnTrack = func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
-		codec := track.Codec()
-		log.Infof("track.Codec():%v", codec)
-		if codec.MimeType == "audio/opus" {
-			samplingRate := 48000
+		/*
+			codec := track.Codec()
+			log.Infof("track.Codec():%v", codec)
+			if codec.MimeType == "audio/opus" {
+				samplingRate := 48000
 
-			// Number of channels (aka locations) to play sounds from. Either 1 or 2.
-			// 1 is mono sound, and 2 is stereo (most speakers are stereo).
-			numOfChannels := 1
+				// Number of channels (aka locations) to play sounds from. Either 1 or 2.
+				// 1 is mono sound, and 2 is stereo (most speakers are stereo).
+				numOfChannels := 1
 
-			// Bytes used by a channel to represent one sample. Either 1 or 2 (usually 2).
-			audioBitDepth := 2
+				// Bytes used by a channel to represent one sample. Either 1 or 2 (usually 2).
+				audioBitDepth := 2
 
-			otoCtx, readyChan, err := oto.NewContext(samplingRate, numOfChannels, audioBitDepth)
-			if err != nil {
-				panic("oto.NewContext failed: " + err.Error())
+				otoCtx, readyChan, err := oto.NewContext(samplingRate, numOfChannels, audioBitDepth)
+				if err != nil {
+					panic("oto.NewContext failed: " + err.Error())
+				}
+				// It might take a bit for the hardware audio devices to be ready, so we wait on the channel.
+				<-readyChan
+
+				decoder, err := opusdecoder.NewOpusDecoder(samplingRate, numOfChannels)
+				if err != nil {
+					fmt.Printf("Error creating")
+				}
+				player := otoCtx.NewPlayer(decoder)
+				defer player.Close()
+				//player.Play()
+				//pipeReader, pipeWriter := io.Pipe()
+
+				b := make([]byte, 1500)
+				rtpPacket := &rtp.Packet{}
+				for {
+
+					// Read
+					n, _, readErr := track.Read(b)
+					if readErr != nil {
+						log.Errorf("OnTrack read error: %v", readErr)
+						return
+						//panic(readErr)
+					}
+
+					// Unmarshal the packet and update the PayloadType
+					if err = rtpPacket.Unmarshal(b[:n]); err != nil {
+						log.Errorf("OnTrack UnMarshal error: %v", err)
+						return
+						//panic(err)
+					}
+
+					//复制一份，以防覆盖
+					temp := make([]byte, len(rtpPacket.Payload))
+					copy(temp, rtpPacket.Payload)
+					//decoder.SetOpusData(rtpPacket.Payload)
+					decoder.Write(temp)
+					player.Play()
+				}
 			}
-			// It might take a bit for the hardware audio devices to be ready, so we wait on the channel.
-			<-readyChan
-
-			decoder, err := opusdecoder.NewOpusDecoder(samplingRate, numOfChannels)
-			if err != nil {
-				fmt.Printf("Error creating")
-			}
-			player := otoCtx.NewPlayer(decoder)
-			defer player.Close()
-			//player.Play()
-			//pipeReader, pipeWriter := io.Pipe()
-
-			b := make([]byte, 1500)
-			rtpPacket := &rtp.Packet{}
+		*/
+		codecName := strings.Split(track.Codec().RTPCodecCapability.MimeType, "/")[1]
+		fmt.Printf("Track has started, of type %d: %s \n", track.PayloadType(), codecName)
+		sink := "fakesink"
+		switch track.Kind() {
+		case webrtc.RTPCodecTypeAudio:
+			sink = "autoaudiosink"
+		case webrtc.RTPCodecTypeVideo:
+			sink = "autovideosink"
+		}
+		fmt.Printf(sink)
+		
+		if sink == "autoaudiosink" {
+			pipeline := gstsink.CreatePipeline(strings.ToLower(codecName), sink)
+			pipeline.Start()
+			defer pipeline.Stop()
+			buf := make([]byte, 800)
+			fmt.Println("autoaudiosink")
 			for {
-
-				// Read
-				n, _, readErr := track.Read(b)
+				i, _, readErr := track.Read(buf)
 				if readErr != nil {
-					log.Errorf("OnTrack read error: %v", readErr)
+					log.Errorf("%v", readErr)
 					return
-					//panic(readErr)
 				}
+				fmt.Printf("%v\r", i)
 
-				// Unmarshal the packet and update the PayloadType
-				if err = rtpPacket.Unmarshal(b[:n]); err != nil {
-					log.Errorf("OnTrack UnMarshal error: %v", err)
-					return
-					//panic(err)
-				}
-
-				//复制一份，以防覆盖
-				temp := make([]byte, len(rtpPacket.Payload))
-				copy(temp, rtpPacket.Payload)
-				//decoder.SetOpusData(rtpPacket.Payload)
-				decoder.Write(temp)
-				player.Play()
+				pipeline.Push(buf[:i])
 			}
 		}
 	}
