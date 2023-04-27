@@ -42,6 +42,7 @@ func CreatePipeline(codecName, pipelineSink string) *Pipeline {
 	default:
 		panic("Unhandled codec " + codecName)
 	}
+	//gst-launch-1.0 filesrc location=1.mp3 ! decodebin ! audioconvert ! alsasink device="plughw:1"
 
 	pipelineStrUnsafe := C.CString(pipelineStr)
 	defer C.free(unsafe.Pointer(pipelineStrUnsafe))
