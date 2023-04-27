@@ -8,3 +8,5 @@ https://github.com/coder/code-server/
 sudo dpkg -i code-server_${VERSION}_amd64.deb
 sudo systemctl enable --now code-server@$USER
 如果是在云里，修改~/.config/code-server/config.yaml里的地址为0.0.0.0
+
+test
